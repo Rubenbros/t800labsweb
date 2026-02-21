@@ -221,12 +221,13 @@ export default function Home() {
       bt.to(".blood-drip-6", { height: "115%", duration: 2.2, ease: liquidEase }, 19.3);
       bt.to(".blood-drip-7", { height: "115%", duration: 2.0, ease: liquidEase2 }, 19.5);
 
-      // Solid overlay ensures full red coverage (also translucent → opaque)
-      bt.to(".blood-solid", { opacity: 0.85, duration: 0.5 }, 21.5);
+      // Solid fill within group ensures full coverage
+      bt.to(".blood-solid", { opacity: 1, duration: 0.5 }, 21.5);
 
-      // Transition everything to black
-      bt.to(".blood-solid", { opacity: 1, backgroundColor: "#000000", duration: 2, ease: "power2.inOut" }, 22);
-      bt.to(".blood-drip", { opacity: 1, backgroundColor: "#000000", duration: 2, ease: "power2.inOut" }, 22);
+      // Transition to black: raise group opacity to fully opaque + change colors
+      bt.to(".bond-blood-drips", { opacity: 1, duration: 2, ease: "power2.inOut" }, 22);
+      bt.to(".blood-solid", { backgroundColor: "#000000", duration: 2, ease: "power2.inOut" }, 22);
+      bt.to(".blood-drip", { backgroundColor: "#000000", duration: 2, ease: "power2.inOut" }, 22);
       bt.to(".bond-assembly", { opacity: 0, duration: 1.5 }, 22);
 
     }, wrapperRef);
@@ -349,28 +350,28 @@ export default function Home() {
 
         </div>
 
-        {/* ── Blood drips — translucent cascade after gunshot ── */}
-        <div className="bond-blood-drips pointer-events-none absolute inset-0 z-50 overflow-hidden">
-          {/* Phase 1: Narrow drips — translucent, fall first */}
-          <div className="blood-drip blood-drip-1 absolute top-0"
-               style={{ left: '46%', width: '5%', height: '0%', borderRadius: '0 0 50% 50%', backgroundColor: 'rgba(139, 0, 0, 0.55)' }} />
-          <div className="blood-drip blood-drip-2 absolute top-0"
-               style={{ left: '20%', width: '4%', height: '0%', borderRadius: '0 0 50% 50%', backgroundColor: 'rgba(122, 0, 0, 0.5)' }} />
-          <div className="blood-drip blood-drip-3 absolute top-0"
-               style={{ left: '73%', width: '4%', height: '0%', borderRadius: '0 0 50% 50%', backgroundColor: 'rgba(139, 0, 0, 0.55)' }} />
+        {/* ── Blood drips — group opacity so overlaps don't stack ── */}
+        <div className="bond-blood-drips pointer-events-none absolute inset-0 z-50 overflow-hidden" style={{ opacity: 0.5 }}>
+          {/* Phase 1: Narrow drips — solid inside group */}
+          <div className="blood-drip blood-drip-1 absolute top-0 bg-[#550010]"
+               style={{ left: '46%', width: '5%', height: '0%', borderRadius: '0 0 50% 50%' }} />
+          <div className="blood-drip blood-drip-2 absolute top-0 bg-[#4A0008]"
+               style={{ left: '20%', width: '4%', height: '0%', borderRadius: '0 0 50% 50%' }} />
+          <div className="blood-drip blood-drip-3 absolute top-0 bg-[#550010]"
+               style={{ left: '73%', width: '4%', height: '0%', borderRadius: '0 0 50% 50%' }} />
 
-          {/* Phase 2: Wider flows — translucent, layers build opacity */}
-          <div className="blood-drip blood-drip-4 absolute top-0"
-               style={{ left: '28%', width: '26%', height: '0%', borderRadius: '0 0 30% 30%', backgroundColor: 'rgba(122, 0, 0, 0.45)' }} />
-          <div className="blood-drip blood-drip-5 absolute top-0"
-               style={{ left: '52%', width: '24%', height: '0%', borderRadius: '0 0 30% 30%', backgroundColor: 'rgba(139, 0, 0, 0.45)' }} />
-          <div className="blood-drip blood-drip-6 absolute top-0"
-               style={{ left: '-2%', width: '32%', height: '0%', borderRadius: '0 0 25% 25%', backgroundColor: 'rgba(122, 0, 0, 0.4)' }} />
-          <div className="blood-drip blood-drip-7 absolute top-0"
-               style={{ left: '74%', width: '28%', height: '0%', borderRadius: '0 0 25% 25%', backgroundColor: 'rgba(139, 0, 0, 0.4)' }} />
+          {/* Phase 2: Wider flows — solid, same tone */}
+          <div className="blood-drip blood-drip-4 absolute top-0 bg-[#4A0008]"
+               style={{ left: '28%', width: '26%', height: '0%', borderRadius: '0 0 30% 30%' }} />
+          <div className="blood-drip blood-drip-5 absolute top-0 bg-[#550010]"
+               style={{ left: '52%', width: '24%', height: '0%', borderRadius: '0 0 30% 30%' }} />
+          <div className="blood-drip blood-drip-6 absolute top-0 bg-[#4A0008]"
+               style={{ left: '-2%', width: '32%', height: '0%', borderRadius: '0 0 25% 25%' }} />
+          <div className="blood-drip blood-drip-7 absolute top-0 bg-[#550010]"
+               style={{ left: '74%', width: '28%', height: '0%', borderRadius: '0 0 25% 25%' }} />
 
-          {/* Final overlay — translucent red → opaque black */}
-          <div className="blood-solid absolute inset-0 opacity-0" style={{ backgroundColor: 'rgba(139, 0, 0, 0.6)' }} />
+          {/* Final solid cover within group */}
+          <div className="blood-solid absolute inset-0 bg-[#550010] opacity-0" />
         </div>
       </section>
 
