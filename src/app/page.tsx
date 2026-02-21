@@ -184,23 +184,25 @@ export default function Home() {
       bt.to(".bond-flash",
         { scale: 1.5, opacity: 0, duration: 0.3, ease: "power2.out" }, 17.25);
 
-      // Blood appears (opacity 0→1) then fills barrel from top to bottom
-      bt.to(".bond-blood",
-        { opacity: 1, duration: 0.3 }, 17.5);
-      bt.to(".bond-blood",
-        { clipPath: "inset(0 0 0% 0)", duration: 4, ease: "power1.in" }, 17.8);
+      // ── Phase 4: Blood drips cascade down screen (17.5→24) ──
+      // Narrow drips fall first — fast
+      bt.to(".blood-drip-1", { height: "115%", duration: 0.7, ease: "power3.in" }, 17.5);
+      bt.to(".blood-drip-2", { height: "115%", duration: 1.4, ease: "power2.in" }, 18.0);
+      bt.to(".blood-drip-3", { height: "115%", duration: 1.1, ease: "power2.in" }, 18.3);
 
-      // ── Phase 4: Red tint over scene → fade to black (21→25) ──
-      // Scene gets dark red tint (rifling still visible through it)
-      bt.to(".bond-red-tint",
-        { opacity: 0.7, duration: 2, ease: "power2.in" }, 21);
-      // Then darken fully and transition to black
-      bt.to(".bond-red-tint",
-        { opacity: 1, duration: 1.5, ease: "power2.in" }, 23);
-      bt.to(".bond-red-tint",
-        { background: "#000000", duration: 2, ease: "power2.inOut" }, 24);
-      bt.to(".bond-assembly",
-        { opacity: 0, duration: 1.5 }, 24);
+      // Wider flows fill the gaps
+      bt.to(".blood-drip-4", { height: "115%", duration: 2.0, ease: "power2.in" }, 18.8);
+      bt.to(".blood-drip-5", { height: "115%", duration: 1.8, ease: "power2.in" }, 19.0);
+      bt.to(".blood-drip-6", { height: "115%", duration: 2.2, ease: "power2.in" }, 19.3);
+      bt.to(".blood-drip-7", { height: "115%", duration: 2.0, ease: "power2.in" }, 19.5);
+
+      // Solid overlay ensures full red coverage
+      bt.to(".blood-solid", { opacity: 1, duration: 0.5 }, 21.5);
+
+      // Transition everything to black
+      bt.to(".blood-solid", { backgroundColor: "#000000", duration: 2, ease: "power2.inOut" }, 22);
+      bt.to(".blood-drip", { backgroundColor: "#000000", duration: 2, ease: "power2.inOut" }, 22);
+      bt.to(".bond-assembly", { opacity: 0, duration: 1.5 }, 22);
 
     }, wrapperRef);
 
@@ -320,15 +322,31 @@ export default function Home() {
             <div className="absolute left-1/2 top-1/2 h-2.5 w-2.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-orange-400 shadow-[0_0_8px_4px_rgba(255,150,0,0.5)]" />
           </div>
 
-          {/* Blood inside barrel opening — fills from top like Bond */}
-          <div
-            className="bond-blood absolute left-1/2 top-1/2 z-[35] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#8B0000] opacity-0"
-            style={{ width: "18%", height: "18%", clipPath: "inset(0 0 100% 0)" }}
-          />
         </div>
 
-        {/* ── Red tint over entire scene — darkens after blood fills ── */}
-        <div className="bond-red-tint pointer-events-none absolute inset-0 z-50 bg-[#8B0000] opacity-0" />
+        {/* ── Blood drips — cascade down after gunshot ── */}
+        <div className="bond-blood-drips pointer-events-none absolute inset-0 z-50 overflow-hidden">
+          {/* Phase 1: Narrow drips — fall first, fast */}
+          <div className="blood-drip blood-drip-1 absolute top-0 bg-[#8B0000]"
+               style={{ left: '46%', width: '5%', height: '0%', borderRadius: '0 0 50% 50%' }} />
+          <div className="blood-drip blood-drip-2 absolute top-0 bg-[#7a0000]"
+               style={{ left: '20%', width: '4%', height: '0%', borderRadius: '0 0 50% 50%' }} />
+          <div className="blood-drip blood-drip-3 absolute top-0 bg-[#8B0000]"
+               style={{ left: '73%', width: '4%', height: '0%', borderRadius: '0 0 50% 50%' }} />
+
+          {/* Phase 2: Wider flows — fill the screen */}
+          <div className="blood-drip blood-drip-4 absolute top-0 bg-[#7a0000]"
+               style={{ left: '28%', width: '26%', height: '0%', borderRadius: '0 0 30% 30%' }} />
+          <div className="blood-drip blood-drip-5 absolute top-0 bg-[#8B0000]"
+               style={{ left: '52%', width: '24%', height: '0%', borderRadius: '0 0 30% 30%' }} />
+          <div className="blood-drip blood-drip-6 absolute top-0 bg-[#7a0000]"
+               style={{ left: '-2%', width: '32%', height: '0%', borderRadius: '0 0 25% 25%' }} />
+          <div className="blood-drip blood-drip-7 absolute top-0 bg-[#8B0000]"
+               style={{ left: '74%', width: '28%', height: '0%', borderRadius: '0 0 25% 25%' }} />
+
+          {/* Final solid overlay — full red → fades to black */}
+          <div className="blood-solid absolute inset-0 bg-[#8B0000] opacity-0" />
+        </div>
       </section>
 
     </div>
