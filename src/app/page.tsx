@@ -78,7 +78,7 @@ export default function Home() {
         scrollTrigger: {
           trigger: ".bond-section",
           start: "top top",
-          end: "+=6000",
+          end: "+=3500",
           scrub: 1,
           pin: true,
         },
@@ -113,39 +113,94 @@ export default function Home() {
       // Grows big enough to go off-screen right
       bt.to(".bond-assembly",
         { scale: 1.8, duration: 2.5, ease: "power2.out" }, 7);
-      // Rifling fades in as it grows
+      // Rifling fades in as it grows + slow rotation
       bt.to(".bond-rifling",
         { opacity: 1, duration: 1.5 }, 7.5);
+      bt.to(".bond-rifling",
+        { rotation: 90, duration: 9.5, ease: "none" }, 7.5);
 
       // ── Phase 1b: Once big, moves to center (9.5→13) ──
       bt.to(".bond-assembly",
         { x: 0, y: 0, duration: 3.5, ease: "power2.inOut" }, 9.5);
 
-      // ── Phase 2: Bond video appears when circle is fully expanded ──
+      // ── Phase 2: Bond character appears inside barrel ──
       bt.to(".bond-video-wrapper",
-        { opacity: 1, duration: 1 }, 9.5);
-      // TODO: sync video.currentTime to scroll progress here
-      // The video element will be controlled via ScrollTrigger onUpdate
+        { opacity: 1, duration: 0.8 }, 9.5);
 
-      // ── Phase 3: Flash + blood drip (17→20) ──
+      // ── Phase 2b: Sprite animation ──
+      // Frames 0-5 = walk, 6-9 = turn, 10-11 = aim
+      const TOTAL_FRAMES = 12;
+      const WALK_FRAMES = 6;
+      const TURN_START = 6;
+      const CANVAS_W = 301;
+      const CANVAS_H = 803;
+
+      // Preload all frames
+      const frames: HTMLImageElement[] = [];
+      for (let i = 0; i < TOTAL_FRAMES; i++) {
+        const img = new window.Image();
+        img.src = `/bond-frames/frame-${String(i).padStart(2, "0")}.png`;
+        frames.push(img);
+      }
+
+      const drawFrame = (f: number) => {
+        const canvas = document.querySelector(".bond-sprite-canvas") as HTMLCanvasElement;
+        const img = frames[f];
+        if (!canvas || !img?.complete) return;
+        const ctx2d = canvas.getContext("2d");
+        if (!ctx2d) return;
+        ctx2d.clearRect(0, 0, CANVAS_W, CANVAS_H);
+        const dx = (CANVAS_W - img.naturalWidth) / 2;
+        ctx2d.drawImage(img, dx, 0);
+      };
+
+      frames[0].onload = () => drawFrame(0);
+
+      // Walk cycle loops while circle moves to center (9.5→12)
+      const walkObj = { frame: 0 };
+      bt.to(walkObj, {
+        frame: WALK_FRAMES * 3 - 1,
+        ease: `steps(${WALK_FRAMES * 3 - 1})`,
+        duration: 2.5,
+        onUpdate: () => drawFrame(Math.round(walkObj.frame) % WALK_FRAMES),
+      }, 9.5);
+
+      // Turn + aim starts just before circle settles (12→17)
+      const turnObj = { frame: TURN_START };
+      bt.to(turnObj, {
+        frame: TOTAL_FRAMES - 1,
+        ease: `steps(${TOTAL_FRAMES - 1 - TURN_START})`,
+        duration: 5,
+        onUpdate: () => drawFrame(Math.round(turnObj.frame)),
+      }, 12);
+
+      // ── Phase 3: Flash + blood fills barrel opening (17→22) ──
+      // Muzzle flash — bright burst then quick fade
       bt.fromTo(".bond-flash",
         { opacity: 0, scale: 0.5 },
-        { opacity: 1, scale: 2.5, duration: 0.3 }, 17);
+        { opacity: 1, scale: 1.2, duration: 0.15, ease: "power4.out" }, 17);
       bt.to(".bond-flash",
-        { opacity: 0, duration: 0.4 }, 17.3);
-      // Blood drips from top of circle
-      bt.fromTo(".bond-blood-drip",
-        { yPercent: -100 },
-        { yPercent: 0, duration: 3, ease: "power1.in" }, 17.5);
+        { scale: 0.8, opacity: 0.7, duration: 0.1 }, 17.15);
+      bt.to(".bond-flash",
+        { scale: 1.5, opacity: 0, duration: 0.3, ease: "power2.out" }, 17.25);
 
-      // ── Phase 4: Blood fills screen, fade to black (20→24) ──
-      bt.fromTo(".bond-blood-screen",
-        { opacity: 0 },
-        { opacity: 1, duration: 1.5, ease: "power2.in" }, 20);
+      // Blood appears (opacity 0→1) then fills barrel from top to bottom
+      bt.to(".bond-blood",
+        { opacity: 1, duration: 0.3 }, 17.5);
+      bt.to(".bond-blood",
+        { clipPath: "inset(0 0 0% 0)", duration: 4, ease: "power1.in" }, 17.8);
+
+      // ── Phase 4: Red tint over scene → fade to black (21→25) ──
+      // Scene gets dark red tint (rifling still visible through it)
+      bt.to(".bond-red-tint",
+        { opacity: 0.7, duration: 2, ease: "power2.in" }, 21);
+      // Then darken fully and transition to black
+      bt.to(".bond-red-tint",
+        { opacity: 1, duration: 1.5, ease: "power2.in" }, 23);
+      bt.to(".bond-red-tint",
+        { background: "#000000", duration: 2, ease: "power2.inOut" }, 24);
       bt.to(".bond-assembly",
-        { opacity: 0, duration: 1.5 }, 20);
-      bt.to(".bond-blood-screen",
-        { backgroundColor: "#000000", duration: 3, ease: "power2.inOut" }, 22);
+        { opacity: 0, duration: 1.5 }, 24);
 
     }, wrapperRef);
 
@@ -226,20 +281,7 @@ export default function Home() {
           <div
             className="absolute left-1/2 top-1/2 z-20 -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-full bg-white"
             style={{ width: "18%", height: "18%" }}
-          >
-            {/* Blood drip — falls from top inside circle */}
-            <div className="bond-blood-drip absolute inset-x-0 top-0 z-20 h-full" style={{ transform: "translateY(-100%)" }}>
-              <div className="h-full w-full bg-[#8B0000]" />
-              <div className="absolute bottom-0 left-[8%] h-[50px] w-[5px] translate-y-full rounded-b-full bg-[#8B0000]" />
-              <div className="absolute bottom-0 left-[20%] h-[80px] w-[7px] translate-y-full rounded-b-full bg-[#8B0000]" />
-              <div className="absolute bottom-0 left-[33%] h-[35px] w-[4px] translate-y-full rounded-b-full bg-[#8B0000]" />
-              <div className="absolute bottom-0 left-[45%] h-[65px] w-[6px] translate-y-full rounded-b-full bg-[#8B0000]" />
-              <div className="absolute bottom-0 left-[58%] h-[90px] w-[8px] translate-y-full rounded-b-full bg-[#8B0000]" />
-              <div className="absolute bottom-0 left-[70%] h-[40px] w-[5px] translate-y-full rounded-b-full bg-[#8B0000]" />
-              <div className="absolute bottom-0 left-[82%] h-[70px] w-[6px] translate-y-full rounded-b-full bg-[#8B0000]" />
-              <div className="absolute bottom-0 left-[93%] h-[55px] w-[5px] translate-y-full rounded-b-full bg-[#8B0000]" />
-            </div>
-          </div>
+          />
 
           {/* Barrel rifling — zoomed out (55%) for better definition */}
           <div
@@ -253,26 +295,40 @@ export default function Home() {
             />
           </div>
 
-          {/* Video overlay — clipped to barrel opening circle */}
+          {/* Character overlay — clipped to barrel opening circle */}
           <div
             className="bond-video-wrapper absolute inset-0 z-[25] opacity-0"
             style={{ clipPath: "circle(9.1% at 50% 50%)" }}
           >
-            {/*
-              TODO: Replace placeholder with:
-              <video className="bond-video h-full w-full object-cover" src="/bond-sequence.mp4" muted playsInline preload="auto" />
-            */}
-            <div className="flex h-full w-full items-center justify-center bg-white/90 font-mono text-xs text-black/30">
-              VIDEO
-            </div>
+            <div className="absolute inset-0 bg-white" />
+            <canvas
+              className="bond-sprite-canvas absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
+              width={301}
+              height={803}
+              style={{
+                width: "6%",
+                height: "16%",
+              }}
+            />
           </div>
 
           {/* Gun flash — centered on the circle */}
-          <div className="bond-flash pointer-events-none absolute left-1/2 top-1/2 z-30 h-12 w-12 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white opacity-0 shadow-[0_0_80px_40px_rgba(255,255,255,0.95)]" />
+          {/* Muzzle flash — small fire effect */}
+          <div className="bond-flash pointer-events-none absolute left-1/2 top-[44%] z-30 -translate-x-1/2 -translate-y-1/2 opacity-0">
+            <div className="absolute left-1/2 top-1/2 h-6 w-6 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white shadow-[0_0_15px_8px_rgba(255,255,255,0.7)]" />
+            <div className="absolute left-1/2 top-1/2 h-4 w-4 -translate-x-1/2 -translate-y-1/2 rounded-full bg-yellow-200 shadow-[0_0_10px_5px_rgba(255,200,50,0.6)]" />
+            <div className="absolute left-1/2 top-1/2 h-2.5 w-2.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-orange-400 shadow-[0_0_8px_4px_rgba(255,150,0,0.5)]" />
+          </div>
+
+          {/* Blood inside barrel opening — fills from top like Bond */}
+          <div
+            className="bond-blood absolute left-1/2 top-1/2 z-[35] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#8B0000] opacity-0"
+            style={{ width: "18%", height: "18%", clipPath: "inset(0 0 100% 0)" }}
+          />
         </div>
 
-        {/* Full-screen blood overlay — covers everything, final takeover */}
-        <div className="bond-blood-screen pointer-events-none absolute inset-0 z-40 bg-[#8B0000] opacity-0" />
+        {/* ── Red tint over entire scene — darkens after blood fills ── */}
+        <div className="bond-red-tint pointer-events-none absolute inset-0 z-50 bg-[#8B0000] opacity-0" />
       </section>
 
     </div>
