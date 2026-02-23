@@ -490,6 +490,13 @@ export default function HomeClient() {
         { opacity: 0 },
         { opacity: 1, duration: 0.8, stagger: 0.1 }, 1);
 
+      // Fade to black before unpin — prevents scroll-up flash
+      st.to(".services-fadeout", {
+        opacity: 1,
+        duration: 1.5,
+        ease: "power2.in",
+      }, 8);
+
       // ═══════════════════════════════════════
       // PROCESS SECTION — handled by ProcessVersionA/B/C component
       // ═══════════════════════════════════════
@@ -521,6 +528,13 @@ export default function HomeClient() {
       ht.fromTo(".hal-corner",
         { opacity: 0 },
         { opacity: 1, duration: 0.6, stagger: 0.08 }, 0.5);
+
+      // Fade to black before unpin
+      ht.to(".hal-fadeout", {
+        opacity: 1,
+        duration: 1.5,
+        ease: "power2.in",
+      }, 3);
 
       // ═══════════════════════════════════════
       // PERSISTENT SCROLL INDICATOR
@@ -782,6 +796,8 @@ export default function HomeClient() {
           SERVICES SECTION — Matrix Rain
           ════════════════════════════════════════════ */}
       <section id="servicios" className="services-section relative h-screen overflow-hidden bg-black">
+        {/* Fadeout overlay — covers content before unpin */}
+        <div className="services-fadeout pointer-events-none absolute inset-0 z-30 bg-black opacity-0" />
         {/* Matrix rain canvas background */}
         <div className="services-rain absolute inset-0 opacity-0">
           <MatrixRain />
@@ -902,6 +918,8 @@ export default function HomeClient() {
           HAL 9000 SECTION
           ════════════════════════════════════════════ */}
       <section className="hal-section relative h-screen overflow-hidden bg-black">
+        {/* Fadeout overlay — covers content before unpin */}
+        <div className="hal-fadeout pointer-events-none absolute inset-0 z-30 bg-black opacity-0" />
         {/* HAL eye — centered */}
         <div className="flex h-full items-center justify-center">
           <div className="flex flex-col items-center gap-6 md:gap-10">

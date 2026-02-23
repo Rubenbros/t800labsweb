@@ -227,6 +227,13 @@ export default function ProcessTesseract() {
         pos += 5;
       }
 
+      // Fade to black before unpin — prevents scroll-up flash
+      pt.to(".process-fadeout", {
+        opacity: 1,
+        duration: 1.5,
+        ease: "power2.in",
+      }, 30.5);
+
       // Ambient glow pulse (loop)
       gsap.to(".tess-ambient", {
         opacity: 0.7,
@@ -243,6 +250,8 @@ export default function ProcessTesseract() {
 
   return (
     <section ref={sectionRef} id="proceso" className="process-section relative h-screen overflow-hidden bg-black">
+      {/* Fadeout overlay — covers content before unpin */}
+      <div className="process-fadeout pointer-events-none absolute inset-0 z-50 bg-black opacity-0" />
 
       {/* ═══ WORMHOLE TUNNEL ═══ */}
       <div className="tess-wormhole pointer-events-none absolute inset-0 z-40 flex items-center justify-center opacity-0">
