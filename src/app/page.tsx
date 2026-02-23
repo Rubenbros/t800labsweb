@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
 import Image from "next/image";
+import Hal9000 from "@/components/Hal9000";
 
 export default function Home() {
   const wrapperRef = useRef<HTMLDivElement>(null);
@@ -91,23 +92,35 @@ export default function Home() {
       bt.to(".bond-assembly",
         { x: endX, duration: 7, ease: "none" }, 0);
 
-      // Ghost trail 1 — appears at ~28% of travel
+      // Ghost trail 1 — appears at ~28% + service label
       bt.fromTo(".bond-ghost-1",
-        { opacity: 0 }, { opacity: 0.5, duration: 0.05 }, 2);
+        { opacity: 0 }, { opacity: 0.6, duration: 0.05 }, 2);
+      bt.fromTo(".ghost-label-1",
+        { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.3 }, 2);
       bt.to(".bond-ghost-1",
         { opacity: 0, duration: 1.5 }, 2.05);
+      bt.to(".ghost-label-1",
+        { opacity: 0, y: -10, duration: 1 }, 2.5);
 
-      // Ghost trail 2 — appears at ~52% of travel
+      // Ghost trail 2 — appears at ~52% + service label
       bt.fromTo(".bond-ghost-2",
-        { opacity: 0 }, { opacity: 0.5, duration: 0.05 }, 3.8);
+        { opacity: 0 }, { opacity: 0.6, duration: 0.05 }, 3.8);
+      bt.fromTo(".ghost-label-2",
+        { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.3 }, 3.8);
       bt.to(".bond-ghost-2",
         { opacity: 0, duration: 1.5 }, 3.85);
+      bt.to(".ghost-label-2",
+        { opacity: 0, y: -10, duration: 1 }, 4.3);
 
-      // Ghost trail 3 — appears at ~76% of travel
+      // Ghost trail 3 — appears at ~76% + service label
       bt.fromTo(".bond-ghost-3",
-        { opacity: 0 }, { opacity: 0.5, duration: 0.05 }, 5.5);
+        { opacity: 0 }, { opacity: 0.6, duration: 0.05 }, 5.5);
+      bt.fromTo(".ghost-label-3",
+        { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.3 }, 5.5);
       bt.to(".bond-ghost-3",
         { opacity: 0, duration: 1.5 }, 5.55);
+      bt.to(".ghost-label-3",
+        { opacity: 0, y: -10, duration: 1 }, 6.0);
 
       // ── Phase 1b: Circle expands at right edge (7→9.5) ──
       // Grows big enough to go off-screen right
@@ -224,11 +237,45 @@ export default function Home() {
       // Solid fill within group ensures full coverage
       bt.to(".blood-solid", { opacity: 1, duration: 0.5 }, 21.5);
 
-      // Transition to black: raise group opacity to fully opaque + change colors
-      bt.to(".bond-blood-drips", { opacity: 1, duration: 2, ease: "power2.inOut" }, 22);
-      bt.to(".blood-solid", { backgroundColor: "#000000", duration: 2, ease: "power2.inOut" }, 22);
-      bt.to(".blood-drip", { backgroundColor: "#000000", duration: 2, ease: "power2.inOut" }, 22);
+      // Raise group opacity to fully opaque — stays red for HAL transition
+      bt.to(".bond-blood-drips", { opacity: 1, duration: 1.5, ease: "power2.inOut" }, 22);
       bt.to(".bond-assembly", { opacity: 0, duration: 1.5 }, 22);
+
+      // ═══════════════════════════════════════
+      // HAL 9000 SECTION — red mask transition
+      // ═══════════════════════════════════════
+      const ht = gsap.timeline({
+        scrollTrigger: {
+          trigger: ".hal-section",
+          start: "top top",
+          end: "+=2500",
+          scrub: 1,
+          pin: true,
+        },
+      });
+
+      // Red mask shrinks from full screen to HAL eye circle
+      ht.to(".hal-red-mask", {
+        clipPath: "circle(12% at 50% 50%)",
+        duration: 5,
+        ease: "power2.inOut",
+      }, 0);
+
+      // Fade out the red mask to reveal full HAL
+      ht.to(".hal-red-mask", {
+        opacity: 0,
+        duration: 2,
+      }, 5);
+
+      // HAL label fades in
+      ht.fromTo(".hal-quote",
+        { opacity: 0, y: 30 },
+        { opacity: 1, y: 0, duration: 2, ease: "power2.out" }, 5);
+
+      // Corner decorations
+      ht.fromTo(".hal-corner",
+        { opacity: 0 },
+        { opacity: 1, duration: 1, stagger: 0.15 }, 6);
 
       // ═══════════════════════════════════════
       // PERSISTENT SCROLL INDICATOR
@@ -349,10 +396,19 @@ export default function Home() {
           ════════════════════════════════════════════ */}
       <section className="bond-section relative h-screen overflow-hidden bg-black">
 
-        {/* ── Ghost trail circles (3 echoes that appear and fade) ── */}
-        <div className="bond-ghost-1 absolute left-1/2 top-1/2 rounded-full bg-white opacity-0" style={{ width: "6vh", height: "6vh" }} />
-        <div className="bond-ghost-2 absolute left-1/2 top-1/2 rounded-full bg-white opacity-0" style={{ width: "6vh", height: "6vh" }} />
-        <div className="bond-ghost-3 absolute left-1/2 top-1/2 rounded-full bg-white opacity-0" style={{ width: "6vh", height: "6vh" }} />
+        {/* ── Ghost trail circles with service labels ── */}
+        <div className="bond-ghost-1 absolute left-1/2 top-1/2 flex flex-col items-center opacity-0" style={{ width: "6vh", height: "6vh" }}>
+          <div className="h-full w-full rounded-full bg-white" />
+          <span className="ghost-label-1 mt-3 whitespace-nowrap font-mono text-[10px] tracking-[0.2em] text-white/80 uppercase opacity-0">Web Apps</span>
+        </div>
+        <div className="bond-ghost-2 absolute left-1/2 top-1/2 flex flex-col items-center opacity-0" style={{ width: "6vh", height: "6vh" }}>
+          <div className="h-full w-full rounded-full bg-white" />
+          <span className="ghost-label-2 mt-3 whitespace-nowrap font-mono text-[10px] tracking-[0.2em] text-white/80 uppercase opacity-0">AI / ML</span>
+        </div>
+        <div className="bond-ghost-3 absolute left-1/2 top-1/2 flex flex-col items-center opacity-0" style={{ width: "6vh", height: "6vh" }}>
+          <div className="h-full w-full rounded-full bg-white" />
+          <span className="ghost-label-3 mt-3 whitespace-nowrap font-mono text-[10px] tracking-[0.2em] text-white/80 uppercase opacity-0">Cloud Ops</span>
+        </div>
 
         {/* ── Barrel assembly (circle + rifling + video + blood) ── */}
         <div
@@ -427,6 +483,49 @@ export default function Home() {
           {/* Final solid cover within group */}
           <div className="blood-solid absolute inset-0 bg-[#550010] opacity-0" />
         </div>
+      </section>
+
+      {/* ════════════════════════════════════════════
+          HAL 9000 SECTION
+          ════════════════════════════════════════════ */}
+      <section className="hal-section relative h-screen overflow-hidden bg-black">
+        {/* HAL eye — centered */}
+        <div className="flex h-full items-center justify-center">
+          <div className="flex flex-col items-center gap-10">
+            <Hal9000 />
+            <div className="hal-quote flex flex-col items-center gap-3 opacity-0">
+              <p className="font-mono text-sm tracking-[0.15em] text-white/50 md:text-base">&quot;I&apos;m sorry, Dave. I&apos;m afraid I can&apos;t do that.&quot;</p>
+              <div className="h-[1px] w-16 bg-gradient-to-r from-transparent via-red-500/30 to-transparent" />
+              <p className="font-mono text-[10px] tracking-[0.25em] text-red-500/40 uppercase">HAL 9000 — T800 Labs Core</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Corner decorations */}
+        <div className="hal-corner absolute left-6 top-6 opacity-0">
+          <div className="h-8 w-[1px] bg-gradient-to-b from-red-500/30 to-transparent" />
+          <div className="absolute top-0 h-[1px] w-8 bg-gradient-to-r from-red-500/30 to-transparent" />
+          <span className="absolute left-3 top-3 font-mono text-[9px] tracking-[0.3em] text-red-500/25">SYS.02</span>
+        </div>
+        <div className="hal-corner absolute right-6 top-6 opacity-0">
+          <div className="ml-auto h-8 w-[1px] bg-gradient-to-b from-red-500/30 to-transparent" />
+          <div className="absolute right-0 top-0 h-[1px] w-8 bg-gradient-to-l from-red-500/30 to-transparent" />
+          <span className="absolute right-3 top-3 font-mono text-[9px] tracking-[0.3em] text-red-500/25">ACTIVE</span>
+        </div>
+        <div className="hal-corner absolute bottom-6 left-6 opacity-0">
+          <div className="h-8 w-[1px] bg-gradient-to-t from-red-500/30 to-transparent" />
+          <div className="absolute bottom-0 h-[1px] w-8 bg-gradient-to-r from-red-500/30 to-transparent" />
+        </div>
+        <div className="hal-corner absolute bottom-6 right-6 opacity-0">
+          <div className="ml-auto h-8 w-[1px] bg-gradient-to-t from-red-500/30 to-transparent" />
+          <div className="absolute bottom-0 right-0 h-[1px] w-8 bg-gradient-to-l from-red-500/30 to-transparent" />
+        </div>
+
+        {/* Red mask — starts covering everything, shrinks to HAL eye circle */}
+        <div
+          className="hal-red-mask absolute inset-0 z-40 bg-[#550010]"
+          style={{ clipPath: "circle(100% at 50% 50%)" }}
+        />
       </section>
 
     </div>
