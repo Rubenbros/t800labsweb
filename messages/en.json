@@ -19,8 +19,7 @@
   "Navbar": {
     "servicios": "Services",
     "proceso": "Process",
-    "portfolio": "Portfolio",
-    "nosotros": "About Us",
+    "equipo": "Team",
     "contacto": "Contact"
   },
   "Hal": {
@@ -73,5 +72,30 @@
     "step5Title": "DELIVERY",
     "step5Desc": "Your product crosses to the other side. Deploy, training, support, evolution.",
     "back": "BACK"
+  },
+  "Team": {
+    "subtitle": "Tyrell Files",
+    "title": "TEAM",
+    "model": "NEXUS-7 // SERIAL: RJC-001",
+    "inception": "INCEPTION",
+    "function": "FUNCTION",
+    "functionValue": "Founder & Lead Developer",
+    "specializations": "SPECIALIZATIONS",
+    "specList": "Java/Spring · AI Integration · Full-Stack · Cloud",
+    "priorAssignments": "PRIOR_ASSIGNMENTS",
+    "assignments": "Centro Zaragoza · Tragsatec · ISYC · Softek",
+    "additionalProtocols": "ADDITIONAL_PROTOCOLS",
+    "protocols": "CS College Professor · AI Speaker",
+    "bio": "Passionate about technology and expert in AI integrations",
+    "quote": "\"All those moments will be lost in time, like tears in rain.\"",
+    "cornerSys": "SYS.04",
+    "cornerLabel": "TYRELL"
+  },
+  "Footer": {
+    "description": "Next generation software. Websites, apps, and systems that make a difference.",
+    "contact": "CONTACT",
+    "navigation": "NAVIGATION",
+    "followUs": "FOLLOW US",
+    "copyright": "© 2026 T800 Labs. All rights reserved."
   }
 }

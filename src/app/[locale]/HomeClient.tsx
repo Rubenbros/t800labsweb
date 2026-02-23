@@ -502,6 +502,73 @@ export default function HomeClient() {
       // ═══════════════════════════════════════
 
       // ═══════════════════════════════════════
+      // TEAM SECTION — Blade Runner / Tyrell Corp
+      // ═══════════════════════════════════════
+      const tt = gsap.timeline({
+        scrollTrigger: {
+          trigger: ".team-section",
+          start: "top top",
+          end: isMobile ? "+=1200" : "+=2000",
+          scrub: true,
+          pin: true,
+        },
+      });
+
+      // Header fades in
+      tt.fromTo(".team-header",
+        { opacity: 0, y: 30 },
+        { opacity: 1, y: 0, duration: 1.5, ease: "power2.out" }, 0);
+
+      // Divider expands
+      tt.to(".team-divider",
+        { scaleX: 1, duration: 1, ease: "power3.inOut" }, 1);
+
+      // Card appears — CRT power-on effect
+      tt.fromTo(".team-card",
+        { opacity: 0, scaleY: 0.01 },
+        { opacity: 1, scaleY: 1, duration: 1.2, ease: "power2.out" }, 1.5);
+
+      // Photo reveals with scan sweep
+      tt.fromTo(".team-photo-scan",
+        { y: "-100%" },
+        { y: "100%", duration: 1.5, ease: "power2.inOut" }, 2);
+      tt.fromTo(".team-photo-img",
+        { opacity: 0 },
+        { opacity: 1, duration: 0.8 }, 2.3);
+
+      // Data lines type in staggered
+      tt.fromTo(".team-data-line",
+        { opacity: 0, x: -15 },
+        { opacity: 1, x: 0, stagger: 0.3, duration: 0.6, ease: "power2.out" }, 2.8);
+
+      // Bio line
+      tt.fromTo(".team-bio",
+        { opacity: 0 },
+        { opacity: 1, duration: 0.8 }, 4.8);
+
+      // Social links
+      tt.fromTo(".team-social-link",
+        { opacity: 0, y: 10 },
+        { opacity: 1, y: 0, stagger: 0.15, duration: 0.5 }, 5.2);
+
+      // Corner decorations
+      tt.fromTo(".team-corner",
+        { opacity: 0 },
+        { opacity: 1, duration: 0.5, stagger: 0.1 }, 0.5);
+
+      // Quote at bottom
+      tt.fromTo(".team-quote",
+        { opacity: 0 },
+        { opacity: 1, duration: 1.2 }, 5.5);
+
+      // Fade to black before unpin
+      tt.to(".team-fadeout", {
+        opacity: 1,
+        duration: 0.8,
+        ease: "power2.in",
+      }, 7);
+
+      // ═══════════════════════════════════════
       // HAL 9000 SECTION — fades in from black
       // ═══════════════════════════════════════
       const ht = gsap.timeline({
@@ -915,6 +982,133 @@ export default function HomeClient() {
       <ProcessTesseract />
 
       {/* ════════════════════════════════════════════
+          TEAM SECTION — Blade Runner / Tyrell Corp
+          ════════════════════════════════════════════ */}
+      <section id="equipo" className="team-section relative h-screen overflow-hidden bg-black">
+        {/* Fadeout overlay */}
+        <div className="team-fadeout pointer-events-none absolute inset-0 z-30 bg-black opacity-0" />
+
+        {/* Content */}
+        <div className="relative z-10 flex h-full flex-col items-center justify-center px-4 md:px-10">
+          {/* Section header */}
+          <div className="team-header mb-6 flex flex-col items-center gap-3 opacity-0 md:mb-10">
+            <span className="font-mono text-[10px] tracking-[0.3em] text-[#F2A900]/60 uppercase">
+              {t("Team.subtitle")}
+            </span>
+            <h2 className="font-bold text-3xl tracking-[0.15em] text-[#F2A900] md:text-5xl">
+              {t("Team.title")}
+            </h2>
+            <div className="team-divider h-[1px] w-16 origin-center scale-x-0 bg-gradient-to-r from-transparent via-[#F2A900]/50 to-transparent" />
+          </div>
+
+          {/* Replicant card */}
+          <div className="team-card w-full max-w-3xl origin-center overflow-hidden rounded border border-[#F2A900]/20 bg-black/80 backdrop-blur-sm">
+            <div className="flex flex-col md:flex-row">
+              {/* Photo side */}
+              <div className="relative aspect-square w-full overflow-hidden md:w-2/5">
+                <img
+                  src="/ruben-jarne.jpg"
+                  alt="Rubén Jarné Cabañero"
+                  className="team-photo-img h-full w-full object-cover opacity-0"
+                />
+                {/* Scan lines overlay */}
+                <div className="pointer-events-none absolute inset-0 bg-[repeating-linear-gradient(0deg,transparent,transparent_2px,rgba(0,0,0,0.12)_2px,rgba(0,0,0,0.12)_4px)]" />
+                {/* Amber tint */}
+                <div className="pointer-events-none absolute inset-0 bg-[#F2A900]/8 mix-blend-overlay" />
+                {/* Scan sweep bar */}
+                <div className="team-photo-scan pointer-events-none absolute left-0 right-0 h-1 bg-[#F2A900]/60 shadow-[0_0_20px_4px_rgba(242,169,0,0.4)]" style={{ top: 0 }} />
+              </div>
+
+              {/* Data side */}
+              <div className="flex flex-1 flex-col justify-center p-5 font-mono md:p-8">
+                {/* Header */}
+                <div className="team-data-line mb-4 border-b border-[#F2A900]/20 pb-3">
+                  <span className="text-[10px] tracking-[0.2em] text-[#F2A900]/40">{t("Team.model")}</span>
+                  <h3 className="mt-1 text-lg font-bold tracking-[0.05em] text-[#F2A900] md:text-xl">RUBÉN JARNÉ CABAÑERO</h3>
+                </div>
+
+                {/* Data fields */}
+                <div className="space-y-2.5 text-[11px] md:text-xs">
+                  <div className="team-data-line flex gap-2">
+                    <span className="shrink-0 text-[#F2A900]/50">{t("Team.inception")}:</span>
+                    <span className="text-white/80">2019</span>
+                  </div>
+                  <div className="team-data-line flex gap-2">
+                    <span className="shrink-0 text-[#F2A900]/50">{t("Team.function")}:</span>
+                    <span className="text-white/80">{t("Team.functionValue")}</span>
+                  </div>
+                  <div className="team-data-line flex gap-2">
+                    <span className="shrink-0 text-[#F2A900]/50">{t("Team.specializations")}:</span>
+                    <span className="text-white/80">{t("Team.specList")}</span>
+                  </div>
+                  <div className="team-data-line flex gap-2">
+                    <span className="shrink-0 text-[#F2A900]/50">{t("Team.priorAssignments")}:</span>
+                    <span className="text-white/80">{t("Team.assignments")}</span>
+                  </div>
+                  <div className="team-data-line flex gap-2">
+                    <span className="shrink-0 text-[#F2A900]/50">{t("Team.additionalProtocols")}:</span>
+                    <span className="text-white/80">{t("Team.protocols")}</span>
+                  </div>
+                </div>
+
+                {/* Bio */}
+                <div className="team-bio mt-4 border-t border-[#F2A900]/10 pt-3 opacity-0">
+                  <p className="text-[11px] italic text-white/50 md:text-xs">&quot;{t("Team.bio")}&quot;</p>
+                </div>
+
+                {/* Social links */}
+                <div className="mt-4 flex gap-4">
+                  <a
+                    href="https://github.com/rubenbros"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="team-social-link font-mono text-[10px] tracking-[0.15em] text-[#F2A900]/50 uppercase transition-colors duration-300 hover:text-[#F2A900] opacity-0"
+                  >
+                    GitHub ↗
+                  </a>
+                  <a
+                    href="https://www.linkedin.com/in/rubenbros"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="team-social-link font-mono text-[10px] tracking-[0.15em] text-[#F2A900]/50 uppercase transition-colors duration-300 hover:text-[#F2A900] opacity-0"
+                  >
+                    LinkedIn ↗
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Blade Runner quote */}
+          <div className="team-quote mt-8 opacity-0">
+            <p className="text-center font-mono text-[10px] italic tracking-[0.1em] text-[#F2A900]/25 md:text-xs">
+              {t("Team.quote")}
+            </p>
+          </div>
+        </div>
+
+        {/* Corner decorations — amber */}
+        <div className="team-corner absolute left-6 top-6 opacity-0">
+          <div className="h-8 w-[1px] bg-gradient-to-b from-[#F2A900]/40 to-transparent" />
+          <div className="absolute top-0 h-[1px] w-8 bg-gradient-to-r from-[#F2A900]/40 to-transparent" />
+          <span className="absolute left-3 top-3 font-mono text-[9px] tracking-[0.3em] text-[#F2A900]/50">{t("Team.cornerSys")}</span>
+        </div>
+        <div className="team-corner absolute right-6 top-6 opacity-0">
+          <div className="ml-auto h-8 w-[1px] bg-gradient-to-b from-[#F2A900]/40 to-transparent" />
+          <div className="absolute right-0 top-0 h-[1px] w-8 bg-gradient-to-l from-[#F2A900]/40 to-transparent" />
+          <span className="absolute right-3 top-3 font-mono text-[9px] tracking-[0.3em] text-[#F2A900]/50">{t("Team.cornerLabel")}</span>
+        </div>
+        <div className="team-corner absolute bottom-6 left-6 opacity-0">
+          <div className="h-8 w-[1px] bg-gradient-to-t from-[#F2A900]/40 to-transparent" />
+          <div className="absolute bottom-0 h-[1px] w-8 bg-gradient-to-r from-[#F2A900]/40 to-transparent" />
+        </div>
+        <div className="team-corner absolute bottom-6 right-6 opacity-0">
+          <div className="ml-auto h-8 w-[1px] bg-gradient-to-t from-[#F2A900]/40 to-transparent" />
+          <div className="absolute bottom-0 right-0 h-[1px] w-8 bg-gradient-to-l from-[#F2A900]/40 to-transparent" />
+        </div>
+      </section>
+
+      {/* ════════════════════════════════════════════
           HAL 9000 SECTION
           ════════════════════════════════════════════ */}
       <section id="contacto" className="hal-section relative h-screen overflow-hidden bg-black">
@@ -954,6 +1148,75 @@ export default function HomeClient() {
           FINAL FADE-TO-BLACK SPACER
           ════════════════════════════════════════════ */}
       <div className="final-fade-spacer relative h-[15vh] bg-black" />
+
+      {/* ════════════════════════════════════════════
+          FOOTER
+          ════════════════════════════════════════════ */}
+      <footer className="relative border-t border-white/5 bg-black px-6 py-12 md:px-10">
+        <div className="mx-auto max-w-6xl">
+          <div className="grid grid-cols-1 gap-10 md:grid-cols-3">
+            {/* Column 1: Logo + description */}
+            <div>
+              <div className="mb-4 flex items-center gap-3">
+                <img src="/logo-small.png" alt="T800 Labs" className="h-8" />
+                <span className="text-lg font-bold text-white">T800<span className="text-[#e50914]">Labs</span></span>
+              </div>
+              <p className="font-mono text-[11px] leading-relaxed text-white/40">
+                {t("Footer.description")}
+              </p>
+            </div>
+
+            {/* Column 2: Contact */}
+            <div>
+              <h4 className="mb-4 font-mono text-[10px] tracking-[0.2em] text-white/60 uppercase">{t("Footer.contact")}</h4>
+              <div className="space-y-2 font-mono text-[11px] text-white/40">
+                <a
+                  href="mailto:ruben.jarne.cabanero@gmail.com"
+                  className="block transition-colors duration-300 hover:text-[#e50914]"
+                >
+                  ruben.jarne.cabanero@gmail.com
+                </a>
+                <a
+                  href="https://wa.me/34646515267"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block transition-colors duration-300 hover:text-[#e50914]"
+                >
+                  +34 646 515 267
+                </a>
+              </div>
+            </div>
+
+            {/* Column 3: Social */}
+            <div>
+              <h4 className="mb-4 font-mono text-[10px] tracking-[0.2em] text-white/60 uppercase">{t("Footer.followUs")}</h4>
+              <div className="flex gap-5">
+                <a
+                  href="https://github.com/rubenbros"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-mono text-[11px] text-white/40 transition-colors duration-300 hover:text-[#e50914]"
+                >
+                  GitHub
+                </a>
+                <a
+                  href="https://www.linkedin.com/in/rubenbros"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-mono text-[11px] text-white/40 transition-colors duration-300 hover:text-[#e50914]"
+                >
+                  LinkedIn
+                </a>
+              </div>
+            </div>
+          </div>
+
+          {/* Copyright */}
+          <div className="mt-10 border-t border-white/5 pt-6 text-center">
+            <span className="font-mono text-[10px] text-white/20">{t("Footer.copyright")}</span>
+          </div>
+        </div>
+      </footer>
 
       {/* Fixed blackout overlay — fades in at the very end */}
       <div className="final-blackout pointer-events-none fixed inset-0 z-[998] bg-black opacity-0" />

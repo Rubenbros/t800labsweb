@@ -12,8 +12,7 @@ export default function Navbar() {
   const NAV_LINKS = [
     { label: t("servicios"), href: "#servicios" },
     { label: t("proceso"), href: "#proceso" },
-    { label: t("portfolio"), href: "#portfolio" },
-    { label: t("nosotros"), href: "#nosotros" },
+    { label: t("equipo"), href: "#equipo" },
     { label: t("contacto"), href: "#contacto" },
   ];
 
@@ -22,6 +21,7 @@ export default function Navbar() {
   const PIN_PROGRESS: Record<string, number> = {
     "#servicios": 0.65,  // all service cards visible
     "#proceso": 0.82,    // numbers revealed and clickable
+    "#equipo": 0.5,      // team card fully visible
     "#contacto": 0.15,   // HAL eye + quote visible
   };
 
