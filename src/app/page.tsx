@@ -401,7 +401,7 @@ export default function Home() {
         </div>
         <div className="bond-ghost-3 absolute left-1/2 top-1/2 flex flex-col items-center opacity-0" style={{ width: "6vh", height: "6vh" }}>
           <div className="h-full w-full rounded-full bg-white" />
-          <span className="ghost-label-3 mt-3 whitespace-nowrap font-mono text-[10px] tracking-[0.2em] text-white/80 uppercase opacity-0">DevOps</span>
+          <span className="ghost-label-3 mt-3 whitespace-nowrap font-mono text-[10px] tracking-[0.2em] text-white/80 uppercase opacity-0">Custom Software</span>
         </div>
 
         {/* ── Barrel assembly (circle + rifling + video + blood) ── */}
