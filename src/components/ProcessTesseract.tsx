@@ -40,7 +40,7 @@ export default function ProcessTesseract() {
 
     const ctx = gsap.context(() => {
       const isMobile = window.innerWidth < 768;
-      const scrollEnd = isMobile ? "+=3500" : "+=6000";
+      const scrollEnd = isMobile ? "+=4500" : "+=8000";
 
       // Snap points: wormhole end, overview, each card peak, end
       // Timeline: wormhole 0→5, bookshelf 4.5→7, steps at 7,12,17,22,27 (card at +1.5)
@@ -230,9 +230,9 @@ export default function ProcessTesseract() {
       // Fade to black before unpin — prevents scroll-up flash
       pt.to(".process-fadeout", {
         opacity: 1,
-        duration: 1.5,
+        duration: 1,
         ease: "power2.in",
-      }, 30.5);
+      }, 31);
 
       // Ambient glow pulse (loop)
       gsap.to(".tess-ambient", {

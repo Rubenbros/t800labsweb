@@ -259,7 +259,7 @@ export default function HomeClient() {
         scrollTrigger: {
           trigger: ".bond-section",
           start: "top top",
-          end: isMobile ? "+=1600" : "+=2800",
+          end: isMobile ? "+=2000" : "+=3500",
           scrub: true,
           pin: true,
         },
@@ -430,30 +430,30 @@ export default function HomeClient() {
         scrollTrigger: {
           trigger: ".services-section",
           start: "top top",
-          end: isMobile ? "+=900" : "+=1400",
+          end: isMobile ? "+=1200" : "+=2000",
           scrub: true,
           pin: true,
         },
       });
 
-      // Matrix rain fades in (fast)
+      // Matrix rain fades in — fast so no black gap
       st.fromTo(".services-rain",
         { opacity: 0 },
-        { opacity: 1, duration: 0.6, ease: "power2.out" }, 0);
+        { opacity: 1, duration: 0.3, ease: "power2.out" }, 0);
 
       // Header decodes in
       st.fromTo(".services-header",
         { opacity: 0, y: 30 },
-        { opacity: 1, y: 0, duration: 1, ease: "power2.out" }, 0.2);
+        { opacity: 1, y: 0, duration: 1.5, ease: "power2.out" }, 0.2);
 
       // Title divider expands
       st.to(".services-divider",
-        { scaleX: 1, duration: 0.8, ease: "power3.inOut" }, 1);
+        { scaleX: 1, duration: 1, ease: "power3.inOut" }, 1.5);
 
       // Grid container fades in
       st.fromTo(".services-grid",
         { opacity: 0 },
-        { opacity: 1, duration: 0.4 }, 1.5);
+        { opacity: 1, duration: 0.5 }, 2);
 
       // Cards stagger in with glitch flash
       st.fromTo(".service-card",
@@ -462,40 +462,40 @@ export default function HomeClient() {
           opacity: 1,
           y: 0,
           scale: 1,
-          duration: 1.2,
-          stagger: 0.3,
+          duration: 1.5,
+          stagger: 0.4,
           ease: "power2.out",
-        }, 1.8);
+        }, 2.5);
 
       // Green glow flash on each card as it appears
       st.fromTo(".service-card",
         { boxShadow: "0 0 0px rgba(0,255,65,0)" },
         {
           boxShadow: "0 0 20px rgba(0,255,65,0.3)",
-          duration: 0.6,
-          stagger: 0.3,
+          duration: 0.8,
+          stagger: 0.4,
           ease: "power2.out",
-        }, 1.8);
+        }, 2.5);
 
       // Fade glow back to subtle
       st.to(".service-card", {
         boxShadow: "0 0 8px rgba(0,255,65,0.08)",
-        duration: 1,
-        stagger: 0.15,
+        duration: 1.5,
+        stagger: 0.2,
         ease: "power2.out",
-      }, 4.5);
+      }, 5.5);
 
       // Corner decorations
       st.fromTo(".services-corner",
         { opacity: 0 },
-        { opacity: 1, duration: 0.6, stagger: 0.08 }, 0.5);
+        { opacity: 1, duration: 0.8, stagger: 0.1 }, 1);
 
-      // Fade to black before unpin
+      // Fade to black before unpin — tight at the end
       st.to(".services-fadeout", {
         opacity: 1,
-        duration: 1,
+        duration: 0.8,
         ease: "power2.in",
-      }, 6.5);
+      }, 7.5);
 
       // ═══════════════════════════════════════
       // PROCESS SECTION — handled by ProcessVersionA/B/C component
@@ -508,33 +508,33 @@ export default function HomeClient() {
         scrollTrigger: {
           trigger: ".hal-section",
           start: "top top",
-          end: isMobile ? "+=500" : "+=700",
+          end: isMobile ? "+=800" : "+=1200",
           scrub: true,
           pin: true,
         },
       });
 
-      // HAL eye powers on immediately
+      // HAL eye powers on — fast, no black gap
       ht.fromTo(".hal-container",
         { opacity: 0, scale: 0.95 },
-        { opacity: 1, scale: 1, duration: 0.5, ease: "power2.out" }, 0);
+        { opacity: 1, scale: 1, duration: 0.3, ease: "power2.out" }, 0);
 
       // Quote + CTA appears right after
       ht.fromTo(".hal-quote",
         { opacity: 0, y: 15 },
-        { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" }, 0.1);
+        { opacity: 1, y: 0, duration: 0.3, ease: "power2.out" }, 0);
 
       // Corner decorations almost simultaneously
       ht.fromTo(".hal-corner",
         { opacity: 0 },
-        { opacity: 1, duration: 0.4, stagger: 0.05 }, 0.2);
+        { opacity: 1, duration: 0.3, stagger: 0.05 }, 0);
 
       // Fade to black before unpin
       ht.to(".hal-fadeout", {
         opacity: 1,
-        duration: 1,
+        duration: 0.8,
         ease: "power2.in",
-      }, 2);
+      }, 2.5);
 
       // ═══════════════════════════════════════
       // PERSISTENT SCROLL INDICATOR
