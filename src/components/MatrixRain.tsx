@@ -6,6 +6,7 @@ const CHARS =
   "アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン0123456789ABCDEF<>/{}[]();:=+*#@!";
 const FONT_SIZE = 14;
 const FADE_ALPHA = 0.04;
+const DROP_SPEED = 0.35; // <1 = slower than 1 char per frame
 
 export default function MatrixRain() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -53,7 +54,8 @@ export default function MatrixRain() {
       for (let i = 0; i < columns; i++) {
         const char = CHARS[Math.floor(Math.random() * CHARS.length)];
         const x = i * FONT_SIZE;
-        const y = drops[i] * FONT_SIZE;
+        const row = Math.floor(drops[i]);
+        const y = row * FONT_SIZE;
 
         // Bright head character
         ctx.fillStyle = "#00ff41";
@@ -61,16 +63,16 @@ export default function MatrixRain() {
         ctx.fillText(char, x, y);
 
         // Slightly dimmer character just above
-        if (drops[i] > 1) {
+        if (row > 1) {
           ctx.fillStyle = "#00cc33";
           ctx.globalAlpha = 0.4;
           const prevChar = CHARS[Math.floor(Math.random() * CHARS.length)];
-          ctx.fillText(prevChar, x, (drops[i] - 1) * FONT_SIZE);
+          ctx.fillText(prevChar, x, (row - 1) * FONT_SIZE);
         }
 
         ctx.globalAlpha = 1;
 
-        drops[i]++;
+        drops[i] += DROP_SPEED;
 
         // Reset drop with some randomness
         if (y > canvas.height && Math.random() > 0.975) {

@@ -377,51 +377,51 @@ export default function HomeClient() {
       bt.to(".bond-flash",
         { scale: 1.5, opacity: 0, duration: 0.3, ease: "power2.out" }, 17.25);
 
-      // ── Phase 4: Blood drips cascade down screen (17.5→24) ──
+      // ── Phase 4: Blood drips cascade down screen (17.5→28) ──
       // Liquid easing: slow start → fast middle → slow near bottom
       const liquidEase = "slow(0.5, 0.8, false)";
       const liquidEase2 = "slow(0.4, 0.7, false)";
 
-      // Narrow drips fall first — keyframed speed variation
+      // Narrow drips fall first — keyframed speed variation (slower)
       bt.to(".blood-drip-1", {
         keyframes: [
-          { height: "30%", duration: 0.2, ease: "power2.in" },
-          { height: "80%", duration: 0.25, ease: "none" },
-          { height: "100%", duration: 0.3, ease: "power3.out" },
-          { height: "115%", duration: 0.15, ease: "power1.out" },
+          { height: "30%", duration: 0.5, ease: "power2.in" },
+          { height: "80%", duration: 0.6, ease: "none" },
+          { height: "100%", duration: 0.7, ease: "power3.out" },
+          { height: "115%", duration: 0.4, ease: "power1.out" },
         ],
       }, 17.5);
       bt.to(".blood-drip-2", {
         keyframes: [
-          { height: "20%", duration: 0.3, ease: "power1.in" },
-          { height: "65%", duration: 0.4, ease: "power2.in" },
-          { height: "95%", duration: 0.35, ease: "power1.out" },
-          { height: "115%", duration: 0.45, ease: "sine.out" },
+          { height: "20%", duration: 0.6, ease: "power1.in" },
+          { height: "65%", duration: 0.8, ease: "power2.in" },
+          { height: "95%", duration: 0.7, ease: "power1.out" },
+          { height: "115%", duration: 0.6, ease: "sine.out" },
         ],
-      }, 18.0);
+      }, 18.5);
       bt.to(".blood-drip-3", {
         keyframes: [
-          { height: "25%", duration: 0.25, ease: "power2.in" },
-          { height: "75%", duration: 0.35, ease: "none" },
-          { height: "105%", duration: 0.3, ease: "power2.out" },
-          { height: "115%", duration: 0.2, ease: "sine.out" },
+          { height: "25%", duration: 0.5, ease: "power2.in" },
+          { height: "75%", duration: 0.7, ease: "none" },
+          { height: "105%", duration: 0.6, ease: "power2.out" },
+          { height: "115%", duration: 0.4, ease: "sine.out" },
         ],
-      }, 18.3);
+      }, 19.5);
 
-      // Wider flows — organic liquid speed variation
-      bt.to(".blood-drip-4", { height: "115%", duration: 2.0, ease: liquidEase }, 18.8);
-      bt.to(".blood-drip-5", { height: "115%", duration: 1.8, ease: liquidEase2 }, 19.0);
-      bt.to(".blood-drip-6", { height: "115%", duration: 2.2, ease: liquidEase }, 19.3);
-      bt.to(".blood-drip-7", { height: "115%", duration: 2.0, ease: liquidEase2 }, 19.5);
+      // Wider flows — organic liquid speed variation (slower)
+      bt.to(".blood-drip-4", { height: "115%", duration: 3.5, ease: liquidEase }, 20.5);
+      bt.to(".blood-drip-5", { height: "115%", duration: 3.2, ease: liquidEase2 }, 21.0);
+      bt.to(".blood-drip-6", { height: "115%", duration: 3.5, ease: liquidEase }, 21.5);
+      bt.to(".blood-drip-7", { height: "115%", duration: 3.2, ease: liquidEase2 }, 22.0);
 
       // Solid fill within group ensures full coverage
-      bt.to(".blood-solid", { opacity: 1, duration: 0.5 }, 21.5);
+      bt.to(".blood-solid", { opacity: 1, duration: 0.8 }, 25);
 
-      // Raise group opacity to fully opaque + instant fade to black
-      bt.to(".bond-blood-drips", { opacity: 1, duration: 0.5, ease: "power2.inOut" }, 22);
-      bt.to(".bond-assembly", { opacity: 0, duration: 0.5 }, 22);
-      bt.to(".blood-solid", { backgroundColor: "#000000", duration: 0.5, ease: "power2.in" }, 22.3);
-      bt.to(".blood-drip", { backgroundColor: "#000000", duration: 0.5, ease: "power2.in" }, 22.3);
+      // Raise group opacity to fully opaque + fade to black
+      bt.to(".bond-blood-drips", { opacity: 1, duration: 0.5, ease: "power2.inOut" }, 26);
+      bt.to(".bond-assembly", { opacity: 0, duration: 0.5 }, 26);
+      bt.to(".blood-solid", { backgroundColor: "#000000", duration: 0.8, ease: "power2.in" }, 26.5);
+      bt.to(".blood-drip", { backgroundColor: "#000000", duration: 0.8, ease: "power2.in" }, 26.5);
 
       // ═══════════════════════════════════════
       // SERVICES SECTION — Matrix rain + cards
@@ -436,10 +436,10 @@ export default function HomeClient() {
         },
       });
 
-      // Matrix rain fades in — fast so no black gap
+      // Matrix rain fades in — quick but visible transition
       st.fromTo(".services-rain",
         { opacity: 0 },
-        { opacity: 1, duration: 0.3, ease: "power2.out" }, 0);
+        { opacity: 1, duration: 0.8, ease: "power2.out" }, 0);
 
       // Header decodes in
       st.fromTo(".services-header",
