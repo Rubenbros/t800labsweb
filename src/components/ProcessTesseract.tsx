@@ -40,7 +40,7 @@ export default function ProcessTesseract() {
 
     const ctx = gsap.context(() => {
       const isMobile = window.innerWidth < 768;
-      const scrollEnd = isMobile ? "+=4500" : "+=8000";
+      const scrollEnd = isMobile ? "+=3500" : "+=6000";
 
       // Snap points: wormhole end, overview, each card peak, end
       // Timeline: wormhole 0→5, bookshelf 4.5→7, steps at 7,12,17,22,27 (card at +1.5)
