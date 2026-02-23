@@ -230,6 +230,42 @@ export default function Home() {
       bt.to(".blood-drip", { backgroundColor: "#000000", duration: 2, ease: "power2.inOut" }, 22);
       bt.to(".bond-assembly", { opacity: 0, duration: 1.5 }, 22);
 
+      // ═══════════════════════════════════════
+      // PERSISTENT SCROLL INDICATOR
+      // ═══════════════════════════════════════
+      // Fade in after hero entrance
+      gsap.fromTo(".scroll-persistent",
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 0.8, delay: 3 });
+
+      // Arrow bounce loop
+      gsap.to(".scroll-persistent-arrow", {
+        y: 6, duration: 1, repeat: -1, yoyo: true, ease: "sine.inOut",
+      });
+
+      // Progress bar tracks total scroll
+      gsap.to(".scroll-progress-fill", {
+        scaleY: 1,
+        ease: "none",
+        scrollTrigger: {
+          trigger: wrapperRef.current,
+          start: "top top",
+          end: "bottom bottom",
+          scrub: true,
+        },
+      });
+
+      // Hide indicator near bottom of page
+      gsap.to(".scroll-persistent", {
+        opacity: 0,
+        scrollTrigger: {
+          trigger: wrapperRef.current,
+          start: "bottom-=300 bottom",
+          end: "bottom bottom",
+          scrub: true,
+        },
+      });
+
     }, wrapperRef);
 
     return () => ctx.revert();
@@ -237,6 +273,24 @@ export default function Home() {
 
   return (
     <div ref={wrapperRef} className="relative bg-black">
+
+      {/* ════════════════════════════════════════════
+          PERSISTENT SCROLL INDICATOR (fixed)
+          ════════════════════════════════════════════ */}
+      <div className="scroll-persistent pointer-events-none fixed bottom-0 left-0 right-0 z-[999] opacity-0">
+        {/* Bottom center — arrow + label */}
+        <div className="flex flex-col items-center gap-1 pb-5">
+          <span className="font-mono text-[9px] tracking-[0.25em] text-red-500/40 uppercase">scroll</span>
+          <svg className="scroll-persistent-arrow h-4 w-4 text-red-500/50" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+          </svg>
+        </div>
+
+        {/* Right edge — progress bar */}
+        <div className="absolute right-4 h-[60vh] w-[1px] bg-white/5" style={{ top: '20vh' }}>
+          <div className="scroll-progress-fill h-full w-full origin-top scale-y-0 bg-gradient-to-b from-red-500/60 to-red-500/20" />
+        </div>
+      </div>
 
       {/* ════════════════════════════════════════════
           HERO SECTION
