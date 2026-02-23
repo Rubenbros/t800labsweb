@@ -486,13 +486,13 @@ export default function ProcessTesseract() {
 
       {/* ═══ DETAIL OVERLAY (shown on gap click) ═══ */}
       <div
-        className="tess-detail-overlay absolute inset-0 z-[35] opacity-0"
-        style={{ pointerEvents: activeGap !== null ? "auto" : "none" }}
+        className="tess-detail-overlay absolute inset-0"
+        style={{ zIndex: 45, opacity: 0, pointerEvents: activeGap !== null ? "auto" : "none" }}
       >
         {activeGap !== null && (
-          <div className="relative flex h-full w-full items-center justify-center">
+          <div className="relative flex h-full w-full items-center justify-center bg-black">
             {/* Background image with dark filter */}
-            <div className="absolute inset-0">
+            <div className="absolute inset-0 bg-black">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={STEP_IMAGES[activeGap]}
@@ -505,7 +505,8 @@ export default function ProcessTesseract() {
 
             {/* Back button */}
             <button
-              className="absolute left-6 top-6 z-10 cursor-pointer border border-[#d4a017]/40 bg-black/60 px-4 py-2 font-mono text-xs tracking-[0.2em] text-[#d4a017] backdrop-blur-sm transition-colors hover:border-[#d4a017] hover:bg-black/80"
+              className="absolute left-6 top-6 cursor-pointer border border-[#d4a017]/50 bg-black/80 px-5 py-2.5 font-mono text-sm tracking-[0.2em] text-[#d4a017] backdrop-blur-sm transition-colors hover:border-[#d4a017] hover:bg-black"
+              style={{ zIndex: 50 }}
               onClick={handleBack}
             >
               &larr; {t("Process.back")}
