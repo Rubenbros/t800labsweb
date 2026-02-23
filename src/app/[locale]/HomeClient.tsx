@@ -917,7 +917,7 @@ export default function HomeClient() {
       {/* ════════════════════════════════════════════
           HAL 9000 SECTION
           ════════════════════════════════════════════ */}
-      <section className="hal-section relative h-screen overflow-hidden bg-black">
+      <section id="contacto" className="hal-section relative h-screen overflow-hidden bg-black">
         {/* Fadeout overlay — covers content before unpin */}
         <div className="hal-fadeout pointer-events-none absolute inset-0 z-30 bg-black opacity-0" />
         {/* HAL eye — centered */}

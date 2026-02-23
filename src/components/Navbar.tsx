@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useState } from "react";
-import { gsap } from "@/lib/gsap";
+import { gsap, ScrollTrigger } from "@/lib/gsap";
 import { useTranslations } from "next-intl";
 import LanguageSelector from "./LanguageSelector";
 
@@ -17,17 +17,46 @@ export default function Navbar() {
     { label: t("contacto"), href: "#contacto" },
   ];
 
+  // For pinned sections, scroll to the point where content is fully visible
+  // instead of the top of the section (where animation starts from scratch)
+  const PIN_PROGRESS: Record<string, number> = {
+    "#servicios": 0.65,  // all service cards visible
+    "#proceso": 0.82,    // numbers revealed and clickable
+    "#contacto": 0.15,   // HAL eye + quote visible
+  };
+
   const handleNavClick = useCallback(
     (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
       e.preventDefault();
       const target = document.querySelector(href);
-      if (target) {
-        gsap.to(window, {
-          scrollTo: { y: target, offsetY: 80 },
-          duration: 1.2,
-          ease: "power3.inOut",
-        });
+      if (!target) {
+        setMenuOpen(false);
+        return;
       }
+
+      const progress = PIN_PROGRESS[href];
+      if (progress !== undefined) {
+        const triggers = ScrollTrigger.getAll();
+        const st = triggers.find(
+          (t) => t.trigger === target && t.pin,
+        );
+        if (st) {
+          const scrollPos = st.start + progress * (st.end - st.start);
+          gsap.to(window, {
+            scrollTo: { y: scrollPos },
+            duration: 1.2,
+            ease: "power3.inOut",
+          });
+          setMenuOpen(false);
+          return;
+        }
+      }
+
+      gsap.to(window, {
+        scrollTo: { y: target, offsetY: 80 },
+        duration: 1.2,
+        ease: "power3.inOut",
+      });
       setMenuOpen(false);
     },
     [],
