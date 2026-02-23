@@ -237,11 +237,11 @@ export default function Home() {
       // Solid fill within group ensures full coverage
       bt.to(".blood-solid", { opacity: 1, duration: 0.5 }, 21.5);
 
-      // Raise group opacity to fully opaque + fade to black
-      bt.to(".bond-blood-drips", { opacity: 1, duration: 1.5, ease: "power2.inOut" }, 22);
-      bt.to(".bond-assembly", { opacity: 0, duration: 1.5 }, 22);
-      bt.to(".blood-solid", { backgroundColor: "#000000", duration: 2, ease: "power2.inOut" }, 23);
-      bt.to(".blood-drip", { backgroundColor: "#000000", duration: 2, ease: "power2.inOut" }, 23);
+      // Raise group opacity to fully opaque + quick fade to black
+      bt.to(".bond-blood-drips", { opacity: 1, duration: 1, ease: "power2.inOut" }, 22);
+      bt.to(".bond-assembly", { opacity: 0, duration: 1 }, 22);
+      bt.to(".blood-solid", { backgroundColor: "#000000", duration: 1, ease: "power2.in" }, 22.5);
+      bt.to(".blood-drip", { backgroundColor: "#000000", duration: 1, ease: "power2.in" }, 22.5);
 
       // ═══════════════════════════════════════
       // HAL 9000 SECTION — fades in from black
@@ -250,26 +250,26 @@ export default function Home() {
         scrollTrigger: {
           trigger: ".hal-section",
           start: "top top",
-          end: "+=2000",
+          end: "+=1500",
           scrub: 1,
           pin: true,
         },
       });
 
-      // HAL eye powers on — glow from nothing
+      // HAL eye powers on fast
       ht.fromTo(".hal-container",
-        { opacity: 0, scale: 0.85 },
-        { opacity: 1, scale: 1, duration: 4, ease: "power2.out" }, 0);
+        { opacity: 0, scale: 0.9 },
+        { opacity: 1, scale: 1, duration: 2, ease: "power2.out" }, 0);
 
-      // HAL label fades in after eye is visible
+      // HAL label fades in shortly after
       ht.fromTo(".hal-quote",
         { opacity: 0, y: 20 },
-        { opacity: 1, y: 0, duration: 2, ease: "power2.out" }, 3);
+        { opacity: 1, y: 0, duration: 1.5, ease: "power2.out" }, 1.5);
 
       // Corner decorations
       ht.fromTo(".hal-corner",
         { opacity: 0 },
-        { opacity: 1, duration: 1, stagger: 0.15 }, 4);
+        { opacity: 1, duration: 1, stagger: 0.15 }, 2);
 
       // ═══════════════════════════════════════
       // PERSISTENT SCROLL INDICATOR
