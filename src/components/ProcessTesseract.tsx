@@ -486,8 +486,8 @@ export default function ProcessTesseract() {
 
       {/* ═══ DETAIL OVERLAY (shown on gap click) ═══ */}
       <div
-        className="tess-detail-overlay absolute inset-0"
-        style={{ zIndex: 45, opacity: 0, pointerEvents: activeGap !== null ? "auto" : "none" }}
+        className="tess-detail-overlay fixed inset-0"
+        style={{ zIndex: 9999, opacity: 0, pointerEvents: activeGap !== null ? "auto" : "none" }}
       >
         {activeGap !== null && (
           <div className="relative flex h-full w-full items-center justify-center bg-black">
