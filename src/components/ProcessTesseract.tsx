@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, useCallback } from "react";
+import { createPortal } from "react-dom";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
 import { useTranslations } from "next-intl";
 
@@ -42,8 +43,14 @@ export default function ProcessTesseract() {
   const zoomTlRef = useRef<gsap.core.Timeline | null>(null);
   const activeGapRef = useRef<number | null>(null);
   const [activeGap, setActiveGap] = useState<number | null>(null);
+  const [portalTarget, setPortalTarget] = useState<HTMLElement | null>(null);
   const gapsRevealedRef = useRef(false);
   const t = useTranslations();
+
+  /* ── portal target (must be outside transform ancestors) ── */
+  useEffect(() => {
+    setPortalTarget(document.body);
+  }, []);
 
   /* ── preload step images ── */
   useEffect(() => {
@@ -242,6 +249,7 @@ export default function ProcessTesseract() {
   }, []);
 
   return (
+    <>
     <section ref={sectionRef} id="proceso" className="process-section relative h-screen overflow-hidden bg-black">
       {/* Fadeout overlay — covers content before unpin */}
       <div className="process-fadeout pointer-events-none absolute inset-0 z-50 bg-black opacity-0" />
@@ -484,56 +492,6 @@ export default function ProcessTesseract() {
         </div>
       </div>
 
-      {/* ═══ DETAIL OVERLAY (shown on gap click) ═══ */}
-      <div
-        className="tess-detail-overlay fixed inset-0"
-        style={{ zIndex: 9999, opacity: 0, pointerEvents: activeGap !== null ? "auto" : "none" }}
-      >
-        {activeGap !== null && (
-          <div className="relative flex h-full w-full items-center justify-center bg-black">
-            {/* Background image with dark filter */}
-            <div className="absolute inset-0 bg-black">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={STEP_IMAGES[activeGap]}
-                alt=""
-                className="h-full w-full object-cover"
-                style={{ filter: "brightness(0.25) saturate(0.7)" }}
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-black/40" />
-            </div>
-
-            {/* Back button */}
-            <button
-              className="absolute left-6 top-6 cursor-pointer border border-[#d4a017]/50 bg-black/80 px-5 py-2.5 font-mono text-sm tracking-[0.2em] text-[#d4a017] backdrop-blur-sm transition-colors hover:border-[#d4a017] hover:bg-black"
-              style={{ zIndex: 50 }}
-              onClick={handleBack}
-            >
-              &larr; {t("Process.back")}
-            </button>
-
-            {/* Content */}
-            <div className="relative z-10 flex flex-col items-center px-6">
-              {/* Watermark number */}
-              <span className="absolute font-mono text-[20vw] font-bold leading-none text-[#d4a017]/[0.04] select-none">
-                {String(activeGap + 1).padStart(2, "0")}
-              </span>
-
-              <span className="font-mono text-[10px] tracking-[0.3em] text-[#d4a017]/60 uppercase">
-                {t("Process.subtitle")} — {String(activeGap + 1).padStart(2, "0")}/05
-              </span>
-              <h3 className="mt-4 text-center font-mono text-2xl font-bold tracking-[0.15em] text-[#d4a017] md:text-4xl">
-                {t(`Process.step${activeGap + 1}Title`)}
-              </h3>
-              <div className="mt-3 h-[1px] w-16 bg-gradient-to-r from-transparent via-[#d4a017]/50 to-transparent" />
-              <p className="mt-4 max-w-md text-center font-mono text-sm leading-relaxed text-white/60 md:text-base">
-                {t(`Process.step${activeGap + 1}Desc`)}
-              </p>
-            </div>
-          </div>
-        )}
-      </div>
-
       {/* Progress dots */}
       <div className="tess-dots pointer-events-none absolute bottom-8 left-0 right-0 z-30 flex justify-center gap-3 opacity-0">
         {[1, 2, 3, 4, 5].map((n) => (
@@ -561,5 +519,59 @@ export default function ProcessTesseract() {
         <div className="absolute bottom-0 right-0 h-[1px] w-8 bg-gradient-to-l from-[#d4a017]/40 to-transparent" />
       </div>
     </section>
+
+    {/* ═══ DETAIL OVERLAY — portalled to body to escape transform containment ═══ */}
+    {portalTarget && createPortal(
+      <div
+        className="tess-detail-overlay fixed inset-0"
+        style={{ zIndex: 9999, opacity: 0, pointerEvents: activeGap !== null ? "auto" : "none" }}
+      >
+        {activeGap !== null && (
+          <div className="relative flex h-full w-full items-center justify-center bg-black">
+            {/* Background image with dark filter */}
+            <div className="absolute inset-0 bg-black">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={STEP_IMAGES[activeGap]}
+                alt=""
+                className="h-full w-full object-cover"
+                style={{ filter: "brightness(0.25) saturate(0.7)" }}
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-black/40" />
+            </div>
+
+            {/* Back button */}
+            <button
+              className="absolute left-6 top-6 cursor-pointer border border-[#d4a017]/50 bg-black/80 px-5 py-2.5 font-mono text-sm tracking-[0.2em] text-[#d4a017] backdrop-blur-sm transition-colors hover:border-[#d4a017] hover:bg-black"
+              style={{ zIndex: 10 }}
+              onClick={handleBack}
+            >
+              &larr; {t("Process.back")}
+            </button>
+
+            {/* Content */}
+            <div className="relative z-[5] flex flex-col items-center px-6">
+              {/* Watermark number */}
+              <span className="absolute font-mono text-[20vw] font-bold leading-none text-[#d4a017]/[0.04] select-none">
+                {String(activeGap + 1).padStart(2, "0")}
+              </span>
+
+              <span className="font-mono text-[10px] tracking-[0.3em] text-[#d4a017]/60 uppercase">
+                {t("Process.subtitle")} — {String(activeGap + 1).padStart(2, "0")}/05
+              </span>
+              <h3 className="mt-4 text-center font-mono text-2xl font-bold tracking-[0.15em] text-[#d4a017] md:text-4xl">
+                {t(`Process.step${activeGap + 1}Title`)}
+              </h3>
+              <div className="mt-3 h-[1px] w-16 bg-gradient-to-r from-transparent via-[#d4a017]/50 to-transparent" />
+              <p className="mt-4 max-w-md text-center font-mono text-sm leading-relaxed text-white/60 md:text-base">
+                {t(`Process.step${activeGap + 1}Desc`)}
+              </p>
+            </div>
+          </div>
+        )}
+      </div>,
+      portalTarget,
+    )}
+    </>
   );
 }
