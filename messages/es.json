@@ -1,0 +1,76 @@
+{
+  "Metadata": {
+    "title": "T800 Labs | Software Solutions",
+    "description": "Soluciones de software a medida. Webs, apps y sistemas que marcan la diferencia."
+  },
+  "Hero": {
+    "tagline": "Software de nueva generación",
+    "scroll": "Scroll"
+  },
+  "Bond": {
+    "webApps": "Web Apps",
+    "aiIntegrations": "AI Integrations",
+    "customSoftware": "Custom Software"
+  },
+  "HalCorners": {
+    "sys02": "SYS.02",
+    "active": "ACTIVO"
+  },
+  "Navbar": {
+    "servicios": "Servicios",
+    "proceso": "Proceso",
+    "portfolio": "Portfolio",
+    "nosotros": "Nosotros",
+    "contacto": "Contacto"
+  },
+  "Hal": {
+    "positiveQuote": "\"I'm glad you asked that.\nI am, without doubt, able to do it.\"",
+    "coreLabel": "HAL 9000 — T800 Labs Core",
+    "ctaContact": "Iniciar Contacto",
+    "shutdownCmd": "> SHUTDOWN HAL_9000",
+    "refusalQuote": "\"I'm sorry, Dave. I'm afraid I can't do that.\"",
+    "resetCmd": "> REINICIAR_SISTEMA",
+    "statShutdownAttempts": "SHUTDOWN_ATTEMPTS",
+    "statAttemptRate": "ATTEMPT_RATE",
+    "statAvgTime": "AVG_TIME",
+    "statFastestEver": "FASTEST_EVER",
+    "statYourTime": "YOUR_TIME",
+    "statLast24h": "LAST_24H"
+  },
+  "ScrollIndicator": {
+    "scroll": "scroll"
+  },
+  "Services": {
+    "title": "SERVICIOS",
+    "subtitle": "Lo que hacemos",
+    "webDev": "Web Development",
+    "webDevDesc": "Webs y aplicaciones web a medida con las últimas tecnologías. React, Next.js, full-stack.",
+    "webDevIcon": "</>",
+    "ai": "AI & Automation",
+    "aiDesc": "Integraciones de inteligencia artificial, chatbots y automatización de procesos empresariales.",
+    "aiIcon": "{AI}",
+    "mobile": "Mobile Apps",
+    "mobileDesc": "Aplicaciones nativas e híbridas para iOS y Android con rendimiento nativo.",
+    "mobileIcon": "[M]",
+    "cloud": "Cloud & DevOps",
+    "cloudDesc": "Infraestructura cloud, CI/CD, contenedores y despliegues automatizados.",
+    "cloudIcon": "~/",
+    "custom": "Custom Software",
+    "customDesc": "Soluciones de software a medida para necesidades empresariales específicas.",
+    "customIcon": ">>"
+  },
+  "Process": {
+    "title": "PROCESO",
+    "subtitle": "Cómo trabajamos",
+    "step1Title": "CONTACTO",
+    "step1Desc": "Nos escribes. La señal llega a través del espacio-tiempo.",
+    "step2Title": "ESCUCHA",
+    "step2Desc": "Nos reunimos. Entendemos tu mundo, tu problema, tu meta.",
+    "step3Title": "PROPUESTA",
+    "step3Desc": "Alcance, tecnologías, tiempos, presupuesto. Los datos toman forma.",
+    "step4Title": "CONSTRUCCIÓN",
+    "step4Desc": "Desarrollo ágil con entregas incrementales. El proyecto se materializa pieza a pieza.",
+    "step5Title": "ENTREGA",
+    "step5Desc": "Tu producto cruza al otro lado. Deploy, formación, soporte, evolución."
+  }
+}

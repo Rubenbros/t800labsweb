@@ -1,0 +1,76 @@
+{
+  "Metadata": {
+    "title": "T800 Labs | Software Solutions",
+    "description": "Custom software solutions. Websites, apps, and systems that make a difference."
+  },
+  "Hero": {
+    "tagline": "Next generation software",
+    "scroll": "Scroll"
+  },
+  "Bond": {
+    "webApps": "Web Apps",
+    "aiIntegrations": "AI Integrations",
+    "customSoftware": "Custom Software"
+  },
+  "HalCorners": {
+    "sys02": "SYS.02",
+    "active": "ACTIVE"
+  },
+  "Navbar": {
+    "servicios": "Services",
+    "proceso": "Process",
+    "portfolio": "Portfolio",
+    "nosotros": "About Us",
+    "contacto": "Contact"
+  },
+  "Hal": {
+    "positiveQuote": "\"I'm glad you asked that.\nI am, without doubt, able to do it.\"",
+    "coreLabel": "HAL 9000 — T800 Labs Core",
+    "ctaContact": "Start Contact",
+    "shutdownCmd": "> SHUTDOWN HAL_9000",
+    "refusalQuote": "\"I'm sorry, Dave. I'm afraid I can't do that.\"",
+    "resetCmd": "> RESTART_SYSTEM",
+    "statShutdownAttempts": "SHUTDOWN_ATTEMPTS",
+    "statAttemptRate": "ATTEMPT_RATE",
+    "statAvgTime": "AVG_TIME",
+    "statFastestEver": "FASTEST_EVER",
+    "statYourTime": "YOUR_TIME",
+    "statLast24h": "LAST_24H"
+  },
+  "ScrollIndicator": {
+    "scroll": "scroll"
+  },
+  "Services": {
+    "title": "SERVICES",
+    "subtitle": "What we do",
+    "webDev": "Web Development",
+    "webDevDesc": "Custom websites and web applications with cutting-edge technology. React, Next.js, full-stack.",
+    "webDevIcon": "</>",
+    "ai": "AI & Automation",
+    "aiDesc": "AI integrations, chatbots, and business process automation powered by machine learning.",
+    "aiIcon": "{AI}",
+    "mobile": "Mobile Apps",
+    "mobileDesc": "Native and hybrid applications for iOS and Android with native performance.",
+    "mobileIcon": "[M]",
+    "cloud": "Cloud & DevOps",
+    "cloudDesc": "Cloud infrastructure, CI/CD pipelines, containers and automated deployments.",
+    "cloudIcon": "~/",
+    "custom": "Custom Software",
+    "customDesc": "Tailored software solutions for specific business needs and workflows.",
+    "customIcon": ">>"
+  },
+  "Process": {
+    "title": "PROCESS",
+    "subtitle": "How we work",
+    "step1Title": "CONTACT",
+    "step1Desc": "You reach out. The signal arrives through space-time.",
+    "step2Title": "LISTEN",
+    "step2Desc": "We meet. We understand your world, your problem, your goal.",
+    "step3Title": "PROPOSAL",
+    "step3Desc": "Scope, technologies, timelines, budget. Data takes shape.",
+    "step4Title": "BUILD",
+    "step4Desc": "Agile development with incremental deliveries. The project materializes piece by piece.",
+    "step5Title": "DELIVERY",
+    "step5Desc": "Your product crosses to the other side. Deploy, training, support, evolution."
+  }
+}
