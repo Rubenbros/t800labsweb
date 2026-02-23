@@ -92,35 +92,35 @@ export default function Home() {
       bt.to(".bond-assembly",
         { x: endX, duration: 7, ease: "none" }, 0);
 
-      // Ghost trail 1 — appears at ~28% + service label
+      // Ghost trail 1 — appears at ~28% + service label (longer visible)
       bt.fromTo(".bond-ghost-1",
-        { opacity: 0 }, { opacity: 0.6, duration: 0.05 }, 2);
+        { opacity: 0 }, { opacity: 0.6, duration: 0.1 }, 2);
       bt.fromTo(".ghost-label-1",
-        { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.3 }, 2);
+        { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.4 }, 2);
       bt.to(".bond-ghost-1",
-        { opacity: 0, duration: 1.5 }, 2.05);
+        { opacity: 0, duration: 2.5 }, 3.5);
       bt.to(".ghost-label-1",
-        { opacity: 0, y: -10, duration: 1 }, 2.5);
+        { opacity: 0, y: -10, duration: 2 }, 3.8);
 
-      // Ghost trail 2 — appears at ~52% + service label
+      // Ghost trail 2 — appears at ~52% + service label (longer visible)
       bt.fromTo(".bond-ghost-2",
-        { opacity: 0 }, { opacity: 0.6, duration: 0.05 }, 3.8);
+        { opacity: 0 }, { opacity: 0.6, duration: 0.1 }, 3.8);
       bt.fromTo(".ghost-label-2",
-        { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.3 }, 3.8);
+        { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.4 }, 3.8);
       bt.to(".bond-ghost-2",
-        { opacity: 0, duration: 1.5 }, 3.85);
+        { opacity: 0, duration: 2.5 }, 5.3);
       bt.to(".ghost-label-2",
-        { opacity: 0, y: -10, duration: 1 }, 4.3);
+        { opacity: 0, y: -10, duration: 2 }, 5.5);
 
-      // Ghost trail 3 — appears at ~76% + service label
+      // Ghost trail 3 — appears at ~76% + service label (longer visible)
       bt.fromTo(".bond-ghost-3",
-        { opacity: 0 }, { opacity: 0.6, duration: 0.05 }, 5.5);
+        { opacity: 0 }, { opacity: 0.6, duration: 0.1 }, 5.5);
       bt.fromTo(".ghost-label-3",
-        { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.3 }, 5.5);
+        { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.4 }, 5.5);
       bt.to(".bond-ghost-3",
-        { opacity: 0, duration: 1.5 }, 5.55);
+        { opacity: 0, duration: 2.5 }, 7.0);
       bt.to(".ghost-label-3",
-        { opacity: 0, y: -10, duration: 1 }, 6.0);
+        { opacity: 0, y: -10, duration: 2 }, 7.2);
 
       // ── Phase 1b: Circle expands at right edge (7→9.5) ──
       // Grows big enough to go off-screen right
@@ -237,45 +237,39 @@ export default function Home() {
       // Solid fill within group ensures full coverage
       bt.to(".blood-solid", { opacity: 1, duration: 0.5 }, 21.5);
 
-      // Raise group opacity to fully opaque — stays red for HAL transition
+      // Raise group opacity to fully opaque + fade to black
       bt.to(".bond-blood-drips", { opacity: 1, duration: 1.5, ease: "power2.inOut" }, 22);
       bt.to(".bond-assembly", { opacity: 0, duration: 1.5 }, 22);
+      bt.to(".blood-solid", { backgroundColor: "#000000", duration: 2, ease: "power2.inOut" }, 23);
+      bt.to(".blood-drip", { backgroundColor: "#000000", duration: 2, ease: "power2.inOut" }, 23);
 
       // ═══════════════════════════════════════
-      // HAL 9000 SECTION — red mask transition
+      // HAL 9000 SECTION — fades in from black
       // ═══════════════════════════════════════
       const ht = gsap.timeline({
         scrollTrigger: {
           trigger: ".hal-section",
           start: "top top",
-          end: "+=2500",
+          end: "+=2000",
           scrub: 1,
           pin: true,
         },
       });
 
-      // Red mask shrinks from full screen to HAL eye circle
-      ht.to(".hal-red-mask", {
-        clipPath: "circle(12% at 50% 50%)",
-        duration: 5,
-        ease: "power2.inOut",
-      }, 0);
+      // HAL eye powers on — glow from nothing
+      ht.fromTo(".hal-container",
+        { opacity: 0, scale: 0.85 },
+        { opacity: 1, scale: 1, duration: 4, ease: "power2.out" }, 0);
 
-      // Fade out the red mask to reveal full HAL
-      ht.to(".hal-red-mask", {
-        opacity: 0,
-        duration: 2,
-      }, 5);
-
-      // HAL label fades in
+      // HAL label fades in after eye is visible
       ht.fromTo(".hal-quote",
-        { opacity: 0, y: 30 },
-        { opacity: 1, y: 0, duration: 2, ease: "power2.out" }, 5);
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 2, ease: "power2.out" }, 3);
 
       // Corner decorations
       ht.fromTo(".hal-corner",
         { opacity: 0 },
-        { opacity: 1, duration: 1, stagger: 0.15 }, 6);
+        { opacity: 1, duration: 1, stagger: 0.15 }, 4);
 
       // ═══════════════════════════════════════
       // PERSISTENT SCROLL INDICATOR
@@ -403,11 +397,11 @@ export default function Home() {
         </div>
         <div className="bond-ghost-2 absolute left-1/2 top-1/2 flex flex-col items-center opacity-0" style={{ width: "6vh", height: "6vh" }}>
           <div className="h-full w-full rounded-full bg-white" />
-          <span className="ghost-label-2 mt-3 whitespace-nowrap font-mono text-[10px] tracking-[0.2em] text-white/80 uppercase opacity-0">AI / ML</span>
+          <span className="ghost-label-2 mt-3 whitespace-nowrap font-mono text-[10px] tracking-[0.2em] text-white/80 uppercase opacity-0">AI Integrations</span>
         </div>
         <div className="bond-ghost-3 absolute left-1/2 top-1/2 flex flex-col items-center opacity-0" style={{ width: "6vh", height: "6vh" }}>
           <div className="h-full w-full rounded-full bg-white" />
-          <span className="ghost-label-3 mt-3 whitespace-nowrap font-mono text-[10px] tracking-[0.2em] text-white/80 uppercase opacity-0">Cloud Ops</span>
+          <span className="ghost-label-3 mt-3 whitespace-nowrap font-mono text-[10px] tracking-[0.2em] text-white/80 uppercase opacity-0">DevOps</span>
         </div>
 
         {/* ── Barrel assembly (circle + rifling + video + blood) ── */}
@@ -521,11 +515,6 @@ export default function Home() {
           <div className="absolute bottom-0 right-0 h-[1px] w-8 bg-gradient-to-l from-red-500/30 to-transparent" />
         </div>
 
-        {/* Red mask — starts covering everything, shrinks to HAL eye circle */}
-        <div
-          className="hal-red-mask absolute inset-0 z-40 bg-[#550010]"
-          style={{ clipPath: "circle(100% at 50% 50%)" }}
-        />
       </section>
 
     </div>
