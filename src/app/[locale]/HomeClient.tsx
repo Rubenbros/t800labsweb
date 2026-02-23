@@ -141,7 +141,7 @@ export default function HomeClient() {
 
       // Flying title: center → next to logo in navbar
       const titleTargetFontSize = isMobile ? 16 : 20;
-      const titleTargetLeft = targetLeft + targetWidth / 2 - (isMobile ? 4 : 8);
+      const titleTargetLeft = targetLeft + targetWidth * (isMobile ? 0.22 : 0.25);
 
       gsap.to(".flying-title", {
         top: targetTop,
