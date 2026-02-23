@@ -1,61 +1,130 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
 import { useTranslations } from "next-intl";
+
+/* ── constants (outside component to avoid recreation) ── */
+const COLS = 8;
+const ROWS = 5;
+const GAPS: [number, number][] = [
+  [1, 1], [4, 0], [6, 2], [2, 3], [5, 4],
+];
+const WORMHOLE_RINGS = 12;
+
+const STEP_IMAGES = [
+  "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&q=80",
+  "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&q=80",
+  "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80",
+  "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&q=80",
+  "https://images.unsplash.com/photo-1517976487492-5750f3195933?w=800&q=80",
+];
+
+const BOOK_COLORS = [
+  "#8B1A1A", "#2F4F4F", "#8B4513", "#1C3A5F", "#556B2F",
+  "#722F37", "#C4A35A", "#4A3728", "#1B4D3E", "#6B3A2A",
+  "#2C3E50", "#8B0000", "#3B5998", "#704214", "#3E5641",
+  "#A0522D", "#483D8B", "#5C4033", "#D4A017", "#2E4057",
+  "#614B3B", "#8B6914", "#4B0082", "#36454F", "#C19A6B",
+  "#654321", "#800020", "#1C1C3C", "#556B2F", "#DAA520",
+];
 
 /**
  * Tesseract Bookshelf — Interstellar-style.
  *
  * Phase 0: Wormhole tunnel sucks you in
  * Phase 1: Bookshelf materializes in 3D perspective
- * Phase 2: Zoom into gaps to reveal step cards
+ * Phase 1.5: Numbers reveal in the gaps (clickable)
+ * Click: Zoom into gap → detail overlay with image + info
  */
 export default function ProcessTesseract() {
   const sectionRef = useRef<HTMLElement>(null);
+  const zoomTlRef = useRef<gsap.core.Timeline | null>(null);
+  const activeGapRef = useRef<number | null>(null);
+  const [activeGap, setActiveGap] = useState<number | null>(null);
+  const gapsRevealedRef = useRef(false);
   const t = useTranslations();
 
-  const COLS = 8;
-  const ROWS = 5;
+  /* ── preload step images ── */
+  useEffect(() => {
+    STEP_IMAGES.forEach((src) => {
+      const img = new window.Image();
+      img.src = src;
+    });
+  }, []);
 
-  const gaps: [number, number][] = [
-    [1, 1], [4, 0], [6, 2], [2, 3], [5, 4],
-  ];
+  /* ── click: zoom into a gap ── */
+  const handleGapClick = useCallback((index: number) => {
+    if (activeGapRef.current !== null || !gapsRevealedRef.current) return;
 
-  // Realistic book colors — like a real library
-  const bookColors = [
-    "#8B1A1A", "#2F4F4F", "#8B4513", "#1C3A5F", "#556B2F",
-    "#722F37", "#C4A35A", "#4A3728", "#1B4D3E", "#6B3A2A",
-    "#2C3E50", "#8B0000", "#3B5998", "#704214", "#3E5641",
-    "#A0522D", "#483D8B", "#5C4033", "#D4A017", "#2E4057",
-    "#614B3B", "#8B6914", "#4B0082", "#36454F", "#C19A6B",
-    "#654321", "#800020", "#1C1C3C", "#556B2F", "#DAA520",
-  ];
+    const [gc, gr] = GAPS[index];
+    const cellCenterX = ((gc + 0.5) / COLS) * 100;
+    const cellCenterY = ((gr + 0.5) / ROWS) * 100;
 
-  // Wormhole ring count
-  const WORMHOLE_RINGS = 12;
+    activeGapRef.current = index;
+    setActiveGap(index);
 
+    if (zoomTlRef.current) zoomTlRef.current.kill();
+
+    const tl = gsap.timeline();
+    zoomTlRef.current = tl;
+
+    tl.set(".tess-shelf", { transformOrigin: `${cellCenterX}% ${cellCenterY}%` });
+
+    tl.to(".tess-perspective", { rotateX: 2, duration: 1, ease: "power2.inOut" }, 0);
+    tl.to(".tess-shelf", { scale: 12, duration: 1, ease: "power2.inOut" }, 0);
+    tl.to(".tess-title-wrap", { opacity: 0, duration: 0.3 }, 0);
+    tl.to(".tess-gap-number", { opacity: 0, duration: 0.3 }, 0);
+    tl.to(".tess-dots", { opacity: 0, duration: 0.3 }, 0);
+
+    tl.fromTo(".tess-detail-overlay",
+      { opacity: 0 },
+      { opacity: 1, duration: 0.5, ease: "power2.out" },
+      0.7,
+    );
+
+    tl.to(`.tess-dot-${index + 1}`, {
+      backgroundColor: "#d4a017", scale: 1.5,
+      boxShadow: "0 0 8px rgba(212,160,23,0.6)", duration: 0.4,
+    }, 0.5);
+  }, []);
+
+  /* ── click: zoom back out ── */
+  const handleBack = useCallback(() => {
+    if (activeGapRef.current === null) return;
+    const prevGap = activeGapRef.current;
+
+    if (zoomTlRef.current) zoomTlRef.current.kill();
+
+    const tl = gsap.timeline({
+      onComplete: () => {
+        activeGapRef.current = null;
+        setActiveGap(null);
+        zoomTlRef.current = null;
+      },
+    });
+    zoomTlRef.current = tl;
+
+    tl.to(".tess-detail-overlay", { opacity: 0, duration: 0.3 }, 0);
+    tl.to(".tess-shelf", { scale: 1, duration: 1, ease: "power2.inOut" }, 0.2);
+    tl.to(".tess-perspective", { rotateX: 12, duration: 1, ease: "power2.inOut" }, 0.2);
+    tl.to(".tess-title-wrap", { opacity: 1, duration: 0.5 }, 0.8);
+    tl.to(".tess-gap-number", { opacity: 1, duration: 0.5 }, 0.8);
+    tl.to(".tess-dots", { opacity: 1, duration: 0.5 }, 0.8);
+    tl.to(`.tess-dot-${prevGap + 1}`, {
+      backgroundColor: "transparent", scale: 1,
+      boxShadow: "none", duration: 0.3,
+    }, 0.3);
+  }, []);
+
+  /* ── GSAP scroll-driven timeline ── */
   useEffect(() => {
     if (!sectionRef.current) return;
 
     const ctx = gsap.context(() => {
       const isMobile = window.innerWidth < 768;
-      const scrollEnd = isMobile ? "+=4500" : "+=8000";
-
-      // Snap points: wormhole end, overview, each card peak, end
-      // Timeline: wormhole 0→5, bookshelf 4.5→7, steps at 7,12,17,22,27 (card at +1.5)
-      const totalDur = 32;
-      const snapPoints = [
-        0,
-        5 / totalDur,        // wormhole done
-        7 / totalDur,        // bookshelf overview
-        8.5 / totalDur,      // card 1
-        13.5 / totalDur,     // card 2
-        18.5 / totalDur,     // card 3
-        23.5 / totalDur,     // card 4
-        28.5 / totalDur,     // card 5
-        1,
-      ];
+      const scrollEnd = isMobile ? "+=1200" : "+=2000";
+      const totalDur = 10;
 
       const pt = gsap.timeline({
         scrollTrigger: {
@@ -64,6 +133,17 @@ export default function ProcessTesseract() {
           end: scrollEnd,
           scrub: true,
           pin: true,
+          onUpdate: (self) => {
+            const revealed = self.progress >= 8 / totalDur;
+            gapsRevealedRef.current = revealed;
+
+            const btns = sectionRef.current?.querySelectorAll(".tess-gap-btn");
+            if (btns) {
+              btns.forEach((el) => {
+                (el as HTMLElement).style.pointerEvents = revealed ? "auto" : "none";
+              });
+            }
+          },
         },
       });
 
@@ -71,12 +151,10 @@ export default function ProcessTesseract() {
       // PHASE 0: WORMHOLE TUNNEL (0→5)
       // ═══════════════════════════════════════
 
-      // Wormhole container fades in
       pt.fromTo(".tess-wormhole",
         { opacity: 0 },
         { opacity: 1, duration: 0.5 }, 0);
 
-      // Rings expand from center outward with stagger
       pt.fromTo(".tess-ring",
         { scale: 0, opacity: 0 },
         {
@@ -84,20 +162,17 @@ export default function ProcessTesseract() {
           stagger: 0.12, ease: "power2.out",
         }, 0.2);
 
-      // Rings start pulling toward camera (scale up dramatically)
       pt.to(".tess-ring", {
         scale: 8, opacity: 0, duration: 2.5,
         stagger: 0.15, ease: "power3.in",
       }, 2);
 
-      // Wormhole center flash
       pt.fromTo(".tess-wormhole-flash",
         { opacity: 0, scale: 0.5 },
         { opacity: 1, scale: 2, duration: 0.4, ease: "power4.out" }, 4);
       pt.to(".tess-wormhole-flash",
         { opacity: 0, scale: 4, duration: 0.8, ease: "power2.out" }, 4.4);
 
-      // Wormhole fades away
       pt.to(".tess-wormhole",
         { opacity: 0, duration: 0.5, pointerEvents: "none" }, 4.5);
 
@@ -105,17 +180,14 @@ export default function ProcessTesseract() {
       // PHASE 1: BOOKSHELF MATERIALIZES (4.5→7)
       // ═══════════════════════════════════════
 
-      // 3D perspective container rotates from steep angle to subtle tilt
       pt.fromTo(".tess-perspective",
         { rotateX: 45, opacity: 0, scale: 0.6 },
         { rotateX: 12, opacity: 1, scale: 1, duration: 2.5, ease: "power2.out" }, 4.5);
 
-      // Depth beams glow in
       pt.fromTo(".tess-beam",
         { opacity: 0 },
         { opacity: 1, duration: 1.5, stagger: 0.04 }, 5);
 
-      // Title
       pt.fromTo(".tess-title-wrap",
         { opacity: 0, y: -15 },
         { opacity: 1, y: 0, duration: 1.2, ease: "power2.out" }, 5.5);
@@ -123,129 +195,50 @@ export default function ProcessTesseract() {
         { scaleX: 0 },
         { scaleX: 1, duration: 0.8, ease: "power3.inOut" }, 6.2);
 
-      // Corner decorations
       pt.fromTo(".tess-corner",
         { opacity: 0 },
         { opacity: 1, duration: 0.6, stagger: 0.1 }, 5.5);
 
-      // Dots
       pt.fromTo(".tess-dots",
         { opacity: 0 },
         { opacity: 1, duration: 0.8 }, 6.5);
 
       // ═══════════════════════════════════════
-      // PHASE 2: ZOOM INTO GAPS (7→32)
+      // PHASE 1.5: NUMBER REVEAL (7→8)
       // ═══════════════════════════════════════
-      let pos = 7;
 
-      for (let i = 0; i < 5; i++) {
-        const [gc, gr] = gaps[i];
-        const n = i + 1;
+      pt.fromTo(".tess-gap-number",
+        { opacity: 0, scale: 0.5 },
+        { opacity: 1, scale: 1, duration: 0.8, stagger: 0.15, ease: "back.out(1.7)" },
+        7,
+      );
 
-        const cellCenterX = ((gc + 0.5) / COLS) * 100;
-        const cellCenterY = ((gr + 0.5) / ROWS) * 100;
+      // ═══════════════════════════════════════
+      // FADEOUT (9→10)
+      // ═══════════════════════════════════════
 
-        // Set transform origin for zoom
-        pt.to(".tess-shelf", {
-          transformOrigin: `${cellCenterX}% ${cellCenterY}%`,
-          duration: 0.01,
-        }, pos);
-
-        // Flatten perspective as we zoom in (more immersive)
-        pt.to(".tess-perspective", {
-          rotateX: 2,
-          duration: 1.8,
-          ease: "power2.inOut",
-        }, pos);
-
-        // Zoom INTO the gap
-        pt.to(".tess-shelf", {
-          scale: 12,
-          duration: 1.8,
-          ease: "power2.inOut",
-        }, pos);
-
-        // Fade title during zoom
-        pt.to(".tess-title-wrap", {
-          opacity: 0,
-          duration: 0.5,
-        }, pos);
-
-        // Show the card
-        pt.fromTo(`.tess-card-${n}`,
-          { opacity: 0, scale: 0.8 },
-          { opacity: 1, scale: 1, duration: 0.8, ease: "power2.out" },
-          pos + 1.5);
-
-        // Gap cell glows
-        pt.to(`.tess-gap-${n}`, {
-          boxShadow: "0 0 20px rgba(212,160,23,0.3), inset 0 0 15px rgba(212,160,23,0.1)",
-          duration: 0.5,
-        }, pos + 1.2);
-
-        // Dot activates
-        pt.to(`.tess-dot-${n}`, {
-          backgroundColor: "#d4a017",
-          scale: 1.5,
-          boxShadow: "0 0 8px rgba(212,160,23,0.6)",
-          duration: 0.4,
-        }, pos + 1.5);
-
-        // Hide card and zoom out
-        pt.to(`.tess-card-${n}`, {
-          opacity: 0,
-          duration: 0.5,
-        }, pos + 3.5);
-
-        pt.to(`.tess-gap-${n}`, {
-          boxShadow: "0 0 0px rgba(212,160,23,0)",
-          duration: 0.3,
-        }, pos + 3.5);
-
-        // Zoom OUT back to overview
-        if (i < 4) {
-          pt.to(".tess-shelf", {
-            scale: 1,
-            duration: 1.5,
-            ease: "power2.inOut",
-          }, pos + 3.8);
-
-          // Restore 3D tilt
-          pt.to(".tess-perspective", {
-            rotateX: 12,
-            duration: 1.5,
-            ease: "power2.inOut",
-          }, pos + 3.8);
-
-          // Title fades back
-          pt.to(".tess-title-wrap", {
-            opacity: 1,
-            duration: 0.5,
-          }, pos + 4.5);
-        }
-
-        pos += 5;
-      }
-
-      // Fade to black before unpin — prevents scroll-up flash
       pt.to(".process-fadeout", {
         opacity: 1,
         duration: 1,
         ease: "power2.in",
-      }, 31);
+      }, 9);
 
-      // Ambient glow pulse (loop)
+      // ── ambient loops ──
       gsap.to(".tess-ambient", {
-        opacity: 0.7,
-        duration: 3,
-        repeat: -1,
-        yoyo: true,
-        ease: "sine.inOut",
+        opacity: 0.7, duration: 3, repeat: -1, yoyo: true, ease: "sine.inOut",
+      });
+
+      gsap.to(".tess-gap-glow", {
+        boxShadow: "0 0 15px rgba(212,160,23,0.4), inset 0 0 10px rgba(212,160,23,0.15)",
+        duration: 1.5, repeat: -1, yoyo: true, ease: "sine.inOut",
       });
 
     }, sectionRef);
 
-    return () => ctx.revert();
+    return () => {
+      if (zoomTlRef.current) zoomTlRef.current.kill();
+      ctx.revert();
+    };
   }, []);
 
   return (
@@ -258,7 +251,7 @@ export default function ProcessTesseract() {
         {/* Concentric rings */}
         {Array.from({ length: WORMHOLE_RINGS }).map((_, i) => {
           const size = 60 + i * 80;
-          const hue = 35 + i * 3; // golden range
+          const hue = 35 + i * 3;
           return (
             <div
               key={`ring-${i}`}
@@ -421,16 +414,15 @@ export default function ProcessTesseract() {
               }} />
             ))}
 
-            {/* Cells with books OR gaps */}
+            {/* Cells with books OR clickable gaps */}
             {Array.from({ length: ROWS }).map((_, row) =>
               Array.from({ length: COLS }).map((_, col) => {
-                const gapIndex = gaps.findIndex(([gc, gr]) => gc === col && gr === row);
+                const gapIndex = GAPS.findIndex(([gc, gr]) => gc === col && gr === row);
                 const cellIsGap = gapIndex !== -1;
 
                 return (
                   <div
                     key={`cell-${col}-${row}`}
-                    className={cellIsGap ? `tess-gap-${gapIndex + 1}` : ""}
                     style={{
                       position: "absolute",
                       left: `${(col / COLS) * 100}%`,
@@ -439,7 +431,7 @@ export default function ProcessTesseract() {
                       height: `${100 / ROWS}%`,
                       padding: "6px",
                       display: "flex",
-                      alignItems: "flex-end",
+                      alignItems: cellIsGap ? "center" : "flex-end",
                       justifyContent: "center",
                       gap: "2px",
                     }}
@@ -448,7 +440,7 @@ export default function ProcessTesseract() {
                       <>
                         {Array.from({ length: 4 + (col + row) % 3 }).map((_, bi) => {
                           const h = 50 + ((col * 3 + row * 7 + bi * 11) % 40);
-                          const color = bookColors[(col * 7 + row * 5 + bi * 11) % bookColors.length];
+                          const color = BOOK_COLORS[(col * 7 + row * 5 + bi * 11) % BOOK_COLORS.length];
                           return (
                             <div
                               key={bi}
@@ -466,15 +458,23 @@ export default function ProcessTesseract() {
                         })}
                       </>
                     ) : (
-                      <div className="flex h-full w-full items-center justify-center">
+                      <button
+                        className={`tess-gap-btn tess-gap-${gapIndex + 1} flex h-full w-full cursor-pointer items-center justify-center`}
+                        style={{ pointerEvents: "none", background: "none", border: "none", padding: 0 }}
+                        onClick={() => handleGapClick(gapIndex)}
+                      >
                         <div
-                          className="h-[70%] w-[60%] rounded-sm border border-[#d4a017]/25"
+                          className="tess-gap-glow flex h-[70%] w-[60%] items-center justify-center rounded-sm border border-[#d4a017]/30 transition-colors hover:border-[#d4a017]/70"
                           style={{
                             background: "radial-gradient(circle, rgba(212,160,23,0.08) 0%, rgba(212,160,23,0.02) 50%, transparent 80%)",
                             boxShadow: "inset 0 0 15px rgba(212,160,23,0.06)",
                           }}
-                        />
-                      </div>
+                        >
+                          <span className="tess-gap-number font-mono text-lg font-bold text-[#d4a017] opacity-0 md:text-2xl">
+                            {String(gapIndex + 1).padStart(2, "0")}
+                          </span>
+                        </div>
+                      </button>
                     )}
                   </div>
                 );
@@ -484,28 +484,53 @@ export default function ProcessTesseract() {
         </div>
       </div>
 
-      {/* Step cards */}
-      <div className="absolute inset-0 z-20 flex items-center justify-center">
-        {[1, 2, 3, 4, 5].map((n) => (
-          <div
-            key={n}
-            className={`tess-card-${n} absolute w-[80vw] max-w-md rounded border border-[#d4a017]/30 bg-black/85 px-6 py-5 opacity-0 backdrop-blur-sm md:px-8 md:py-7`}
-          >
-            <div className="flex items-baseline gap-4">
-              <span className="font-mono text-4xl font-bold text-[#d4a017]/20 md:text-5xl">
-                {String(n).padStart(2, "0")}
+      {/* ═══ DETAIL OVERLAY (shown on gap click) ═══ */}
+      <div
+        className="tess-detail-overlay absolute inset-0 z-[35] opacity-0"
+        style={{ pointerEvents: activeGap !== null ? "auto" : "none" }}
+      >
+        {activeGap !== null && (
+          <div className="relative flex h-full w-full items-center justify-center">
+            {/* Background image with dark filter */}
+            <div className="absolute inset-0">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={STEP_IMAGES[activeGap]}
+                alt=""
+                className="h-full w-full object-cover"
+                style={{ filter: "brightness(0.25) saturate(0.7)" }}
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-black/40" />
+            </div>
+
+            {/* Back button */}
+            <button
+              className="absolute left-6 top-6 z-10 cursor-pointer border border-[#d4a017]/40 bg-black/60 px-4 py-2 font-mono text-xs tracking-[0.2em] text-[#d4a017] backdrop-blur-sm transition-colors hover:border-[#d4a017] hover:bg-black/80"
+              onClick={handleBack}
+            >
+              &larr; {t("Process.back")}
+            </button>
+
+            {/* Content */}
+            <div className="relative z-10 flex flex-col items-center px-6">
+              {/* Watermark number */}
+              <span className="absolute font-mono text-[20vw] font-bold leading-none text-[#d4a017]/[0.04] select-none">
+                {String(activeGap + 1).padStart(2, "0")}
               </span>
-              <div>
-                <h3 className="font-mono text-sm font-bold tracking-[0.15em] text-[#d4a017] uppercase md:text-lg">
-                  {t(`Process.step${n}Title`)}
-                </h3>
-                <p className="mt-2 font-mono text-[10px] leading-relaxed text-white/50 md:text-xs">
-                  {t(`Process.step${n}Desc`)}
-                </p>
-              </div>
+
+              <span className="font-mono text-[10px] tracking-[0.3em] text-[#d4a017]/60 uppercase">
+                {t("Process.subtitle")} — {String(activeGap + 1).padStart(2, "0")}/05
+              </span>
+              <h3 className="mt-4 text-center font-mono text-2xl font-bold tracking-[0.15em] text-[#d4a017] md:text-4xl">
+                {t(`Process.step${activeGap + 1}Title`)}
+              </h3>
+              <div className="mt-3 h-[1px] w-16 bg-gradient-to-r from-transparent via-[#d4a017]/50 to-transparent" />
+              <p className="mt-4 max-w-md text-center font-mono text-sm leading-relaxed text-white/60 md:text-base">
+                {t(`Process.step${activeGap + 1}Desc`)}
+              </p>
             </div>
           </div>
-        ))}
+        )}
       </div>
 
       {/* Progress dots */}

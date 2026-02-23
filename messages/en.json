@@ -71,6 +71,7 @@
     "step4Title": "BUILD",
     "step4Desc": "Agile development with incremental deliveries. The project materializes piece by piece.",
     "step5Title": "DELIVERY",
-    "step5Desc": "Your product crosses to the other side. Deploy, training, support, evolution."
+    "step5Desc": "Your product crosses to the other side. Deploy, training, support, evolution.",
+    "back": "BACK"
   }
 }

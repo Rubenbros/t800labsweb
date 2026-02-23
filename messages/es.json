@@ -71,6 +71,7 @@
     "step4Title": "CONSTRUCCIÓN",
     "step4Desc": "Desarrollo ágil con entregas incrementales. El proyecto se materializa pieza a pieza.",
     "step5Title": "ENTREGA",
-    "step5Desc": "Tu producto cruza al otro lado. Deploy, formación, soporte, evolución."
+    "step5Desc": "Tu producto cruza al otro lado. Deploy, formación, soporte, evolución.",
+    "back": "VOLVER"
   }
 }
