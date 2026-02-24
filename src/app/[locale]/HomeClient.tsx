@@ -424,6 +424,47 @@ export default function HomeClient() {
       bt.to(".blood-drip", { backgroundColor: "#000000", duration: 0.4, ease: "power2.in" }, 26);
 
       // ═══════════════════════════════════════
+      // MANIFESTO SECTION — Statement reveal
+      // ═══════════════════════════════════════
+      const mft = gsap.timeline({
+        scrollTrigger: {
+          trigger: ".manifesto-section",
+          start: "top top",
+          end: isMobile ? "+=600" : "+=1000",
+          scrub: true,
+          pin: true,
+        },
+      });
+
+      // Line 1 reveals
+      mft.fromTo(".manifesto-line-1",
+        { opacity: 0, y: 40 },
+        { opacity: 1, y: 0, duration: 1.5, ease: "power2.out" }, 0);
+
+      // Line 2 reveals
+      mft.fromTo(".manifesto-line-2",
+        { opacity: 0, y: 40 },
+        { opacity: 1, y: 0, duration: 1.5, ease: "power2.out" }, 1.5);
+
+      // Red divider expands
+      mft.to(".manifesto-divider",
+        { width: "120px", duration: 1, ease: "power3.inOut" }, 3);
+
+      // Line 3 reveals (red accent)
+      mft.fromTo(".manifesto-line-3",
+        { opacity: 0, y: 40 },
+        { opacity: 1, y: 0, duration: 1.5, ease: "power2.out" }, 3.5);
+
+      // Red glow pulse on final line
+      mft.fromTo(".manifesto-line-3",
+        { textShadow: "0 0 0px rgba(229,9,20,0)" },
+        { textShadow: "0 0 30px rgba(229,9,20,0.5)", duration: 1, ease: "power2.inOut" }, 4.5);
+
+      // Fade to black
+      mft.to(".manifesto-fadeout",
+        { opacity: 1, duration: 1.5, ease: "power2.in" }, 6);
+
+      // ═══════════════════════════════════════
       // SERVICES SECTION — Matrix rain + cards
       // ═══════════════════════════════════════
       const st = gsap.timeline({
@@ -856,6 +897,27 @@ export default function HomeClient() {
 
           {/* Final solid cover within group */}
           <div className="blood-solid absolute inset-0 bg-[#550010] opacity-0" />
+        </div>
+      </section>
+
+      {/* ════════════════════════════════════════════
+          MANIFESTO SECTION — Statement
+          ════════════════════════════════════════════ */}
+      <section className="manifesto-section relative h-screen overflow-hidden bg-black">
+        <div className="manifesto-fadeout pointer-events-none absolute inset-0 z-30 bg-black opacity-0" />
+        <div className="relative z-10 flex h-full flex-col items-center justify-center px-6 md:px-10">
+          <div className="manifesto-content flex flex-col items-center gap-4 text-center md:gap-6">
+            <p className="manifesto-line-1 font-bold text-2xl tracking-[0.08em] text-[#ededed] opacity-0 md:text-4xl lg:text-5xl">
+              {t("Manifesto.line1")}
+            </p>
+            <p className="manifesto-line-2 font-bold text-2xl tracking-[0.08em] text-[#ededed] opacity-0 md:text-4xl lg:text-5xl">
+              {t("Manifesto.line2")}
+            </p>
+            <div className="manifesto-divider h-[1px] w-0 bg-gradient-to-r from-transparent via-[#e50914] to-transparent" />
+            <p className="manifesto-line-3 font-bold text-2xl tracking-[0.08em] text-[#e50914] opacity-0 md:text-4xl lg:text-5xl">
+              {t("Manifesto.line3")}
+            </p>
+          </div>
         </div>
       </section>
 

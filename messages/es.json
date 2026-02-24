@@ -39,6 +39,11 @@
   "ScrollIndicator": {
     "scroll": "scroll"
   },
+  "Manifesto": {
+    "line1": "Otros se adaptan.",
+    "line2": "Nosotros mutamos.",
+    "line3": "La IA no nos reemplaza — nos potencia."
+  },
   "Services": {
     "title": "SERVICIOS",
     "subtitle": "Lo que hacemos",

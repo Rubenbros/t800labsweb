@@ -39,6 +39,11 @@
   "ScrollIndicator": {
     "scroll": "scroll"
   },
+  "Manifesto": {
+    "line1": "Others adapt.",
+    "line2": "We mutate.",
+    "line3": "AI doesn't replace us — it empowers us."
+  },
   "Services": {
     "title": "SERVICES",
     "subtitle": "What we do",
