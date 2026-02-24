@@ -221,14 +221,14 @@ export default function ProcessTesseract() {
       );
 
       // ═══════════════════════════════════════
-      // FADEOUT (9→10)
+      // FADEOUT (9.5→10)
       // ═══════════════════════════════════════
 
       pt.to(".process-fadeout", {
         opacity: 1,
-        duration: 1,
+        duration: 0.5,
         ease: "power2.in",
-      }, 9);
+      }, 9.5);
 
       // ── ambient loops ──
       gsap.to(".tess-ambient", {

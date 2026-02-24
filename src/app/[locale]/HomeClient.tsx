@@ -418,9 +418,9 @@ export default function HomeClient() {
       bt.to(".blood-solid", { opacity: 1, duration: 0.8 }, 25);
 
       // Raise group opacity to fully opaque + fade to black
-      bt.to(".bond-blood-drips", { opacity: 1, duration: 0.5, ease: "power2.inOut" }, 26);
-      bt.to(".bond-assembly", { opacity: 0, duration: 0.5 }, 26);
-      bt.to(".blood-solid", { backgroundColor: "#000000", duration: 0.8, ease: "power2.in" }, 26.5);
+      bt.to(".bond-blood-drips", { opacity: 1, duration: 0.3, ease: "power2.inOut" }, 26);
+      bt.to(".bond-assembly", { opacity: 0, duration: 0.3 }, 26);
+      bt.to(".blood-solid", { backgroundColor: "#000000", duration: 0.4, ease: "power2.in" }, 26.3);
       bt.to(".blood-drip", { backgroundColor: "#000000", duration: 0.8, ease: "power2.in" }, 26.5);
 
       // ═══════════════════════════════════════
@@ -493,9 +493,9 @@ export default function HomeClient() {
       // Fade to black before unpin — tight at the end
       st.to(".services-fadeout", {
         opacity: 1,
-        duration: 0.8,
+        duration: 0.4,
         ease: "power2.in",
-      }, 7.5);
+      }, 7.6);
 
       // ═══════════════════════════════════════
       // PROCESS SECTION — handled by ProcessVersionA/B/C component
@@ -564,9 +564,9 @@ export default function HomeClient() {
       // Fade to black before unpin
       tt.to(".team-fadeout", {
         opacity: 1,
-        duration: 0.8,
+        duration: 0.4,
         ease: "power2.in",
-      }, 7);
+      }, 7.2);
 
       // ═══════════════════════════════════════
       // HAL 9000 SECTION — fades in from black
@@ -599,9 +599,9 @@ export default function HomeClient() {
       // Fade to black before unpin
       ht.to(".hal-fadeout", {
         opacity: 1,
-        duration: 0.8,
+        duration: 0.4,
         ease: "power2.in",
-      }, 2.5);
+      }, 2.8);
 
       // ═══════════════════════════════════════
       // PERSISTENT SCROLL INDICATOR
