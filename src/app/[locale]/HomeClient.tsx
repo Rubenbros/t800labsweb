@@ -418,10 +418,10 @@ export default function HomeClient() {
       bt.to(".blood-solid", { opacity: 1, duration: 0.8 }, 25);
 
       // Raise group opacity to fully opaque + fade to black
-      bt.to(".bond-blood-drips", { opacity: 1, duration: 0.3, ease: "power2.inOut" }, 26);
-      bt.to(".bond-assembly", { opacity: 0, duration: 0.3 }, 26);
-      bt.to(".blood-solid", { backgroundColor: "#000000", duration: 0.4, ease: "power2.in" }, 26.3);
-      bt.to(".blood-drip", { backgroundColor: "#000000", duration: 0.8, ease: "power2.in" }, 26.5);
+      bt.to(".bond-blood-drips", { opacity: 1, duration: 0.2, ease: "power2.inOut" }, 25.8);
+      bt.to(".bond-assembly", { opacity: 0, duration: 0.2 }, 25.8);
+      bt.to(".blood-solid", { backgroundColor: "#000000", duration: 0.4, ease: "power2.in" }, 26);
+      bt.to(".blood-drip", { backgroundColor: "#000000", duration: 0.4, ease: "power2.in" }, 26);
 
       // ═══════════════════════════════════════
       // SERVICES SECTION — Matrix rain + cards
