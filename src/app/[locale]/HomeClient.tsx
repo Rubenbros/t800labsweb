@@ -991,11 +991,11 @@ export default function HomeClient() {
         {/* Content */}
         <div className="relative z-10 flex h-full flex-col items-center justify-center px-4 md:px-10">
           {/* Section header */}
-          <div className="team-header mb-6 flex flex-col items-center gap-3 opacity-0 md:mb-10">
+          <div className="team-header mb-3 flex flex-col items-center gap-2 opacity-0 md:mb-10 md:gap-3">
             <span className="font-mono text-[10px] tracking-[0.3em] text-[#F2A900]/60 uppercase">
               {t("Team.subtitle")}
             </span>
-            <h2 className="font-bold text-3xl tracking-[0.15em] text-[#F2A900] md:text-5xl">
+            <h2 className="font-bold text-2xl tracking-[0.15em] text-[#F2A900] md:text-5xl">
               {t("Team.title")}
             </h2>
             <div className="team-divider h-[1px] w-16 origin-center scale-x-0 bg-gradient-to-r from-transparent via-[#F2A900]/50 to-transparent" />
@@ -1003,9 +1003,9 @@ export default function HomeClient() {
 
           {/* Replicant card */}
           <div className="team-card w-full max-w-3xl origin-center overflow-hidden rounded border border-[#F2A900]/20 bg-black/80 backdrop-blur-sm">
-            <div className="flex flex-col md:flex-row">
+            <div className="flex flex-row">
               {/* Photo side */}
-              <div className="relative aspect-square w-full overflow-hidden md:w-2/5">
+              <div className="relative w-1/3 overflow-hidden md:w-2/5">
                 <img
                   src="/ruben-jarne.jpg"
                   alt="Rubén Jarné Cabañero"
@@ -1020,49 +1020,49 @@ export default function HomeClient() {
               </div>
 
               {/* Data side */}
-              <div className="flex flex-1 flex-col justify-center p-5 font-mono md:p-8">
+              <div className="flex flex-1 flex-col justify-center p-3 font-mono md:p-8">
                 {/* Header */}
-                <div className="team-data-line mb-4 border-b border-[#F2A900]/20 pb-3">
-                  <span className="text-[10px] tracking-[0.2em] text-[#F2A900]/40">{t("Team.model")}</span>
-                  <h3 className="mt-1 text-lg font-bold tracking-[0.05em] text-[#F2A900] md:text-xl">RUBÉN JARNÉ CABAÑERO</h3>
+                <div className="team-data-line mb-2 border-b border-[#F2A900]/20 pb-2 md:mb-4 md:pb-3">
+                  <span className="text-[8px] tracking-[0.2em] text-[#F2A900]/40 md:text-[10px]">{t("Team.model")}</span>
+                  <h3 className="mt-0.5 text-sm font-bold tracking-[0.05em] text-[#F2A900] md:mt-1 md:text-xl">RUBÉN JARNÉ CABAÑERO</h3>
                 </div>
 
                 {/* Data fields */}
-                <div className="space-y-2.5 text-[11px] md:text-xs">
-                  <div className="team-data-line flex gap-2">
+                <div className="space-y-1.5 text-[10px] md:space-y-2.5 md:text-xs">
+                  <div className="team-data-line flex gap-1 md:gap-2">
                     <span className="shrink-0 text-[#F2A900]/50">{t("Team.inception")}:</span>
                     <span className="text-white/80">2019</span>
                   </div>
-                  <div className="team-data-line flex gap-2">
+                  <div className="team-data-line flex gap-1 md:gap-2">
                     <span className="shrink-0 text-[#F2A900]/50">{t("Team.function")}:</span>
                     <span className="text-white/80">{t("Team.functionValue")}</span>
                   </div>
-                  <div className="team-data-line flex gap-2">
+                  <div className="team-data-line flex gap-1 md:gap-2">
                     <span className="shrink-0 text-[#F2A900]/50">{t("Team.specializations")}:</span>
                     <span className="text-white/80">{t("Team.specList")}</span>
                   </div>
-                  <div className="team-data-line flex gap-2">
+                  <div className="team-data-line flex gap-1 md:gap-2">
                     <span className="shrink-0 text-[#F2A900]/50">{t("Team.priorAssignments")}:</span>
                     <span className="text-white/80">{t("Team.assignments")}</span>
                   </div>
-                  <div className="team-data-line flex gap-2">
+                  <div className="team-data-line flex gap-1 md:gap-2">
                     <span className="shrink-0 text-[#F2A900]/50">{t("Team.additionalProtocols")}:</span>
                     <span className="text-white/80">{t("Team.protocols")}</span>
                   </div>
                 </div>
 
                 {/* Bio */}
-                <div className="team-bio mt-4 border-t border-[#F2A900]/10 pt-3 opacity-0">
-                  <p className="text-[11px] italic text-white/50 md:text-xs">&quot;{t("Team.bio")}&quot;</p>
+                <div className="team-bio mt-2 border-t border-[#F2A900]/10 pt-2 opacity-0 md:mt-4 md:pt-3">
+                  <p className="text-[10px] italic text-white/50 md:text-xs">&quot;{t("Team.bio")}&quot;</p>
                 </div>
 
                 {/* Social links */}
-                <div className="mt-4 flex gap-4">
+                <div className="mt-2 flex gap-4 md:mt-4">
                   <a
                     href="https://github.com/rubenbros"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="team-social-link font-mono text-[10px] tracking-[0.15em] text-[#F2A900]/50 uppercase transition-colors duration-300 hover:text-[#F2A900] opacity-0"
+                    className="team-social-link font-mono text-[9px] tracking-[0.15em] text-[#F2A900]/50 uppercase transition-colors duration-300 hover:text-[#F2A900] opacity-0 md:text-[10px]"
                   >
                     GitHub ↗
                   </a>
@@ -1070,7 +1070,7 @@ export default function HomeClient() {
                     href="https://www.linkedin.com/in/rubenbros"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="team-social-link font-mono text-[10px] tracking-[0.15em] text-[#F2A900]/50 uppercase transition-colors duration-300 hover:text-[#F2A900] opacity-0"
+                    className="team-social-link font-mono text-[9px] tracking-[0.15em] text-[#F2A900]/50 uppercase transition-colors duration-300 hover:text-[#F2A900] opacity-0 md:text-[10px]"
                   >
                     LinkedIn ↗
                   </a>
@@ -1080,8 +1080,8 @@ export default function HomeClient() {
           </div>
 
           {/* Blade Runner quote */}
-          <div className="team-quote mt-8 opacity-0">
-            <p className="text-center font-mono text-[10px] italic tracking-[0.1em] text-[#F2A900]/25 md:text-xs">
+          <div className="team-quote mt-4 opacity-0 md:mt-8">
+            <p className="text-center font-mono text-[9px] italic tracking-[0.1em] text-[#F2A900]/25 md:text-xs">
               {t("Team.quote")}
             </p>
           </div>
