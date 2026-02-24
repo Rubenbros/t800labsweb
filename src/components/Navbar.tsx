@@ -21,7 +21,7 @@ export default function Navbar() {
   const PIN_PROGRESS: Record<string, number> = {
     "#servicios": 0.65,  // all service cards visible
     "#proceso": 0.82,    // numbers revealed and clickable
-    "#equipo": 0.5,      // team card fully visible
+    "#equipo": 0.88,     // all content revealed before fade
     "#contacto": 0.15,   // HAL eye + quote visible
   };
 
