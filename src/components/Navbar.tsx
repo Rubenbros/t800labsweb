@@ -19,10 +19,10 @@ export default function Navbar() {
   // For pinned sections, scroll to the point where content is fully visible
   // instead of the top of the section (where animation starts from scratch)
   const PIN_PROGRESS: Record<string, number> = {
-    "#servicios": 0.65,  // all service cards visible
-    "#proceso": 0.82,    // numbers revealed and clickable
-    "#equipo": 0.88,     // all content revealed before fade
-    "#contacto": 0.15,   // HAL eye + quote visible
+    "#servicios": 0.55,  // all service cards visible
+    "#proceso": 0.75,    // numbers revealed and clickable
+    "#equipo": 0.65,     // all content revealed before fade
+    "#contacto": 0.10,   // HAL eye + quote visible
   };
 
   const handleNavClick = useCallback(

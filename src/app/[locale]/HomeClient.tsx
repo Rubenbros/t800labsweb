@@ -259,7 +259,7 @@ export default function HomeClient() {
         scrollTrigger: {
           trigger: ".bond-section",
           start: "top top",
-          end: isMobile ? "+=2000" : "+=3500",
+          end: isMobile ? "+=1100" : "+=2000",
           scrub: true,
           pin: true,
         },
@@ -426,9 +426,66 @@ export default function HomeClient() {
       // ═══════════════════════════════════════
       // MANIFESTO SECTION — Statement reveal
       // ═══════════════════════════════════════
+      // Manifesto — scroll-through with scrub animation (no pin, no gap)
       const mft = gsap.timeline({
         scrollTrigger: {
           trigger: ".manifesto-section",
+          start: "top 80%",
+          end: "bottom 20%",
+          scrub: true,
+        },
+      });
+
+      mft.fromTo(".manifesto-line-1",
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 0.3, ease: "power2.out" }, 0);
+
+      mft.fromTo(".manifesto-line-2",
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 0.3, ease: "power2.out" }, 0.15);
+
+      mft.to(".manifesto-divider",
+        { width: "120px", duration: 0.2, ease: "power3.inOut" }, 0.25);
+
+      mft.fromTo(".manifesto-line-3",
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 0.3, ease: "power2.out" }, 0.3);
+
+      mft.fromTo(".manifesto-line-3",
+        { textShadow: "0 0 0px rgba(229,9,20,0)" },
+        { textShadow: "0 0 30px rgba(229,9,20,0.5)", duration: 0.3, ease: "power2.inOut" }, 0.5);
+
+      // Hold visible through most of scroll range
+      mft.to(".manifesto-content", { opacity: 1, duration: 0.2 }, 0.6);
+
+      // ═══════════════════════════════════════
+      // SERVICES SECTION — Matrix rain + cards
+      // ═══════════════════════════════════════
+
+      // Pre-reveal: rain + header + corners appear as section scrolls into viewport
+      gsap.fromTo(".services-rain",
+        { opacity: 0 },
+        { opacity: 1, ease: "power2.out",
+          scrollTrigger: { trigger: ".services-section", start: "top bottom", end: "top 30%", scrub: true },
+        });
+      gsap.fromTo(".services-header",
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, ease: "power2.out",
+          scrollTrigger: { trigger: ".services-section", start: "top bottom", end: "top 20%", scrub: true },
+        });
+      gsap.to(".services-divider",
+        { scaleX: 1, ease: "power3.inOut",
+          scrollTrigger: { trigger: ".services-section", start: "top 80%", end: "top 40%", scrub: true },
+        });
+      gsap.fromTo(".services-corner",
+        { opacity: 0 },
+        { opacity: 1, stagger: 0.05,
+          scrollTrigger: { trigger: ".services-section", start: "top bottom", end: "top 30%", scrub: true },
+        });
+
+      const st = gsap.timeline({
+        scrollTrigger: {
+          trigger: ".services-section",
           start: "top top",
           end: isMobile ? "+=600" : "+=1000",
           scrub: true,
@@ -436,107 +493,34 @@ export default function HomeClient() {
         },
       });
 
-      // Line 1 reveals
-      mft.fromTo(".manifesto-line-1",
-        { opacity: 0, y: 40 },
-        { opacity: 1, y: 0, duration: 1.5, ease: "power2.out" }, 0);
-
-      // Line 2 reveals
-      mft.fromTo(".manifesto-line-2",
-        { opacity: 0, y: 40 },
-        { opacity: 1, y: 0, duration: 1.5, ease: "power2.out" }, 1.5);
-
-      // Red divider expands
-      mft.to(".manifesto-divider",
-        { width: "120px", duration: 1, ease: "power3.inOut" }, 3);
-
-      // Line 3 reveals (red accent)
-      mft.fromTo(".manifesto-line-3",
-        { opacity: 0, y: 40 },
-        { opacity: 1, y: 0, duration: 1.5, ease: "power2.out" }, 3.5);
-
-      // Red glow pulse on final line
-      mft.fromTo(".manifesto-line-3",
-        { textShadow: "0 0 0px rgba(229,9,20,0)" },
-        { textShadow: "0 0 30px rgba(229,9,20,0.5)", duration: 1, ease: "power2.inOut" }, 4.5);
-
-      // Fade to black
-      mft.to(".manifesto-fadeout",
-        { opacity: 1, duration: 1.5, ease: "power2.in" }, 6);
-
-      // ═══════════════════════════════════════
-      // SERVICES SECTION — Matrix rain + cards
-      // ═══════════════════════════════════════
-      const st = gsap.timeline({
-        scrollTrigger: {
-          trigger: ".services-section",
-          start: "top top",
-          end: isMobile ? "+=1200" : "+=2000",
-          scrub: true,
-          pin: true,
-        },
-      });
-
-      // Matrix rain fades in — quick but visible transition
-      st.fromTo(".services-rain",
-        { opacity: 0 },
-        { opacity: 1, duration: 0.8, ease: "power2.out" }, 0);
-
-      // Header decodes in
-      st.fromTo(".services-header",
-        { opacity: 0, y: 30 },
-        { opacity: 1, y: 0, duration: 1.5, ease: "power2.out" }, 0.2);
-
-      // Title divider expands
-      st.to(".services-divider",
-        { scaleX: 1, duration: 1, ease: "power3.inOut" }, 1.5);
-
-      // Grid container fades in
+      // Cards animate during pin
       st.fromTo(".services-grid",
         { opacity: 0 },
-        { opacity: 1, duration: 0.5 }, 2);
+        { opacity: 1, duration: 0.2 }, 0);
 
-      // Cards stagger in with glitch flash
       st.fromTo(".service-card",
-        { opacity: 0, y: 40, scale: 0.9 },
+        { opacity: 0, y: 30, scale: 0.95 },
         {
-          opacity: 1,
-          y: 0,
-          scale: 1,
-          duration: 1.5,
-          stagger: 0.4,
+          opacity: 1, y: 0, scale: 1,
+          duration: 0.6, stagger: 0.2,
           ease: "power2.out",
-        }, 2.5);
+        }, 0.1);
 
-      // Green glow flash on each card as it appears
       st.fromTo(".service-card",
         { boxShadow: "0 0 0px rgba(0,255,65,0)" },
         {
           boxShadow: "0 0 20px rgba(0,255,65,0.3)",
-          duration: 0.8,
-          stagger: 0.4,
+          duration: 0.4, stagger: 0.2,
           ease: "power2.out",
-        }, 2.5);
+        }, 0.1);
 
-      // Fade glow back to subtle
       st.to(".service-card", {
         boxShadow: "0 0 8px rgba(0,255,65,0.08)",
-        duration: 1.5,
-        stagger: 0.2,
+        duration: 0.6, stagger: 0.1,
         ease: "power2.out",
-      }, 5.5);
+      }, 1.6);
 
-      // Corner decorations
-      st.fromTo(".services-corner",
-        { opacity: 0 },
-        { opacity: 1, duration: 0.8, stagger: 0.1 }, 1);
-
-      // Fade to black before unpin — tight at the end
-      st.to(".services-fadeout", {
-        opacity: 1,
-        duration: 0.4,
-        ease: "power2.in",
-      }, 7.6);
+      // No fade-to-black — section stays visible, next section slides over it
 
       // ═══════════════════════════════════════
       // PROCESS SECTION — handled by ProcessVersionA/B/C component
@@ -545,104 +529,97 @@ export default function HomeClient() {
       // ═══════════════════════════════════════
       // TEAM SECTION — Blade Runner / Tyrell Corp
       // ═══════════════════════════════════════
+
+      // Pre-reveal: header + corners appear as section scrolls into viewport
+      gsap.fromTo(".team-header",
+        { opacity: 0, y: 30 },
+        { opacity: 1, y: 0, ease: "power2.out",
+          scrollTrigger: { trigger: ".team-section", start: "top bottom", end: "top 20%", scrub: true },
+        });
+      gsap.to(".team-divider",
+        { scaleX: 1, ease: "power3.inOut",
+          scrollTrigger: { trigger: ".team-section", start: "top 80%", end: "top 40%", scrub: true },
+        });
+      gsap.fromTo(".team-corner",
+        { opacity: 0 },
+        { opacity: 1, stagger: 0.05,
+          scrollTrigger: { trigger: ".team-section", start: "top bottom", end: "top 30%", scrub: true },
+        });
+
       const tt = gsap.timeline({
         scrollTrigger: {
           trigger: ".team-section",
           start: "top top",
-          end: isMobile ? "+=1200" : "+=2000",
+          end: isMobile ? "+=600" : "+=1000",
           scrub: true,
           pin: true,
         },
       });
 
-      // Header fades in
-      tt.fromTo(".team-header",
-        { opacity: 0, y: 30 },
-        { opacity: 1, y: 0, duration: 1.5, ease: "power2.out" }, 0);
-
-      // Divider expands
-      tt.to(".team-divider",
-        { scaleX: 1, duration: 1, ease: "power3.inOut" }, 1);
-
-      // Card appears — CRT power-on effect
+      // Card and content animate during pin
       tt.fromTo(".team-card",
         { opacity: 0, scaleY: 0.01 },
-        { opacity: 1, scaleY: 1, duration: 1.2, ease: "power2.out" }, 1.5);
+        { opacity: 1, scaleY: 1, duration: 0.5, ease: "power2.out" }, 0);
 
-      // Photo reveals with scan sweep
       tt.fromTo(".team-photo-scan",
         { y: "-100%" },
-        { y: "100%", duration: 1.5, ease: "power2.inOut" }, 2);
+        { y: "100%", duration: 0.7, ease: "power2.inOut" }, 0.3);
       tt.fromTo(".team-photo-img",
         { opacity: 0 },
-        { opacity: 1, duration: 0.8 }, 2.3);
+        { opacity: 1, duration: 0.4 }, 0.5);
 
-      // Data lines type in staggered
       tt.fromTo(".team-data-line",
-        { opacity: 0, x: -15 },
-        { opacity: 1, x: 0, stagger: 0.3, duration: 0.6, ease: "power2.out" }, 2.8);
+        { opacity: 0, x: -10 },
+        { opacity: 1, x: 0, stagger: 0.12, duration: 0.3, ease: "power2.out" }, 0.6);
 
-      // Bio line
       tt.fromTo(".team-bio",
         { opacity: 0 },
-        { opacity: 1, duration: 0.8 }, 4.8);
+        { opacity: 1, duration: 0.3 }, 1.4);
 
-      // Social links
       tt.fromTo(".team-social-link",
-        { opacity: 0, y: 10 },
-        { opacity: 1, y: 0, stagger: 0.15, duration: 0.5 }, 5.2);
+        { opacity: 0, y: 8 },
+        { opacity: 1, y: 0, stagger: 0.08, duration: 0.3 }, 1.5);
 
-      // Corner decorations
-      tt.fromTo(".team-corner",
-        { opacity: 0 },
-        { opacity: 1, duration: 0.5, stagger: 0.1 }, 0.5);
-
-      // Quote at bottom
       tt.fromTo(".team-quote",
         { opacity: 0 },
-        { opacity: 1, duration: 1.2 }, 5.5);
+        { opacity: 1, duration: 0.5 }, 1.8);
 
-      // Fade to black before unpin
-      tt.to(".team-fadeout", {
-        opacity: 1,
-        duration: 0.4,
-        ease: "power2.in",
-      }, 7.2);
+      // No fade-to-black — section stays visible, next section slides over it
 
       // ═══════════════════════════════════════
       // HAL 9000 SECTION — fades in from black
       // ═══════════════════════════════════════
+
+      // Pre-reveal: corners + eye glow appear as section scrolls into viewport
+      gsap.fromTo(".hal-corner",
+        { opacity: 0 },
+        { opacity: 1, stagger: 0.05,
+          scrollTrigger: { trigger: ".hal-section", start: "top bottom", end: "top 30%", scrub: true },
+        });
+      gsap.fromTo(".hal-content",
+        { opacity: 0, scale: 0.9 },
+        { opacity: 1, scale: 1, ease: "power2.out",
+          scrollTrigger: { trigger: ".hal-section", start: "top bottom", end: "top 20%", scrub: true },
+        });
+
       const ht = gsap.timeline({
         scrollTrigger: {
           trigger: ".hal-section",
           start: "top top",
-          end: isMobile ? "+=800" : "+=1200",
+          end: isMobile ? "+=350" : "+=600",
           scrub: true,
           pin: true,
         },
       });
 
-      // HAL eye powers on — fast, no black gap
-      ht.fromTo(".hal-container",
-        { opacity: 0, scale: 0.95 },
-        { opacity: 1, scale: 1, duration: 0.3, ease: "power2.out" }, 0);
-
-      // Quote + CTA appears right after
+      // Quote appears during pin
       ht.fromTo(".hal-quote",
         { opacity: 0, y: 15 },
         { opacity: 1, y: 0, duration: 0.3, ease: "power2.out" }, 0);
 
-      // Corner decorations almost simultaneously
-      ht.fromTo(".hal-corner",
-        { opacity: 0 },
-        { opacity: 1, duration: 0.3, stagger: 0.05 }, 0);
+      // No fade-to-black — section stays visible, next section slides over it
 
-      // Fade to black before unpin
-      ht.to(".hal-fadeout", {
-        opacity: 1,
-        duration: 0.4,
-        ease: "power2.in",
-      }, 2.8);
+
 
       // ═══════════════════════════════════════
       // PERSISTENT SCROLL INDICATOR
@@ -809,7 +786,8 @@ export default function HomeClient() {
       {/* ════════════════════════════════════════════
           BOND BARREL SEQUENCE
           ════════════════════════════════════════════ */}
-      <section className="bond-section relative h-screen overflow-hidden bg-black">
+      <section className="bond-section relative z-[1] h-screen overflow-hidden bg-black">
+        {/* Pre-entrance glow — visible during scroll-in before pin */}
 
         {/* ── Ghost trail circles with service labels ── */}
         <div className="bond-ghost-1 absolute left-1/2 top-1/2 flex flex-col items-center opacity-0" style={{ width: "6vh", height: "6vh" }}>
@@ -903,9 +881,8 @@ export default function HomeClient() {
       {/* ════════════════════════════════════════════
           MANIFESTO SECTION — Statement
           ════════════════════════════════════════════ */}
-      <section className="manifesto-section relative h-screen overflow-hidden bg-black">
-        <div className="manifesto-fadeout pointer-events-none absolute inset-0 z-30 bg-black opacity-0" />
-        <div className="relative z-10 flex h-full flex-col items-center justify-center px-6 md:px-10">
+      <section className="manifesto-section relative z-[2] overflow-hidden bg-black py-20 md:py-28">
+        <div className="relative z-10 flex flex-col items-center justify-center px-6 md:px-10">
           <div className="manifesto-content flex flex-col items-center gap-4 text-center md:gap-6">
             <p className="manifesto-line-1 font-bold text-2xl tracking-[0.08em] text-[#ededed] opacity-0 md:text-4xl lg:text-5xl">
               {t("Manifesto.line1")}
@@ -924,9 +901,9 @@ export default function HomeClient() {
       {/* ════════════════════════════════════════════
           SERVICES SECTION — Matrix Rain
           ════════════════════════════════════════════ */}
-      <section id="servicios" className="services-section relative h-screen overflow-hidden bg-black">
+      <section id="servicios" className="services-section relative z-[3] h-screen overflow-hidden bg-black">
+        {/* Pre-entrance glow */}
         {/* Fadeout overlay — covers content before unpin */}
-        <div className="services-fadeout pointer-events-none absolute inset-0 z-30 bg-black opacity-0" />
         {/* Matrix rain canvas background */}
         <div className="services-rain absolute inset-0 opacity-0">
           <MatrixRain />
@@ -1046,9 +1023,9 @@ export default function HomeClient() {
       {/* ════════════════════════════════════════════
           TEAM SECTION — Blade Runner / Tyrell Corp
           ════════════════════════════════════════════ */}
-      <section id="equipo" className="team-section relative h-screen overflow-hidden bg-black">
+      <section id="equipo" className="team-section relative z-[5] h-screen overflow-hidden bg-black">
+        {/* Pre-entrance glow */}
         {/* Fadeout overlay */}
-        <div className="team-fadeout pointer-events-none absolute inset-0 z-30 bg-black opacity-0" />
 
         {/* Content */}
         <div className="relative z-10 flex h-full flex-col items-center justify-center px-4 md:px-10">
@@ -1173,11 +1150,11 @@ export default function HomeClient() {
       {/* ════════════════════════════════════════════
           HAL 9000 SECTION
           ════════════════════════════════════════════ */}
-      <section id="contacto" className="hal-section relative h-screen overflow-hidden bg-black">
+      <section id="contacto" className="hal-section relative z-[6] h-screen overflow-hidden bg-black">
+        {/* Pre-entrance glow */}
         {/* Fadeout overlay — covers content before unpin */}
-        <div className="hal-fadeout pointer-events-none absolute inset-0 z-30 bg-black opacity-0" />
         {/* HAL eye — centered */}
-        <div className="flex h-full items-center justify-center">
+        <div className="hal-content flex h-full items-center justify-center">
           <div className="flex flex-col items-center gap-6 md:gap-10">
             <Hal9000 />
             <HalShutdownPanel />
@@ -1209,7 +1186,7 @@ export default function HomeClient() {
       {/* ════════════════════════════════════════════
           FINAL FADE-TO-BLACK SPACER
           ════════════════════════════════════════════ */}
-      <div className="final-fade-spacer relative h-[15vh] bg-black" />
+      <div className="final-fade-spacer relative h-[8vh] bg-black" />
 
       {/* ════════════════════════════════════════════
           FOOTER

@@ -130,8 +130,8 @@ export default function ProcessTesseract() {
 
     const ctx = gsap.context(() => {
       const isMobile = window.innerWidth < 768;
-      const scrollEnd = isMobile ? "+=1200" : "+=2000";
-      const totalDur = 10;
+      const scrollEnd = isMobile ? "+=700" : "+=1100";
+      const totalDur = 8;
 
       const pt = gsap.timeline({
         scrollTrigger: {
@@ -141,7 +141,7 @@ export default function ProcessTesseract() {
           scrub: true,
           pin: true,
           onUpdate: (self) => {
-            const revealed = self.progress >= 8 / totalDur;
+            const revealed = self.progress >= 6.5 / totalDur;
             gapsRevealedRef.current = revealed;
 
             const btns = sectionRef.current?.querySelectorAll(".tess-gap-btn");
@@ -155,80 +155,74 @@ export default function ProcessTesseract() {
       });
 
       // ═══════════════════════════════════════
-      // PHASE 0: WORMHOLE TUNNEL (0→5)
+      // PHASE 0: WORMHOLE TUNNEL (0→3.5)
       // ═══════════════════════════════════════
 
       pt.fromTo(".tess-wormhole",
         { opacity: 0 },
-        { opacity: 1, duration: 0.5 }, 0);
+        { opacity: 1, duration: 0.3 }, 0);
 
       pt.fromTo(".tess-ring",
         { scale: 0, opacity: 0 },
         {
-          scale: 1, opacity: 1, duration: 1.5,
-          stagger: 0.12, ease: "power2.out",
-        }, 0.2);
+          scale: 1, opacity: 1, duration: 1.0,
+          stagger: 0.08, ease: "power2.out",
+        }, 0.1);
 
       pt.to(".tess-ring", {
-        scale: 8, opacity: 0, duration: 2.5,
-        stagger: 0.15, ease: "power3.in",
-      }, 2);
+        scale: 8, opacity: 0, duration: 1.5,
+        stagger: 0.1, ease: "power3.in",
+      }, 1.2);
 
       pt.fromTo(".tess-wormhole-flash",
         { opacity: 0, scale: 0.5 },
-        { opacity: 1, scale: 2, duration: 0.4, ease: "power4.out" }, 4);
+        { opacity: 1, scale: 2, duration: 0.3, ease: "power4.out" }, 2.8);
       pt.to(".tess-wormhole-flash",
-        { opacity: 0, scale: 4, duration: 0.8, ease: "power2.out" }, 4.4);
+        { opacity: 0, scale: 4, duration: 0.5, ease: "power2.out" }, 3.1);
 
       pt.to(".tess-wormhole",
-        { opacity: 0, duration: 0.5, pointerEvents: "none" }, 4.5);
+        { opacity: 0, duration: 0.3, pointerEvents: "none" }, 3.2);
 
       // ═══════════════════════════════════════
-      // PHASE 1: BOOKSHELF MATERIALIZES (4.5→7)
+      // PHASE 1: BOOKSHELF MATERIALIZES (3→5.5)
       // ═══════════════════════════════════════
 
       pt.fromTo(".tess-perspective",
         { rotateX: 45, opacity: 0, scale: 0.6 },
-        { rotateX: 12, opacity: 1, scale: 1, duration: 2.5, ease: "power2.out" }, 4.5);
+        { rotateX: 12, opacity: 1, scale: 1, duration: 2.0, ease: "power2.out" }, 3.0);
 
       pt.fromTo(".tess-beam",
         { opacity: 0 },
-        { opacity: 1, duration: 1.5, stagger: 0.04 }, 5);
+        { opacity: 1, duration: 1.0, stagger: 0.03 }, 3.5);
 
       pt.fromTo(".tess-title-wrap",
         { opacity: 0, y: -15 },
-        { opacity: 1, y: 0, duration: 1.2, ease: "power2.out" }, 5.5);
+        { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" }, 3.8);
       pt.fromTo(".tess-divider",
         { scaleX: 0 },
-        { scaleX: 1, duration: 0.8, ease: "power3.inOut" }, 6.2);
+        { scaleX: 1, duration: 0.6, ease: "power3.inOut" }, 4.3);
 
       pt.fromTo(".tess-corner",
         { opacity: 0 },
-        { opacity: 1, duration: 0.6, stagger: 0.1 }, 5.5);
+        { opacity: 1, duration: 0.5, stagger: 0.08 }, 3.8);
 
       pt.fromTo(".tess-dots",
         { opacity: 0 },
-        { opacity: 1, duration: 0.8 }, 6.5);
+        { opacity: 1, duration: 0.6 }, 4.8);
 
       // ═══════════════════════════════════════
-      // PHASE 1.5: NUMBER REVEAL (7→8)
+      // PHASE 1.5: NUMBER REVEAL (5.5→6.5)
       // ═══════════════════════════════════════
 
       pt.fromTo(".tess-gap-number",
         { opacity: 0, scale: 0.5 },
-        { opacity: 1, scale: 1, duration: 0.8, stagger: 0.15, ease: "back.out(1.7)" },
-        7,
+        { opacity: 1, scale: 1, duration: 0.6, stagger: 0.12, ease: "back.out(1.7)" },
+        5.5,
       );
 
       // ═══════════════════════════════════════
-      // FADEOUT (9.5→10)
-      // ═══════════════════════════════════════
+      // No fade-to-black — section stays visible, next section slides over it
 
-      pt.to(".process-fadeout", {
-        opacity: 1,
-        duration: 0.5,
-        ease: "power2.in",
-      }, 9.5);
 
       // ── ambient loops ──
       gsap.to(".tess-ambient", {
@@ -250,9 +244,9 @@ export default function ProcessTesseract() {
 
   return (
     <>
-    <section ref={sectionRef} id="proceso" className="process-section relative h-screen overflow-hidden bg-black">
+    <section ref={sectionRef} id="proceso" className="process-section relative z-[4] h-screen overflow-hidden bg-black">
+      {/* Pre-entrance glow */}
       {/* Fadeout overlay — covers content before unpin */}
-      <div className="process-fadeout pointer-events-none absolute inset-0 z-50 bg-black opacity-0" />
 
       {/* ═══ WORMHOLE TUNNEL ═══ */}
       <div className="tess-wormhole pointer-events-none absolute inset-0 z-40 flex items-center justify-center opacity-0">

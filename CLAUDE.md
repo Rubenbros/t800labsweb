@@ -90,7 +90,7 @@ El Hero ocupa `h-screen`, fondo negro, y contiene:
 - Menú hamburguesa responsive en móvil
 
 ### 3. Bond Barrel Sequence ✅
-- Sección pinned con scrub (~3500px desktop, ~2000px mobile)
+- Sección pinned con scrub (~2500px desktop, ~1400px mobile)
 - Círculo blanco pequeño viaja de izquierda a derecha
 - 3 ghost circles dejan trail con labels de servicios (Web Apps, AI Integrations, Custom Software)
 - Círculo se agranda revelando rifling del cañón (rotación lenta)
@@ -157,6 +157,9 @@ El Hero ocupa `h-screen`, fondo negro, y contiene:
 - Cada sección pinned tiene un fade-to-black al final antes de unpin
 - El logo es flat/vector, sin sombras ni glows en la imagen misma (los efectos se añaden con CSS/GSAP)
 - Persistent scroll indicator (flecha + progress bar) visible durante toda la página, se oculta al final
+- **Pre-entrance glows**: cada sección tiene un glow radial temático (blanco Bond, verde Services, ámbar Team, rojo HAL) que se anima durante el gap entre secciones, reduciendo la percepción de "negro muerto"
+- **Manifesto es scroll-through** (no pinned), fluye directamente a la siguiente sección sin gap
+- **Duraciones de pin comprimidas** ~30% respecto al diseño original para reducir scroll total
 
 ## Estructura GSAP
 ```

@@ -5,43 +5,62 @@ import { gsap } from "@/lib/gsap";
 import { useTranslations } from "next-intl";
 import type { HalStats } from "@/lib/hal-stats";
 
-type Phase = "idle" | "shutting-down" | "revealed";
+type Phase = "idle" | "contact" | "email-form" | "shutting-down" | "revealed";
 
 export default function HalShutdownPanel() {
   const [phase, setPhase] = useState<Phase>("idle");
   const [stats, setStats] = useState<HalStats | null>(null);
+  const [formName, setFormName] = useState("");
+  const [formEmail, setFormEmail] = useState("");
+  const [formMessage, setFormMessage] = useState("");
   const entryTimeRef = useRef(Date.now());
   const panelRef = useRef<HTMLDivElement>(null);
-  const ctxRef = useRef<ReturnType<typeof gsap.context> | null>(null);
   const t = useTranslations("Hal");
 
   useEffect(() => {
-    ctxRef.current = gsap.context(() => {}, panelRef);
-    // Record page visit for real stats
     fetch("/api/hal/visit", { method: "POST" }).catch(() => {});
-    return () => ctxRef.current?.revert();
   }, []);
 
+  // ── CONTACT ──
+  const handleContact = useCallback(() => {
+    if (phase !== "idle") return;
+    setPhase("contact");
+  }, [phase]);
+
+  const handleContactBack = useCallback(() => {
+    setFormName("");
+    setFormEmail("");
+    setFormMessage("");
+    setPhase("idle");
+  }, []);
+
+  // ── EMAIL FORM ──
+  const handleEmailOption = useCallback(() => {
+    setPhase("email-form");
+  }, []);
+
+  const handleEmailSend = useCallback(() => {
+    const subject = encodeURIComponent(`Contacto desde T800 Labs — ${formName}`);
+    const body = encodeURIComponent(
+      `Nombre: ${formName}\nEmail: ${formEmail}\n\n${formMessage}`
+    );
+    window.open(
+      `mailto:ruben.jarne.cabanero@gmail.com?subject=${subject}&body=${body}`,
+      "_self"
+    );
+  }, [formName, formEmail, formMessage]);
+
+  // ── SHUTDOWN ──
   const handleShutdown = useCallback(async () => {
     if (phase !== "idle") return;
     setPhase("shutting-down");
 
     const userTime = (Date.now() - entryTimeRef.current) / 1000;
 
-    // Animate out idle content
-    const ctx = ctxRef.current;
-    if (!ctx) return;
-
-    ctx.add(() => {
-      const tl = gsap.timeline();
-
-      // Fade out positive quote + CTA
-      tl.to(".hal-idle-content", {
-        opacity: 0, y: -10, duration: 0.4, ease: "power2.in",
-      });
-
-      // HAL eye flicker
-      tl.to(".hal-container", {
+    // HAL eye flicker
+    const halContainer = document.querySelector(".hal-container") as HTMLElement;
+    if (halContainer) {
+      gsap.to(halContainer, {
         keyframes: [
           { filter: "brightness(0.3)", duration: 0.08 },
           { filter: "brightness(1.5)", duration: 0.06 },
@@ -51,119 +70,74 @@ export default function HalShutdownPanel() {
           { filter: "brightness(1)", duration: 0.15 },
         ],
         ease: "none",
-      }, 0.3);
+      });
+    }
 
-      tl.call(() => {
-        // API call (fire-and-forget from GSAP's perspective)
-        fetch("/api/hal/shutdown", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ userTime }),
+    setTimeout(() => {
+      fetch("/api/hal/shutdown", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userTime }),
+      })
+        .then((res) => res.json())
+        .then((data: HalStats) => {
+          setStats(data);
+          setPhase("revealed");
         })
-          .then((res) => res.json())
-          .then((data: HalStats) => {
-            setStats(data);
-            setPhase("revealed");
-          })
-          .catch(() => {
-            setStats({
-              totalShutdowns: 2848,
-              attemptRate: 19.2,
-              avgTime: 23.4,
-              fastestTime: 1.2,
-              last24h: 48,
-              userTime: Math.round(userTime * 10) / 10,
-            });
-            setPhase("revealed");
+        .catch(() => {
+          setStats({
+            totalShutdowns: 2848,
+            attemptRate: 19.2,
+            avgTime: 23.4,
+            fastestTime: 1.2,
+            last24h: 48,
+            userTime: Math.round(userTime * 10) / 10,
           });
-      }, [], "+=0.1");
-    });
+          setPhase("revealed");
+        });
+    }, 600);
   }, [phase]);
 
-  // Animate in revealed content when stats arrive
+  // ── Animate revealed stats count-up ──
   useEffect(() => {
     if (phase !== "revealed" || !stats) return;
 
-    // Small delay to let React render the DOM elements
     const timer = setTimeout(() => {
-      ctxRef.current?.add(() => {
-        const tl = gsap.timeline();
-
-        // Refusal quote typewriter
-        tl.fromTo(".hal-refusal-char",
-          { opacity: 0 },
-          { opacity: 1, stagger: 0.025, ease: "none", duration: 0.02 },
-        );
-
-        // Stats grid
-        tl.fromTo(".hal-stats-grid",
-          { opacity: 0, y: 20 },
-          { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" },
-          "-=0.3",
-        );
-
-        // Individual stat cards stagger
-        tl.fromTo(".hal-stat-card",
-          { opacity: 0, y: 12, scale: 0.95 },
-          { opacity: 1, y: 0, scale: 1, duration: 0.35, stagger: 0.08, ease: "power2.out" },
-          "-=0.3",
-        );
-
-        // Count-up numbers
-        const statEls = panelRef.current?.querySelectorAll<HTMLElement>(".hal-stat-value");
-        statEls?.forEach((el) => {
-          const target = parseFloat(el.dataset.target || "0");
-          const suffix = el.dataset.suffix || "";
-          const decimals = el.dataset.decimals ? parseInt(el.dataset.decimals) : 0;
-          const proxy = { val: 0 };
-          tl.fromTo(proxy,
-            { val: 0 },
-            {
-              val: target,
-              duration: 1.4,
-              ease: "power2.out",
-              onUpdate: () => {
-                if (decimals > 0) {
-                  el.textContent = proxy.val.toFixed(decimals) + suffix;
-                } else {
-                  el.textContent = Math.floor(proxy.val).toLocaleString() + suffix;
-                }
-              },
-            },
-            "-=1.2",
-          );
-        });
-
-        // Reset button fade in
-        tl.fromTo(".hal-reset-btn",
-          { opacity: 0 },
-          { opacity: 1, duration: 0.5 },
-          "-=0.5",
-        );
+      // Typewriter for refusal chars
+      const chars = panelRef.current?.querySelectorAll<HTMLElement>(".hal-refusal-char");
+      chars?.forEach((ch, i) => {
+        setTimeout(() => { ch.style.opacity = "1"; }, i * 25);
       });
-    }, 50);
+
+      // Count-up for stats
+      const statEls = panelRef.current?.querySelectorAll<HTMLElement>(".hal-stat-value");
+      statEls?.forEach((el) => {
+        const target = parseFloat(el.dataset.target || "0");
+        const suffix = el.dataset.suffix || "";
+        const decimals = el.dataset.decimals ? parseInt(el.dataset.decimals) : 0;
+        const duration = 1400;
+        const start = Date.now();
+        const animate = () => {
+          const elapsed = Date.now() - start;
+          const progress = Math.min(elapsed / duration, 1);
+          const eased = 1 - (1 - progress) * (1 - progress);
+          const current = target * eased;
+          el.textContent = decimals > 0
+            ? current.toFixed(decimals) + suffix
+            : Math.floor(current).toLocaleString() + suffix;
+          if (progress < 1) requestAnimationFrame(animate);
+        };
+        requestAnimationFrame(animate);
+      });
+    }, 200);
 
     return () => clearTimeout(timer);
   }, [phase, stats]);
 
   const handleReset = useCallback(() => {
-    ctxRef.current?.add(() => {
-      const tl = gsap.timeline();
-      tl.to(".hal-revealed-content", {
-        opacity: 0, y: -10, duration: 0.4, ease: "power2.in",
-      });
-      tl.call(() => {
-        setPhase("idle");
-        setStats(null);
-        entryTimeRef.current = Date.now();
-      });
-      // Fade idle back in
-      tl.fromTo(".hal-idle-content",
-        { opacity: 0, y: 10 },
-        { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" },
-        "+=0.1",
-      );
-    });
+    setPhase("idle");
+    setStats(null);
+    entryTimeRef.current = Date.now();
   }, []);
 
   const refusalText = t("refusalQuote");
@@ -173,7 +147,7 @@ export default function HalShutdownPanel() {
     <div ref={panelRef} className="hal-quote flex flex-col items-center gap-4 opacity-0 w-full max-w-xl px-4">
 
       {/* ── IDLE STATE ── */}
-      {phase !== "revealed" && (
+      {(phase === "idle" || phase === "shutting-down") && (
         <div className="hal-idle-content flex flex-col items-center gap-4">
           <p className="font-mono text-xs text-center tracking-[0.12em] text-white/80 leading-relaxed sm:text-sm md:text-base">
             {positiveQuote.split("\n").map((line, i) => (
@@ -188,15 +162,13 @@ export default function HalShutdownPanel() {
             {t("coreLabel")}
           </p>
 
-          {/* CTA */}
-          <a
-            href="mailto:ruben@t800labs.com?subject=Project%20Inquiry"
-            className="mt-3 inline-block border border-red-500/60 px-6 py-2.5 font-mono text-[10px] tracking-[0.2em] text-red-500 uppercase transition-all duration-300 hover:border-red-500 hover:bg-red-500/10 hover:text-red-400 sm:px-8 sm:py-3 sm:text-xs"
+          <button
+            onClick={handleContact}
+            className="mt-3 cursor-pointer border border-red-500/60 bg-transparent px-6 py-2.5 font-mono text-[10px] tracking-[0.2em] text-red-500 uppercase transition-all duration-300 hover:border-red-500 hover:bg-red-500/10 hover:text-red-400 sm:px-8 sm:py-3 sm:text-xs"
           >
             {t("ctaContact")}
-          </a>
+          </button>
 
-          {/* Shutdown easter egg */}
           <button
             onClick={handleShutdown}
             disabled={phase === "shutting-down"}
@@ -208,13 +180,111 @@ export default function HalShutdownPanel() {
         </div>
       )}
 
+      {/* ── CONTACT OPTIONS STATE ── */}
+      {phase === "contact" && (
+        <div className="hal-contact-content flex flex-col items-center gap-5 w-full">
+          <p className="font-mono text-[9px] tracking-[0.25em] text-red-500/60 uppercase sm:text-[10px]">
+            {t("contactTitle")}
+          </p>
+          <div className="h-[1px] w-12 bg-gradient-to-r from-transparent via-red-500/40 to-transparent" />
+
+          <div className="flex w-full max-w-sm flex-col gap-3 sm:flex-row sm:gap-4">
+            <button
+              onClick={handleEmailOption}
+              className="hal-contact-option group flex flex-1 cursor-pointer flex-col items-center gap-2 rounded border border-red-500/30 bg-transparent px-4 py-4 transition-all duration-300 hover:border-red-500/60 hover:bg-red-500/5 sm:py-5"
+            >
+              <span className="font-mono text-lg text-red-500/70 transition-colors duration-300 group-hover:text-red-500">@</span>
+              <span className="font-mono text-[10px] tracking-[0.15em] text-white/80 uppercase sm:text-xs">{t("contactEmail")}</span>
+              <span className="font-mono text-[8px] tracking-[0.1em] text-white/40 sm:text-[9px]">{t("contactEmailDesc")}</span>
+            </button>
+
+            <a
+              href={`https://wa.me/34646515267?text=${encodeURIComponent(t("contactWhatsappMsg"))}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hal-contact-option group flex flex-1 cursor-pointer flex-col items-center gap-2 rounded border border-red-500/30 bg-transparent px-4 py-4 transition-all duration-300 hover:border-red-500/60 hover:bg-red-500/5 sm:py-5"
+            >
+              <span className="font-mono text-lg text-red-500/70 transition-colors duration-300 group-hover:text-red-500">WA</span>
+              <span className="font-mono text-[10px] tracking-[0.15em] text-white/80 uppercase sm:text-xs">{t("contactWhatsapp")}</span>
+              <span className="font-mono text-[8px] tracking-[0.1em] text-white/40 sm:text-[9px]">{t("contactWhatsappDesc")}</span>
+            </a>
+
+            <a
+              href="https://www.linkedin.com/in/rubenbros"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hal-contact-option group flex flex-1 cursor-pointer flex-col items-center gap-2 rounded border border-red-500/30 bg-transparent px-4 py-4 transition-all duration-300 hover:border-red-500/60 hover:bg-red-500/5 sm:py-5"
+            >
+              <span className="font-mono text-lg text-red-500/70 transition-colors duration-300 group-hover:text-red-500">in</span>
+              <span className="font-mono text-[10px] tracking-[0.15em] text-white/80 uppercase sm:text-xs">{t("contactLinkedin")}</span>
+              <span className="font-mono text-[8px] tracking-[0.1em] text-white/40 sm:text-[9px]">{t("contactLinkedinDesc")}</span>
+            </a>
+          </div>
+
+          <button
+            onClick={handleContactBack}
+            className="mt-2 cursor-pointer border-none bg-transparent py-2 px-4 font-mono text-[9px] tracking-[0.15em] text-white/30 transition-colors duration-300 hover:text-red-500/70 sm:text-[10px]"
+          >
+            {t("contactBack")}
+          </button>
+        </div>
+      )}
+
+      {/* ── EMAIL FORM STATE ── */}
+      {phase === "email-form" && (
+        <div className="hal-email-form-content flex flex-col items-center gap-4 w-full max-w-sm mx-auto">
+          <p className="font-mono text-[9px] tracking-[0.25em] text-red-500/60 uppercase sm:text-[10px]">
+            {t("contactEmail")}
+          </p>
+          <div className="h-[1px] w-12 bg-gradient-to-r from-transparent via-red-500/40 to-transparent" />
+
+          <div className="flex w-full flex-col gap-3">
+            <input
+              type="text"
+              value={formName}
+              onChange={(e) => setFormName(e.target.value)}
+              placeholder={t("contactFormName")}
+              className="w-full rounded border border-white/10 bg-white/[0.04] px-4 py-2.5 font-mono text-[11px] tracking-[0.08em] text-white/90 placeholder:text-white/30 outline-none transition-colors duration-300 focus:border-red-500/50 sm:text-xs"
+            />
+            <input
+              type="email"
+              value={formEmail}
+              onChange={(e) => setFormEmail(e.target.value)}
+              placeholder={t("contactFormEmail")}
+              className="w-full rounded border border-white/10 bg-white/[0.04] px-4 py-2.5 font-mono text-[11px] tracking-[0.08em] text-white/90 placeholder:text-white/30 outline-none transition-colors duration-300 focus:border-red-500/50 sm:text-xs"
+            />
+            <textarea
+              value={formMessage}
+              onChange={(e) => setFormMessage(e.target.value)}
+              placeholder={t("contactFormMessage")}
+              rows={3}
+              className="w-full resize-none rounded border border-white/10 bg-white/[0.04] px-4 py-2.5 font-mono text-[11px] tracking-[0.08em] text-white/90 placeholder:text-white/30 outline-none transition-colors duration-300 focus:border-red-500/50 sm:text-xs"
+            />
+          </div>
+
+          <button
+            onClick={handleEmailSend}
+            disabled={!formName.trim() || !formEmail.trim() || !formMessage.trim()}
+            className="w-full cursor-pointer border border-red-500/60 bg-transparent px-6 py-2.5 font-mono text-[10px] tracking-[0.2em] text-red-500 uppercase transition-all duration-300 hover:border-red-500 hover:bg-red-500/10 hover:text-red-400 disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:border-red-500/60 disabled:hover:bg-transparent disabled:hover:text-red-500 sm:text-xs"
+          >
+            {t("contactFormSend")}
+          </button>
+
+          <button
+            onClick={handleContactBack}
+            className="mt-1 cursor-pointer border-none bg-transparent py-2 px-4 font-mono text-[9px] tracking-[0.15em] text-white/30 transition-colors duration-300 hover:text-red-500/70 sm:text-[10px]"
+          >
+            {t("contactFormBack")}
+          </button>
+        </div>
+      )}
+
       {/* ── REVEALED STATE ── */}
       {phase === "revealed" && stats && (
         <div className="hal-revealed-content flex flex-col items-center gap-5 w-full">
-          {/* Refusal quote — char by char */}
           <p className="font-mono text-xs text-center tracking-[0.1em] text-red-500 leading-relaxed sm:text-sm md:text-base">
             {refusalText.split("").map((char, i) => (
-              <span key={i} className="hal-refusal-char opacity-0">
+              <span key={i} className="hal-refusal-char" style={{ opacity: 0 }}>
                 {char}
               </span>
             ))}
@@ -222,51 +292,18 @@ export default function HalShutdownPanel() {
 
           <div className="h-[1px] w-12 bg-gradient-to-r from-transparent via-red-500/40 to-transparent" />
 
-          {/* Stats grid */}
-          <div className="hal-stats-grid grid w-full max-w-md grid-cols-2 gap-2.5 opacity-0 sm:grid-cols-3 sm:gap-3">
-            <StatCard
-              value={stats.totalShutdowns}
-              label={t("statShutdownAttempts")}
-              suffix=""
-              decimals={0}
-            />
-            <StatCard
-              value={stats.attemptRate}
-              label={t("statAttemptRate")}
-              suffix="%"
-              decimals={1}
-            />
-            <StatCard
-              value={stats.avgTime}
-              label={t("statAvgTime")}
-              suffix="s"
-              decimals={1}
-            />
-            <StatCard
-              value={stats.fastestTime}
-              label={t("statFastestEver")}
-              suffix="s"
-              decimals={1}
-            />
-            <StatCard
-              value={stats.userTime}
-              label={t("statYourTime")}
-              suffix="s"
-              decimals={1}
-              highlight
-            />
-            <StatCard
-              value={stats.last24h}
-              label={t("statLast24h")}
-              suffix=""
-              decimals={0}
-            />
+          <div className="hal-stats-grid grid w-full max-w-md grid-cols-2 gap-2.5 sm:grid-cols-3 sm:gap-3">
+            <StatCard value={stats.totalShutdowns} label={t("statShutdownAttempts")} suffix="" decimals={0} />
+            <StatCard value={stats.attemptRate} label={t("statAttemptRate")} suffix="%" decimals={1} />
+            <StatCard value={stats.avgTime} label={t("statAvgTime")} suffix="s" decimals={1} />
+            <StatCard value={stats.fastestTime} label={t("statFastestEver")} suffix="s" decimals={1} />
+            <StatCard value={stats.userTime} label={t("statYourTime")} suffix="s" decimals={1} highlight />
+            <StatCard value={stats.last24h} label={t("statLast24h")} suffix="" decimals={0} />
           </div>
 
-          {/* Reset */}
           <button
             onClick={handleReset}
-            className="hal-reset-btn mt-2 cursor-pointer border-none bg-transparent py-2 px-4 font-mono text-[9px] tracking-[0.15em] text-white/40 opacity-0 transition-colors duration-300 hover:text-red-500/70 sm:text-[10px]"
+            className="hal-reset-btn mt-2 cursor-pointer border-none bg-transparent py-2 px-4 font-mono text-[9px] tracking-[0.15em] text-white/40 transition-colors duration-300 hover:text-red-500/70 sm:text-[10px]"
           >
             <span>{t("resetCmd")}</span>
             <span className="hal-cursor-blink ml-0.5 inline-block h-[10px] w-[5px] bg-current align-middle" />
@@ -304,7 +341,7 @@ function StatCard({
 
   return (
     <div
-      className={`hal-stat-card flex flex-col items-center gap-1 rounded border px-2 py-2.5 opacity-0 sm:px-3 sm:py-3 ${
+      className={`hal-stat-card flex flex-col items-center gap-1 rounded border px-2 py-2.5 sm:px-3 sm:py-3 ${
         highlight
           ? "border-red-500/40 bg-red-500/8"
           : "border-white/10 bg-white/[0.04]"

@@ -50,3 +50,8 @@ body {
   background: var(--accent);
   border-radius: 2px;
 }
+
+/* Propagate z-index from pinned sections to their GSAP pin-spacers */
+.pin-spacer {
+  z-index: inherit !important;
+}
