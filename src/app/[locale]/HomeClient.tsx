@@ -424,37 +424,31 @@ export default function HomeClient() {
       bt.to(".blood-drip", { backgroundColor: "#000000", duration: 0.4, ease: "power2.in" }, 26);
 
       // ═══════════════════════════════════════
-      // MANIFESTO — Fixed overlay during Bond→Services gap
+      // MANIFESTO — appears inside Bond timeline (end of blood→black)
       // ═══════════════════════════════════════
-      // Manifesto fades in at end of Bond pin (during blood→black phase)
-      const bondPinEnd = isMobile ? 1100 : 2000;
-      const mft = gsap.timeline({
-        scrollTrigger: {
-          trigger: ".bond-section",
-          start: `top+=${bondPinEnd - 300} top`,
-          end: `top+=${bondPinEnd} top`,
-          scrub: true,
-        },
-      });
-      mft.fromTo(".manifesto-overlay", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 0);
-      mft.fromTo(".manifesto-line-1", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 0.1);
-      mft.fromTo(".manifesto-line-2", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 0.25);
-      mft.to(".manifesto-divider", { width: "120px", duration: 0.2, ease: "power3.inOut" }, 0.35);
-      mft.fromTo(".manifesto-line-3", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 0.4);
-      mft.fromTo(".manifesto-line-3",
+      // Add manifesto animations to the Bond timeline itself (avoids
+      // the issue of a separate ScrollTrigger on an already-pinned element)
+      bt.fromTo(".manifesto-overlay", { opacity: 0 }, { opacity: 1, duration: 1.5 }, 25);
+      bt.fromTo(".manifesto-line-1", { opacity: 0 }, { opacity: 1, duration: 1.2 }, 25.2);
+      bt.fromTo(".manifesto-line-2", { opacity: 0 }, { opacity: 1, duration: 1.2 }, 25.6);
+      bt.to(".manifesto-divider", { width: "120px", duration: 0.8, ease: "power3.inOut" }, 26);
+      bt.fromTo(".manifesto-line-3", { opacity: 0 }, { opacity: 1, duration: 1.2 }, 26.2);
+      bt.fromTo(".manifesto-line-3",
         { textShadow: "0 0 0px rgba(229,9,20,0)" },
-        { textShadow: "0 0 30px rgba(229,9,20,0.5)", duration: 0.3 }, 0.6);
+        { textShadow: "0 0 30px rgba(229,9,20,0.5)", duration: 1 }, 26.8);
 
       // Manifesto fades out as Services enters
-      gsap.to(".manifesto-overlay", {
-        opacity: 0,
-        scrollTrigger: {
-          trigger: ".services-section",
-          start: "top 80%",
-          end: "top 30%",
-          scrub: true,
-        },
-      });
+      // Use fromTo + overwrite:false to avoid killing the Bond timeline's tween
+      gsap.fromTo(".manifesto-overlay",
+        { opacity: 1 },
+        { opacity: 0, overwrite: false,
+          scrollTrigger: {
+            trigger: ".services-section",
+            start: "top 80%",
+            end: "top 20%",
+            scrub: true,
+          },
+        });
 
       // ═══════════════════════════════════════
       // SERVICES SECTION — Matrix rain + cards
@@ -899,7 +893,7 @@ export default function HomeClient() {
       {/* ════════════════════════════════════════════
           MANIFESTO — Fixed overlay (appears during Bond→Services transition)
           ════════════════════════════════════════════ */}
-      <div className="manifesto-overlay pointer-events-none fixed inset-0 z-[8] flex items-center justify-center opacity-0">
+      <div className="manifesto-overlay pointer-events-none fixed inset-0 z-[8] flex items-center justify-center" style={{ opacity: 0 }}>
         <div className="flex flex-col items-center gap-4 text-center px-6 md:gap-6">
           <p className="manifesto-line-1 font-bold text-2xl tracking-[0.08em] text-[#ededed] opacity-0 md:text-4xl lg:text-5xl">
             {t("Manifesto.line1")}
