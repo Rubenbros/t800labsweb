@@ -520,7 +520,10 @@ export default function HomeClient() {
         ease: "power2.out",
       }, 1.6);
 
-      // No fade-to-black — section stays visible, next section slides over it
+      // Cross-dissolve out — content dims + blurs at end of pin
+      st.to(".services-inner", {
+        opacity: 0.25, filter: "blur(4px)", duration: 1.2,
+      }, 2.8);
 
       // ═══════════════════════════════════════
       // PROCESS SECTION — handled by ProcessVersionA/B/C component
@@ -584,7 +587,10 @@ export default function HomeClient() {
         { opacity: 0 },
         { opacity: 1, duration: 0.5 }, 1.8);
 
-      // No fade-to-black — section stays visible, next section slides over it
+      // Cross-dissolve out — content dims + blurs at end of pin
+      tt.to(".team-inner", {
+        opacity: 0.25, filter: "blur(4px)", duration: 1.2,
+      }, 2.8);
 
       // ═══════════════════════════════════════
       // HAL 9000 SECTION — fades in from black
@@ -617,9 +623,23 @@ export default function HomeClient() {
         { opacity: 0, y: 15 },
         { opacity: 1, y: 0, duration: 0.3, ease: "power2.out" }, 0);
 
-      // No fade-to-black — section stays visible, next section slides over it
-
-
+      // ═══════════════════════════════════════
+      // TRANSITION SCANLINES — red sweep between sections
+      // ═══════════════════════════════════════
+      [".services-section", ".process-section", ".team-section", ".hal-section"].forEach((trigger) => {
+        ScrollTrigger.create({
+          trigger,
+          start: "top 95%",
+          onEnter: () => {
+            gsap.killTweensOf(".transition-scan");
+            gsap.fromTo(".transition-scan",
+              { top: "-2px", opacity: 1 },
+              { top: "100vh", opacity: 0.6, duration: 0.35, ease: "power2.in",
+                onComplete: () => { gsap.set(".transition-scan", { opacity: 0, top: "-2px" }); },
+              });
+          },
+        });
+      });
 
       // ═══════════════════════════════════════
       // PERSISTENT SCROLL INDICATOR
@@ -902,8 +922,7 @@ export default function HomeClient() {
           SERVICES SECTION — Matrix Rain
           ════════════════════════════════════════════ */}
       <section id="servicios" className="services-section relative z-[3] h-screen overflow-hidden bg-black">
-        {/* Pre-entrance glow */}
-        {/* Fadeout overlay — covers content before unpin */}
+        <div className="services-inner absolute inset-0">
         {/* Matrix rain canvas background */}
         <div className="services-rain absolute inset-0 opacity-0">
           <MatrixRain />
@@ -1013,6 +1032,7 @@ export default function HomeClient() {
           <div className="ml-auto h-8 w-[1px] bg-gradient-to-t from-[#00ff41]/40 to-transparent" />
           <div className="absolute bottom-0 right-0 h-[1px] w-8 bg-gradient-to-l from-[#00ff41]/40 to-transparent" />
         </div>
+        </div>{/* /services-inner */}
       </section>
 
       {/* ════════════════════════════════════════════
@@ -1024,9 +1044,7 @@ export default function HomeClient() {
           TEAM SECTION — Blade Runner / Tyrell Corp
           ════════════════════════════════════════════ */}
       <section id="equipo" className="team-section relative z-[5] h-screen overflow-hidden bg-black">
-        {/* Pre-entrance glow */}
-        {/* Fadeout overlay */}
-
+        <div className="team-inner absolute inset-0">
         {/* Content */}
         <div className="relative z-10 flex h-full flex-col items-center justify-center px-4 md:px-10">
           {/* Section header */}
@@ -1145,6 +1163,7 @@ export default function HomeClient() {
           <div className="ml-auto h-8 w-[1px] bg-gradient-to-t from-[#F2A900]/40 to-transparent" />
           <div className="absolute bottom-0 right-0 h-[1px] w-8 bg-gradient-to-l from-[#F2A900]/40 to-transparent" />
         </div>
+        </div>{/* /team-inner */}
       </section>
 
       {/* ════════════════════════════════════════════
@@ -1256,6 +1275,15 @@ export default function HomeClient() {
           </div>
         </div>
       </footer>
+
+      {/* Transition scanline — sweeps between sections */}
+      <div
+        className="transition-scan pointer-events-none fixed inset-x-0 z-[100] opacity-0"
+        style={{ top: "-2px", height: "2px" }}
+      >
+        <div className="h-full w-full bg-gradient-to-r from-transparent via-red-500/80 to-transparent" />
+        <div className="absolute inset-x-0 top-1/2 h-8 -translate-y-1/2 bg-gradient-to-b from-transparent via-red-500/15 to-transparent" />
+      </div>
 
       {/* Fixed blackout overlay — fades in at the very end */}
       <div className="final-blackout pointer-events-none fixed inset-0 z-[998] bg-black opacity-0" />

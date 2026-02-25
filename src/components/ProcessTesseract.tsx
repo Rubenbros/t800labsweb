@@ -221,8 +221,11 @@ export default function ProcessTesseract() {
       );
 
       // ═══════════════════════════════════════
-      // No fade-to-black — section stays visible, next section slides over it
-
+      // CROSS-DISSOLVE OUT (end of pin)
+      // ═══════════════════════════════════════
+      pt.to(".process-inner", {
+        opacity: 0.25, filter: "blur(4px)", duration: 1.2,
+      }, totalDur - 1.2);
 
       // ── ambient loops ──
       gsap.to(".tess-ambient", {
@@ -245,8 +248,7 @@ export default function ProcessTesseract() {
   return (
     <>
     <section ref={sectionRef} id="proceso" className="process-section relative z-[4] h-screen overflow-hidden bg-black">
-      {/* Pre-entrance glow */}
-      {/* Fadeout overlay — covers content before unpin */}
+      <div className="process-inner absolute inset-0">
 
       {/* ═══ WORMHOLE TUNNEL ═══ */}
       <div className="tess-wormhole pointer-events-none absolute inset-0 z-40 flex items-center justify-center opacity-0">
@@ -512,6 +514,7 @@ export default function ProcessTesseract() {
         <div className="ml-auto h-8 w-[1px] bg-gradient-to-t from-[#d4a017]/40 to-transparent" />
         <div className="absolute bottom-0 right-0 h-[1px] w-8 bg-gradient-to-l from-[#d4a017]/40 to-transparent" />
       </div>
+      </div>{/* /process-inner */}
     </section>
 
     {/* ═══ DETAIL OVERLAY — portalled to body to escape transform containment ═══ */}
