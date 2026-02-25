@@ -426,12 +426,13 @@ export default function HomeClient() {
       // ═══════════════════════════════════════
       // MANIFESTO — Fixed overlay during Bond→Services gap
       // ═══════════════════════════════════════
-      // Manifesto fades in at end of Bond pin (during blood→black)
+      // Manifesto fades in at end of Bond pin (during blood→black phase)
+      const bondPinEnd = isMobile ? 1100 : 2000;
       const mft = gsap.timeline({
         scrollTrigger: {
           trigger: ".bond-section",
-          start: "bottom-=400 top",
-          end: "bottom top",
+          start: `top+=${bondPinEnd - 300} top`,
+          end: `top+=${bondPinEnd} top`,
           scrub: true,
         },
       });
