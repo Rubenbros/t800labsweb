@@ -137,8 +137,8 @@ export default function ProcessTesseract() {
 
     const ctx = gsap.context(() => {
       const isMobile = window.innerWidth < 768;
-      const scrollEnd = isMobile ? "+=700" : "+=1100";
-      const totalDur = 8;
+      const scrollEnd = isMobile ? "+=500" : "+=800";
+      const totalDur = 6;
 
       const pt = gsap.timeline({
         scrollTrigger: {
@@ -148,7 +148,7 @@ export default function ProcessTesseract() {
           scrub: true,
           pin: true,
           onUpdate: (self) => {
-            const revealed = self.progress >= 6.5 / totalDur;
+            const revealed = self.progress >= 4.8 / totalDur;
             gapsRevealedRef.current = revealed;
 
             const btns = sectionRef.current?.querySelectorAll(".tess-gap-btn");
@@ -162,104 +162,99 @@ export default function ProcessTesseract() {
       });
 
       // ═══════════════════════════════════════
-      // PHASE 0: WORMHOLE TUNNEL (0→3.5)
+      // PHASE 0: WORMHOLE TUNNEL (0→2)
       // ═══════════════════════════════════════
 
       pt.fromTo(".tess-wormhole",
         { opacity: 0 },
-        { opacity: 1, duration: 0.3 }, 0);
+        { opacity: 1, duration: 0.2 }, 0);
 
       // Stars: appear, then get pulled toward center and stretch
       const starEls = sectionRef.current?.querySelectorAll(".tess-star");
       if (starEls) {
         starEls.forEach((star, i) => {
           const el = star as HTMLElement;
-          // Read the deterministic position from inline style
           const startLeft = parseFloat(el.style.left);
           const startTop = parseFloat(el.style.top);
-          // Compute pull direction toward center (50%, 50%)
           const dx = 50 - startLeft;
           const dy = 50 - startTop;
-          // Stagger the star appearance slightly
-          const delay = 0.05 + seededValue(i, 10) * 0.4;
+          const delay = 0.03 + seededValue(i, 10) * 0.25;
 
-          // Phase 1: Stars fade in at their starting positions
           pt.fromTo(el,
             { opacity: 0 },
-            { opacity: 1, duration: 0.5, ease: "power1.out" },
+            { opacity: 1, duration: 0.3, ease: "power1.out" },
             delay,
           );
 
-          // Phase 2: Stars get pulled toward center and stretch into streaks
           pt.to(el, {
-            x: `${dx * 0.9}vw`,  // pull ~90% toward center
+            x: `${dx * 0.9}vw`,
             y: `${dy * 0.9}vh`,
-            scaleY: 8 + seededValue(i, 11) * 12,  // stretch 8-20x vertically
-            scaleX: 0.5,  // squeeze horizontally
-            rotation: Math.atan2(dy, dx) * (180 / Math.PI) + 90, // rotate to point toward center
+            scaleY: 8 + seededValue(i, 11) * 12,
+            scaleX: 0.5,
+            rotation: Math.atan2(dy, dx) * (180 / Math.PI) + 90,
             opacity: 0,
-            duration: 2.0,
+            duration: 1.2,
             ease: "power3.in",
-          }, 0.8 + seededValue(i, 12) * 0.4);
+          }, 0.4 + seededValue(i, 12) * 0.3);
         });
       }
 
       pt.fromTo(".tess-ring",
         { scale: 0, opacity: 0 },
         {
-          scale: 1, opacity: 1, duration: 1.0,
-          stagger: 0.08, ease: "power2.out",
-        }, 0.1);
+          scale: 1, opacity: 1, duration: 0.6,
+          stagger: 0.05, ease: "power2.out",
+        }, 0.05);
 
       pt.to(".tess-ring", {
-        scale: 8, opacity: 0, duration: 1.5,
-        stagger: 0.1, ease: "power3.in",
-      }, 1.2);
+        scale: 8, opacity: 0, duration: 0.8,
+        stagger: 0.06, ease: "power3.in",
+      }, 0.7);
 
       pt.fromTo(".tess-wormhole-flash",
         { opacity: 0, scale: 0.5 },
-        { opacity: 1, scale: 2, duration: 0.3, ease: "power4.out" }, 2.8);
+        { opacity: 1, scale: 2, duration: 0.2, ease: "power4.out" }, 1.6);
       pt.to(".tess-wormhole-flash",
-        { opacity: 0, scale: 4, duration: 0.5, ease: "power2.out" }, 3.1);
+        { opacity: 0, scale: 4, duration: 0.3, ease: "power2.out" }, 1.8);
 
       pt.to(".tess-wormhole",
-        { opacity: 0, duration: 0.3, pointerEvents: "none" }, 3.2);
+        { opacity: 0, duration: 0.2, pointerEvents: "none" }, 1.9);
 
       // ═══════════════════════════════════════
-      // PHASE 1: BOOKSHELF MATERIALIZES (3→5.5)
+      // PHASE 1: BOOKSHELF MATERIALIZES (2→4)
       // ═══════════════════════════════════════
 
       pt.fromTo(".tess-perspective",
         { rotateX: 45, opacity: 0, scale: 0.6 },
-        { rotateX: 12, opacity: 1, scale: 1, duration: 2.0, ease: "power2.out" }, 3.0);
+        { rotateX: 12, opacity: 1, scale: 1, duration: 1.5, ease: "power2.out" }, 2.0);
 
       pt.fromTo(".tess-beam",
         { opacity: 0 },
-        { opacity: 1, duration: 1.0, stagger: 0.03 }, 3.5);
+        { opacity: 1, duration: 0.7, stagger: 0.02 }, 2.3);
 
       pt.fromTo(".tess-title-wrap",
         { opacity: 0, y: -15 },
-        { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" }, 3.8);
+        { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" }, 2.5);
       pt.fromTo(".tess-divider",
         { scaleX: 0 },
-        { scaleX: 1, duration: 0.6, ease: "power3.inOut" }, 4.3);
+        { scaleX: 1, duration: 0.5, ease: "power3.inOut" }, 3.0);
 
       pt.fromTo(".tess-corner",
         { opacity: 0 },
-        { opacity: 1, duration: 0.5, stagger: 0.08 }, 3.8);
+        { opacity: 1, duration: 0.4, stagger: 0.06 }, 2.5);
 
       pt.fromTo(".tess-dots",
         { opacity: 0 },
-        { opacity: 1, duration: 0.6 }, 4.8);
+        { opacity: 1, duration: 0.5 }, 3.3);
 
       // ═══════════════════════════════════════
-      // PHASE 1.5: NUMBER REVEAL (5.5→6.5)
+      // PHASE 1.5: NUMBER REVEAL (4→5)
       // ═══════════════════════════════════════
 
       pt.fromTo(".tess-gap-number",
         { opacity: 0, scale: 0.5 },
-        { opacity: 1, scale: 1, duration: 0.6, stagger: 0.12, ease: "back.out(1.7)" },
-        5.5,
+        { opacity: 1, scale: 1, duration: 0.5, stagger: 0.1, ease: "back.out(1.7)" },
+        4.0,
       );
 
       // (fade-to-black removed — process section stays visible as it unpins)
@@ -602,9 +597,9 @@ export default function ProcessTesseract() {
                 src={STEP_IMAGES[activeGap]}
                 alt=""
                 className="h-full w-full object-cover"
-                style={{ filter: "brightness(0.25) saturate(0.7)" }}
+                style={{ filter: "brightness(0.45) saturate(0.85)" }}
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-black/40" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/20" />
             </div>
 
             {/* Back button */}
