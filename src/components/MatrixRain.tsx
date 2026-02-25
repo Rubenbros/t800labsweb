@@ -6,7 +6,7 @@ const CHARS =
   "アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン0123456789ABCDEF<>/{}[]();:=+*#@!";
 const FONT_SIZE = 14;
 const FADE_ALPHA = 0.04;
-const DROP_SPEED = 0.35; // <1 = slower than 1 char per frame
+const DROP_SPEED = 0.12; // <1 = slower than 1 char per frame
 
 export default function MatrixRain() {
   const canvasRef = useRef<HTMLCanvasElement>(null);

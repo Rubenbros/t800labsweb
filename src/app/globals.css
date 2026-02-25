@@ -55,3 +55,9 @@ body {
 .pin-spacer {
   z-index: inherit !important;
 }
+
+/* Prevent ScrollTrigger from clipping h-[10vh] sections with overflow-visible */
+.pin-spacer,
+.pin-spacer > * {
+  overflow: visible !important;
+}

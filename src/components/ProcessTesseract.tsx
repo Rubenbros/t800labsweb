@@ -140,6 +140,9 @@ export default function ProcessTesseract() {
       const scrollEnd = isMobile ? "+=500" : "+=800";
       const totalDur = 6;
 
+      // Start hidden — all entrance inside pin (section bg-black + opacity 0 = no visible scroll)
+      gsap.set(".process-inner", { opacity: 0 });
+
       const pt = gsap.timeline({
         scrollTrigger: {
           trigger: sectionRef.current,
@@ -161,15 +164,17 @@ export default function ProcessTesseract() {
         },
       });
 
+      // Fade in container (stars appear, section is pinned so no visible scroll)
+      pt.fromTo(".process-inner",
+        { opacity: 0 },
+        { opacity: 1, duration: 0.3 }, 0);
+
       // ═══════════════════════════════════════
       // PHASE 0: WORMHOLE TUNNEL (0→2)
+      // Stars fade in quickly via container, then get pulled toward center
       // ═══════════════════════════════════════
 
-      pt.fromTo(".tess-wormhole",
-        { opacity: 0 },
-        { opacity: 1, duration: 0.2 }, 0);
-
-      // Stars: appear, then get pulled toward center and stretch
+      // Stars: get pulled toward center and stretch
       const starEls = sectionRef.current?.querySelectorAll(".tess-star");
       if (starEls) {
         starEls.forEach((star, i) => {
@@ -178,13 +183,6 @@ export default function ProcessTesseract() {
           const startTop = parseFloat(el.style.top);
           const dx = 50 - startLeft;
           const dy = 50 - startTop;
-          const delay = 0.03 + seededValue(i, 10) * 0.25;
-
-          pt.fromTo(el,
-            { opacity: 0 },
-            { opacity: 1, duration: 0.3, ease: "power1.out" },
-            delay,
-          );
 
           pt.to(el, {
             x: `${dx * 0.9}vw`,
@@ -193,12 +191,13 @@ export default function ProcessTesseract() {
             scaleX: 0.5,
             rotation: Math.atan2(dy, dx) * (180 / Math.PI) + 90,
             opacity: 0,
-            duration: 1.2,
+            duration: 1.4,
             ease: "power3.in",
-          }, 0.4 + seededValue(i, 12) * 0.3);
+          }, 0.1 + seededValue(i, 12) * 0.4);
         });
       }
 
+      // Rings expand from center outward
       pt.fromTo(".tess-ring",
         { scale: 0, opacity: 0 },
         {
@@ -211,11 +210,12 @@ export default function ProcessTesseract() {
         stagger: 0.06, ease: "power3.in",
       }, 0.7);
 
+      // Center flash — bright burst
       pt.fromTo(".tess-wormhole-flash",
-        { opacity: 0, scale: 0.5 },
-        { opacity: 1, scale: 2, duration: 0.2, ease: "power4.out" }, 1.6);
+        { opacity: 0, scale: 0.3 },
+        { opacity: 1, scale: 2.5, duration: 0.3, ease: "power4.out" }, 1.4);
       pt.to(".tess-wormhole-flash",
-        { opacity: 0, scale: 4, duration: 0.3, ease: "power2.out" }, 1.8);
+        { opacity: 0, scale: 5, duration: 0.4, ease: "power2.out" }, 1.7);
 
       pt.to(".tess-wormhole",
         { opacity: 0, duration: 0.2, pointerEvents: "none" }, 1.9);
@@ -257,7 +257,10 @@ export default function ProcessTesseract() {
         4.0,
       );
 
-      // (fade-to-black removed — process section stays visible as it unpins)
+      // Fade to black at end of process pin
+      pt.to(".process-inner", {
+        opacity: 0, duration: 1.0,
+      }, totalDur - 1.0);
 
       // ── ambient loops ──
       gsap.to(".tess-ambient", {
@@ -279,11 +282,11 @@ export default function ProcessTesseract() {
 
   return (
     <>
-    <section ref={sectionRef} id="proceso" className="process-section relative z-[4] h-screen overflow-hidden bg-black">
-      <div className="process-inner absolute inset-0">
+    <section ref={sectionRef} id="proceso" className="process-section relative z-[4] h-[10vh] overflow-visible">
+      <div className="process-inner absolute inset-x-0 top-0 h-screen bg-black">
 
       {/* ═══ WORMHOLE TUNNEL ═══ */}
-      <div className="tess-wormhole pointer-events-none absolute inset-0 z-40 flex items-center justify-center opacity-0">
+      <div className="tess-wormhole pointer-events-none absolute inset-0 z-40 flex items-center justify-center">
         {/* Stars — behind rings (rendered first = lower in stacking) */}
         {Array.from({ length: WORMHOLE_STARS }).map((_, i) => {
           // Deterministic position spread across viewport (rounded to avoid hydration mismatch)
@@ -292,19 +295,19 @@ export default function ProcessTesseract() {
           const radius = 15 + seededValue(i, 2) * 40; // 15-55% from center
           const x = r(50 + Math.cos(angle) * radius);
           const y = r(50 + Math.sin(angle) * radius);
-          const size = r(2 + seededValue(i, 3)); // 2-3px
+          const size = r(2.5 + seededValue(i, 3) * 2); // 2.5-4.5px
           // Mix golden and warm white
           const isGolden = seededValue(i, 4) > 0.5;
-          const alpha = r(isGolden ? 0.4 + seededValue(i, 5) * 0.3 : 0.5 + seededValue(i, 6) * 0.3, 3);
+          const alpha = r(isGolden ? 0.6 + seededValue(i, 5) * 0.4 : 0.7 + seededValue(i, 6) * 0.3, 3);
           const color = isGolden
             ? `rgba(212,160,23,${alpha})`
             : `rgba(255,255,255,${alpha})`;
-          const glow = r(2 + seededValue(i, 7) * 3);
+          const glow = r(4 + seededValue(i, 7) * 6);
 
           return (
             <div
               key={`star-${i}`}
-              className="tess-star absolute rounded-full opacity-0"
+              className="tess-star absolute rounded-full"
               style={{
                 width: `${size}px`,
                 height: `${size}px`,
@@ -328,18 +331,18 @@ export default function ProcessTesseract() {
               style={{
                 width: size,
                 height: size,
-                border: `${2 + (WORMHOLE_RINGS - i) * 0.3}px solid hsla(${hue}, 70%, ${45 + i * 3}%, ${0.6 - i * 0.03})`,
-                boxShadow: `0 0 ${15 + i * 3}px hsla(${hue}, 80%, 50%, ${0.3 - i * 0.02}), inset 0 0 ${10 + i * 2}px hsla(${hue}, 80%, 50%, ${0.15 - i * 0.01})`,
+                border: `${2.5 + (WORMHOLE_RINGS - i) * 0.4}px solid hsla(${hue}, 80%, ${50 + i * 3}%, ${0.8 - i * 0.04})`,
+                boxShadow: `0 0 ${20 + i * 4}px hsla(${hue}, 85%, 55%, ${0.5 - i * 0.03}), inset 0 0 ${12 + i * 3}px hsla(${hue}, 85%, 55%, ${0.25 - i * 0.015})`,
                 transform: "scale(0)",
               }}
             />
           );
         })}
         {/* Center bright flash */}
-        <div className="tess-wormhole-flash absolute h-32 w-32 rounded-full opacity-0"
+        <div className="tess-wormhole-flash absolute h-48 w-48 rounded-full opacity-0"
           style={{
-            background: "radial-gradient(circle, rgba(212,160,23,0.9) 0%, rgba(212,160,23,0.4) 30%, transparent 70%)",
-            boxShadow: "0 0 60px rgba(212,160,23,0.5)",
+            background: "radial-gradient(circle, rgba(212,160,23,1) 0%, rgba(212,160,23,0.6) 30%, rgba(212,160,23,0.2) 60%, transparent 80%)",
+            boxShadow: "0 0 100px rgba(212,160,23,0.7), 0 0 200px rgba(212,160,23,0.3)",
           }}
         />
         {/* Streaking light lines (speed lines) */}
@@ -353,7 +356,7 @@ export default function ProcessTesseract() {
               style={{
                 width: `${length}%`,
                 height: "1px",
-                background: `linear-gradient(to right, transparent, rgba(212,160,23,${0.15 + (i % 3) * 0.05}), transparent)`,
+                background: `linear-gradient(to right, transparent, rgba(212,160,23,${0.25 + (i % 3) * 0.1}), transparent)`,
                 transform: `rotate(${angle}deg)`,
                 transformOrigin: "0% 50%",
                 left: "50%",
