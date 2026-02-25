@@ -512,9 +512,9 @@ export default function HomeClient() {
         ease: "power2.out",
       }, 1.6);
 
-      // Cross-dissolve out — content dims + blurs at end of pin
+      // Fade to black at end of services pin (no blur)
       st.to(".services-inner", {
-        opacity: 0.25, filter: "blur(4px)", duration: 1.2,
+        opacity: 0, duration: 1.2,
       }, 2.8);
 
       // ═══════════════════════════════════════
@@ -579,9 +579,9 @@ export default function HomeClient() {
         { opacity: 0 },
         { opacity: 1, duration: 0.5 }, 1.8);
 
-      // Cross-dissolve out — content dims + blurs at end of pin
+      // Fade to black at end of team pin (no blur — just opacity)
       tt.to(".team-inner", {
-        opacity: 0.25, filter: "blur(4px)", duration: 1.2,
+        opacity: 0, duration: 1.2,
       }, 2.8);
 
       // ═══════════════════════════════════════

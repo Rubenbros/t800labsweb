@@ -221,10 +221,10 @@ export default function ProcessTesseract() {
       );
 
       // ═══════════════════════════════════════
-      // CROSS-DISSOLVE OUT (end of pin)
+      // FADE TO BLACK (end of pin — no blur)
       // ═══════════════════════════════════════
       pt.to(".process-inner", {
-        opacity: 0.25, filter: "blur(4px)", duration: 1.2,
+        opacity: 0, duration: 1.2,
       }, totalDur - 1.2);
 
       // ── ambient loops ──
