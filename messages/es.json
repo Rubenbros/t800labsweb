@@ -5,6 +5,8 @@
   },
   "Hero": {
     "tagline": "Software de nueva generación",
+    "valueProposition": "Desarrollo web, apps e integraciones IA a medida",
+    "cta": "Solicitar presupuesto",
     "scroll": "Scroll"
   },
   "Bond": {
@@ -18,6 +20,7 @@
   },
   "Navbar": {
     "servicios": "Servicios",
+    "portfolio": "Portfolio",
     "proceso": "Proceso",
     "equipo": "Equipo",
     "contacto": "Contacto"
@@ -75,26 +78,47 @@
     "cloudIcon": "~/",
     "custom": "Custom Software",
     "customDesc": "Soluciones de software a medida para necesidades empresariales específicas.",
-    "customIcon": ">>"
+    "customIcon": ">>",
+    "cta": "Solicitar presupuesto sin compromiso"
+  },
+  "Portfolio": {
+    "subtitle": "Trabajo real",
+    "title": "PORTFOLIO",
+    "project1Name": "NoEsGratis",
+    "project1Desc": "Plataforma SaaS de gymkhanas virtuales. Crea desafíos interactivos con pruebas, temporizadores y códigos de acceso para regalar experiencias únicas.",
+    "project1Tech": "Next.js · React · TypeScript · Tailwind · Auth · DB",
+    "project1Type": "PRODUCTO PROPIO",
+    "project2Name": "The Rehab Studio",
+    "project2Desc": "Web profesional para clínica de fisioterapia deportiva. Diseño elegante con sistema de reservas, servicios detallados y SEO optimizado.",
+    "project2Tech": "Next.js · React · TypeScript · Tailwind · i18n",
+    "project2Type": "CLIENTE",
+    "visitSite": "Ver proyecto ↗",
+    "cta": "¿Tienes un proyecto en mente?",
+    "cornerSys": "SYS.05",
+    "cornerLabel": "TRON"
   },
   "Process": {
     "title": "PROCESO",
     "subtitle": "Cómo trabajamos",
     "step1Title": "CONTACTO",
-    "step1Desc": "Nos escribes. La señal llega a través del espacio-tiempo.",
-    "step2Title": "ESCUCHA",
-    "step2Desc": "Nos reunimos. Entendemos tu mundo, tu problema, tu meta.",
+    "step1Desc": "Escríbenos con tu idea o necesidad. Respuesta en menos de 24h.",
+    "step2Title": "ANÁLISIS",
+    "step2Desc": "Entendemos tu proyecto en detalle: objetivos, usuarios y requisitos técnicos.",
     "step3Title": "PROPUESTA",
-    "step3Desc": "Alcance, tecnologías, tiempos, presupuesto. Los datos toman forma.",
-    "step4Title": "CONSTRUCCIÓN",
-    "step4Desc": "Desarrollo ágil con entregas incrementales. El proyecto se materializa pieza a pieza.",
-    "step5Title": "ENTREGA",
-    "step5Desc": "Tu producto cruza al otro lado. Deploy, formación, soporte, evolución.",
+    "step3Desc": "Alcance, tecnologías, plazos y presupuesto cerrado. Sin sorpresas.",
+    "step4Title": "DESARROLLO",
+    "step4Desc": "Sprints con entregas funcionales cada 1-2 semanas. Ves el avance en tiempo real.",
+    "step5Title": "LANZAMIENTO",
+    "step5Desc": "Deploy en producción, formación y soporte continuo incluido.",
     "back": "VOLVER"
   },
   "Team": {
     "subtitle": "Archivos Tyrell",
     "title": "EQUIPO",
+    "caseFile": "EXPEDIENTE",
+    "classified": "CLASIFICADO",
+    "notes": "NOTAS",
+    "externalLinks": "ENLACES EXTERNOS",
     "model": "NEXUS-7 // SERIE: RJC-001",
     "inception": "INCEPTION",
     "function": "FUNCIÓN",
@@ -105,7 +129,7 @@
     "assignments": "Centro Zaragoza · Tragsatec · ISYC · Softek",
     "additionalProtocols": "PROTOCOLOS_ADICIONALES",
     "protocols": "Profesor Grado Superior · Speaker IA",
-    "bio": "Apasionado de la tecnología y experto en integraciones con IA",
+    "bio": "Desarrollador full-stack con IA como copiloto. Cada proyecto es un reto y la IA multiplica lo que puedo construir.",
     "quote": "\"Todos esos momentos se perderán en el tiempo, como lágrimas en la lluvia.\"",
     "cornerSys": "SYS.04",
     "cornerLabel": "TYRELL"

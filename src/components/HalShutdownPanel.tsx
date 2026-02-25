@@ -5,7 +5,7 @@ import { gsap } from "@/lib/gsap";
 import { useTranslations } from "next-intl";
 import type { HalStats } from "@/lib/hal-stats";
 
-type Phase = "idle" | "contact" | "email-form" | "shutting-down" | "revealed";
+type Phase = "idle" | "contact" | "email-form" | "email-sending" | "email-sent" | "email-error" | "shutting-down" | "revealed";
 
 export default function HalShutdownPanel() {
   const [phase, setPhase] = useState<Phase>("idle");
@@ -39,15 +39,40 @@ export default function HalShutdownPanel() {
     setPhase("email-form");
   }, []);
 
-  const handleEmailSend = useCallback(() => {
-    const subject = encodeURIComponent(`Contacto desde T800 Labs — ${formName}`);
-    const body = encodeURIComponent(
-      `Nombre: ${formName}\nEmail: ${formEmail}\n\n${formMessage}`
-    );
-    window.open(
-      `mailto:ruben.jarne.cabanero@gmail.com?subject=${subject}&body=${body}`,
-      "_self"
-    );
+  const handleEmailSend = useCallback(async () => {
+    setPhase("email-sending");
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: formName, email: formEmail, message: formMessage }),
+      });
+      if (res.ok) {
+        setPhase("email-sent");
+      } else {
+        // Fallback to mailto if API fails
+        const subject = encodeURIComponent(`Contacto desde T800 Labs — ${formName}`);
+        const body = encodeURIComponent(
+          `Nombre: ${formName}\nEmail: ${formEmail}\n\n${formMessage}`
+        );
+        window.open(
+          `mailto:ruben.jarne.cabanero@gmail.com?subject=${subject}&body=${body}`,
+          "_self"
+        );
+        setPhase("email-sent");
+      }
+    } catch {
+      // Fallback to mailto
+      const subject = encodeURIComponent(`Contacto desde T800 Labs — ${formName}`);
+      const body = encodeURIComponent(
+        `Nombre: ${formName}\nEmail: ${formEmail}\n\n${formMessage}`
+      );
+      window.open(
+        `mailto:ruben.jarne.cabanero@gmail.com?subject=${subject}&body=${body}`,
+        "_self"
+      );
+      setPhase("email-sent");
+    }
   }, [formName, formEmail, formMessage]);
 
   // ── SHUTDOWN ──
@@ -231,7 +256,7 @@ export default function HalShutdownPanel() {
       )}
 
       {/* ── EMAIL FORM STATE ── */}
-      {phase === "email-form" && (
+      {(phase === "email-form" || phase === "email-sending") && (
         <div className="hal-email-form-content flex flex-col items-center gap-4 w-full max-w-sm mx-auto">
           <p className="font-mono text-[9px] tracking-[0.25em] text-red-500/60 uppercase sm:text-[10px]">
             {t("contactEmail")}
@@ -244,35 +269,62 @@ export default function HalShutdownPanel() {
               value={formName}
               onChange={(e) => setFormName(e.target.value)}
               placeholder={t("contactFormName")}
-              className="w-full rounded border border-white/10 bg-white/[0.04] px-4 py-2.5 font-mono text-[11px] tracking-[0.08em] text-white/90 placeholder:text-white/30 outline-none transition-colors duration-300 focus:border-red-500/50 sm:text-xs"
+              disabled={phase === "email-sending"}
+              className="w-full rounded border border-white/10 bg-white/[0.04] px-4 py-2.5 font-mono text-[11px] tracking-[0.08em] text-white/90 placeholder:text-white/30 outline-none transition-colors duration-300 focus:border-red-500/50 disabled:opacity-50 sm:text-xs"
             />
             <input
               type="email"
               value={formEmail}
               onChange={(e) => setFormEmail(e.target.value)}
               placeholder={t("contactFormEmail")}
-              className="w-full rounded border border-white/10 bg-white/[0.04] px-4 py-2.5 font-mono text-[11px] tracking-[0.08em] text-white/90 placeholder:text-white/30 outline-none transition-colors duration-300 focus:border-red-500/50 sm:text-xs"
+              disabled={phase === "email-sending"}
+              className="w-full rounded border border-white/10 bg-white/[0.04] px-4 py-2.5 font-mono text-[11px] tracking-[0.08em] text-white/90 placeholder:text-white/30 outline-none transition-colors duration-300 focus:border-red-500/50 disabled:opacity-50 sm:text-xs"
             />
             <textarea
               value={formMessage}
               onChange={(e) => setFormMessage(e.target.value)}
               placeholder={t("contactFormMessage")}
               rows={3}
-              className="w-full resize-none rounded border border-white/10 bg-white/[0.04] px-4 py-2.5 font-mono text-[11px] tracking-[0.08em] text-white/90 placeholder:text-white/30 outline-none transition-colors duration-300 focus:border-red-500/50 sm:text-xs"
+              disabled={phase === "email-sending"}
+              className="w-full resize-none rounded border border-white/10 bg-white/[0.04] px-4 py-2.5 font-mono text-[11px] tracking-[0.08em] text-white/90 placeholder:text-white/30 outline-none transition-colors duration-300 focus:border-red-500/50 disabled:opacity-50 sm:text-xs"
             />
           </div>
 
           <button
             onClick={handleEmailSend}
-            disabled={!formName.trim() || !formEmail.trim() || !formMessage.trim()}
+            disabled={!formName.trim() || !formEmail.trim() || !formMessage.trim() || phase === "email-sending"}
             className="w-full cursor-pointer border border-red-500/60 bg-transparent px-6 py-2.5 font-mono text-[10px] tracking-[0.2em] text-red-500 uppercase transition-all duration-300 hover:border-red-500 hover:bg-red-500/10 hover:text-red-400 disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:border-red-500/60 disabled:hover:bg-transparent disabled:hover:text-red-500 sm:text-xs"
           >
-            {t("contactFormSend")}
+            {phase === "email-sending" ? "ENVIANDO..." : t("contactFormSend")}
           </button>
 
           <button
             onClick={handleContactBack}
-            className="mt-1 cursor-pointer border-none bg-transparent py-2 px-4 font-mono text-[9px] tracking-[0.15em] text-white/30 transition-colors duration-300 hover:text-red-500/70 sm:text-[10px]"
+            disabled={phase === "email-sending"}
+            className="mt-1 cursor-pointer border-none bg-transparent py-2 px-4 font-mono text-[9px] tracking-[0.15em] text-white/30 transition-colors duration-300 hover:text-red-500/70 disabled:opacity-30 sm:text-[10px]"
+          >
+            {t("contactFormBack")}
+          </button>
+        </div>
+      )}
+
+      {/* ── EMAIL SENT STATE ── */}
+      {phase === "email-sent" && (
+        <div className="hal-email-sent flex flex-col items-center gap-4">
+          <div className="flex h-12 w-12 items-center justify-center rounded-full border border-[#00ff41]/30 text-[#00ff41]">
+            <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+            </svg>
+          </div>
+          <p className="font-mono text-sm tracking-[0.1em] text-white/80">
+            Mensaje enviado
+          </p>
+          <p className="font-mono text-[10px] text-white/40">
+            Te responderé lo antes posible
+          </p>
+          <button
+            onClick={handleContactBack}
+            className="mt-4 cursor-pointer border-none bg-transparent py-2 px-4 font-mono text-[9px] tracking-[0.15em] text-white/30 transition-colors duration-300 hover:text-red-500/70 sm:text-[10px]"
           >
             {t("contactFormBack")}
           </button>

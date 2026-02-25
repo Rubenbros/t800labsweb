@@ -5,6 +5,8 @@
   },
   "Hero": {
     "tagline": "Next generation software",
+    "valueProposition": "Custom web, apps & AI integrations built to order",
+    "cta": "Request a quote",
     "scroll": "Scroll"
   },
   "Bond": {
@@ -18,6 +20,7 @@
   },
   "Navbar": {
     "servicios": "Services",
+    "portfolio": "Portfolio",
     "proceso": "Process",
     "equipo": "Team",
     "contacto": "Contact"
@@ -75,26 +78,47 @@
     "cloudIcon": "~/",
     "custom": "Custom Software",
     "customDesc": "Tailored software solutions for specific business needs and workflows.",
-    "customIcon": ">>"
+    "customIcon": ">>",
+    "cta": "Request a free quote"
+  },
+  "Portfolio": {
+    "subtitle": "Real work",
+    "title": "PORTFOLIO",
+    "project1Name": "NoEsGratis",
+    "project1Desc": "Virtual gymkhana SaaS platform. Create interactive challenges with tests, timers and access codes to gift unique experiences.",
+    "project1Tech": "Next.js · React · TypeScript · Tailwind · Auth · DB",
+    "project1Type": "OWN PRODUCT",
+    "project2Name": "The Rehab Studio",
+    "project2Desc": "Professional website for a sports physiotherapy clinic. Elegant design with booking system, detailed services and optimized SEO.",
+    "project2Tech": "Next.js · React · TypeScript · Tailwind · i18n",
+    "project2Type": "CLIENT",
+    "visitSite": "View project ↗",
+    "cta": "Got a project in mind?",
+    "cornerSys": "SYS.05",
+    "cornerLabel": "TRON"
   },
   "Process": {
     "title": "PROCESS",
     "subtitle": "How we work",
     "step1Title": "CONTACT",
-    "step1Desc": "You reach out. The signal arrives through space-time.",
-    "step2Title": "LISTEN",
-    "step2Desc": "We meet. We understand your world, your problem, your goal.",
+    "step1Desc": "Tell us about your idea or need. Response within 24 hours.",
+    "step2Title": "ANALYSIS",
+    "step2Desc": "We understand your project in detail: goals, users and technical requirements.",
     "step3Title": "PROPOSAL",
-    "step3Desc": "Scope, technologies, timelines, budget. Data takes shape.",
-    "step4Title": "BUILD",
-    "step4Desc": "Agile development with incremental deliveries. The project materializes piece by piece.",
-    "step5Title": "DELIVERY",
-    "step5Desc": "Your product crosses to the other side. Deploy, training, support, evolution.",
+    "step3Desc": "Scope, technologies, timelines and fixed budget. No surprises.",
+    "step4Title": "DEVELOPMENT",
+    "step4Desc": "Sprints with functional deliveries every 1-2 weeks. You see progress in real time.",
+    "step5Title": "LAUNCH",
+    "step5Desc": "Production deployment, training and ongoing support included.",
     "back": "BACK"
   },
   "Team": {
     "subtitle": "Tyrell Files",
     "title": "TEAM",
+    "caseFile": "CASE FILE",
+    "classified": "CLASSIFIED",
+    "notes": "NOTES",
+    "externalLinks": "EXTERNAL LINKS",
     "model": "NEXUS-7 // SERIAL: RJC-001",
     "inception": "INCEPTION",
     "function": "FUNCTION",
@@ -105,7 +129,7 @@
     "assignments": "Centro Zaragoza · Tragsatec · ISYC · Softek",
     "additionalProtocols": "ADDITIONAL_PROTOCOLS",
     "protocols": "CS College Professor · AI Speaker",
-    "bio": "Passionate about technology and expert in AI integrations",
+    "bio": "Full-stack developer with AI as copilot. Every project is a challenge and AI multiplies what I can build.",
     "quote": "\"All those moments will be lost in time, like tears in rain.\"",
     "cornerSys": "SYS.04",
     "cornerLabel": "TYRELL"

@@ -64,7 +64,9 @@ export default function HomeClient() {
       tl.fromTo(".flying-labs", { y: 60, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8 }, 1.6);
       tl.fromTo(".hero-divider", { scaleX: 0 }, { scaleX: 1, duration: 0.8, ease: "power3.inOut" }, 1.8);
       tl.fromTo(".hero-tagline", { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.7 }, 2.1);
-      tl.fromTo(".hero-scroll-indicator", { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8 }, 2.4);
+      tl.fromTo(".hero-value-prop", { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6 }, 2.4);
+      tl.fromTo(".hero-cta", { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6 }, 2.7);
+      tl.fromTo(".hero-scroll-indicator", { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8 }, 3.0);
       tl.fromTo(".hero-corner", { opacity: 0 }, { opacity: 1, duration: 0.5, stagger: 0.1 }, 2.0);
 
       // Hero ambient loops
@@ -259,66 +261,66 @@ export default function HomeClient() {
         scrollTrigger: {
           trigger: ".bond-section",
           start: "top top",
-          end: isMobile ? "+=1100" : "+=2000",
+          end: isMobile ? "+=1500" : "+=2700",
           scrub: true,
           pin: true,
         },
       });
 
-      // ── Phase 1: Small circle left → right (0→7) ──
+      // ── Phase 1: Small circle left → right (0→9.5) — slow walk ──
       bt.fromTo(".bond-assembly",
         { x: startX, y: 0, scale: 0.12, opacity: 0 },
         { opacity: 1, duration: 0.3 }, 0);
       bt.to(".bond-assembly",
-        { x: endX, duration: 7, ease: "none" }, 0);
+        { x: endX, duration: 9.5, ease: "none" }, 0);
 
       // Ghost trail 1 — appears at ~28% + service label (longer visible)
       bt.fromTo(".bond-ghost-1",
-        { opacity: 0 }, { opacity: 0.6, duration: 0.1 }, 2);
+        { opacity: 0 }, { opacity: 0.6, duration: 0.1 }, 2.7);
       bt.fromTo(".ghost-label-1",
-        { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.4 }, 2);
+        { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.4 }, 2.7);
       bt.to(".bond-ghost-1",
-        { opacity: 0, duration: 2.5 }, 3.5);
+        { opacity: 0, duration: 2.5 }, 4.7);
       bt.to(".ghost-label-1",
-        { opacity: 0, y: -10, duration: 2 }, 3.8);
+        { opacity: 0, y: -10, duration: 2 }, 5.1);
 
       // Ghost trail 2 — appears at ~52% + service label (longer visible)
       bt.fromTo(".bond-ghost-2",
-        { opacity: 0 }, { opacity: 0.6, duration: 0.1 }, 3.8);
+        { opacity: 0 }, { opacity: 0.6, duration: 0.1 }, 5.1);
       bt.fromTo(".ghost-label-2",
-        { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.4 }, 3.8);
+        { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.4 }, 5.1);
       bt.to(".bond-ghost-2",
-        { opacity: 0, duration: 2.5 }, 5.3);
+        { opacity: 0, duration: 2.5 }, 7.1);
       bt.to(".ghost-label-2",
-        { opacity: 0, y: -10, duration: 2 }, 5.5);
+        { opacity: 0, y: -10, duration: 2 }, 7.3);
 
       // Ghost trail 3 — appears at ~76% + service label (longer visible)
       bt.fromTo(".bond-ghost-3",
-        { opacity: 0 }, { opacity: 0.6, duration: 0.1 }, 5.5);
+        { opacity: 0 }, { opacity: 0.6, duration: 0.1 }, 7.3);
       bt.fromTo(".ghost-label-3",
-        { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.4 }, 5.5);
+        { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.4 }, 7.3);
       bt.to(".bond-ghost-3",
-        { opacity: 0, duration: 2.5 }, 7.0);
+        { opacity: 0, duration: 2.5 }, 9.5);
       bt.to(".ghost-label-3",
-        { opacity: 0, y: -10, duration: 2 }, 7.2);
+        { opacity: 0, y: -10, duration: 2 }, 9.7);
 
-      // ── Phase 1b: Circle expands at right edge (7→9.5) ──
+      // ── Phase 1b: Circle expands at right edge (9.5→12) ──
       // Grows big enough to go off-screen right
       bt.to(".bond-assembly",
-        { scale: 1.8, duration: 2.5, ease: "power2.out" }, 7);
+        { scale: 1.8, duration: 2.5, ease: "power2.out" }, 9.5);
       // Rifling fades in as it grows + slow rotation
       bt.to(".bond-rifling",
-        { opacity: 1, duration: 1.5 }, 7.5);
+        { opacity: 1, duration: 1.5 }, 10);
       bt.to(".bond-rifling",
-        { rotation: 90, duration: 9.5, ease: "none" }, 7.5);
+        { rotation: 90, duration: 9.5, ease: "none" }, 10);
 
-      // ── Phase 1b: Once big, moves to center (9.5→13) ──
+      // ── Phase 1b: Once big, moves to center (12→15.5) ──
       bt.to(".bond-assembly",
-        { x: 0, y: 0, duration: 3.5, ease: "power2.inOut" }, 9.5);
+        { x: 0, y: 0, duration: 3.5, ease: "power2.inOut" }, 12);
 
       // ── Phase 2: Bond character appears inside barrel ──
       bt.to(".bond-video-wrapper",
-        { opacity: 1, duration: 0.8 }, 9.5);
+        { opacity: 1, duration: 0.8 }, 12);
 
       // ── Phase 2b: Sprite animation ──
       // Frames 0-5 = walk, 6-9 = turn, 10-11 = aim
@@ -349,35 +351,35 @@ export default function HomeClient() {
 
       frames[0].onload = () => drawFrame(0);
 
-      // Walk cycle loops while circle moves to center (9.5→12)
+      // Walk cycle loops while circle moves to center (12→15)
       const walkObj = { frame: 0 };
       bt.to(walkObj, {
         frame: WALK_FRAMES * 3 - 1,
         ease: `steps(${WALK_FRAMES * 3 - 1})`,
-        duration: 2.5,
+        duration: 3,
         onUpdate: () => drawFrame(Math.round(walkObj.frame) % WALK_FRAMES),
-      }, 9.5);
+      }, 12);
 
-      // Turn + aim starts just before circle settles (12→17)
+      // Turn + aim starts just before circle settles (15→19.5)
       const turnObj = { frame: TURN_START };
       bt.to(turnObj, {
         frame: TOTAL_FRAMES - 1,
         ease: `steps(${TOTAL_FRAMES - 1 - TURN_START})`,
-        duration: 5,
+        duration: 4.5,
         onUpdate: () => drawFrame(Math.round(turnObj.frame)),
-      }, 12);
+      }, 15);
 
-      // ── Phase 3: Flash + blood fills barrel opening (17→22) ──
+      // ── Phase 3: Flash + blood fills barrel opening (19.5→24) ──
       // Muzzle flash — bright burst then quick fade
       bt.fromTo(".bond-flash",
         { opacity: 0, scale: 0.5 },
-        { opacity: 1, scale: 1.2, duration: 0.15, ease: "power4.out" }, 17);
+        { opacity: 1, scale: 1.2, duration: 0.15, ease: "power4.out" }, 19.5);
       bt.to(".bond-flash",
-        { scale: 0.8, opacity: 0.7, duration: 0.1 }, 17.15);
+        { scale: 0.8, opacity: 0.7, duration: 0.1 }, 19.65);
       bt.to(".bond-flash",
-        { scale: 1.5, opacity: 0, duration: 0.3, ease: "power2.out" }, 17.25);
+        { scale: 1.5, opacity: 0, duration: 0.3, ease: "power2.out" }, 19.75);
 
-      // ── Phase 4: Blood drips cascade down screen (17.5→28) ──
+      // ── Phase 4: Blood drips cascade down screen (20→30.5) ──
       // Liquid easing: slow start → fast middle → slow near bottom
       const liquidEase = "slow(0.5, 0.8, false)";
       const liquidEase2 = "slow(0.4, 0.7, false)";
@@ -390,7 +392,7 @@ export default function HomeClient() {
           { height: "100%", duration: 0.7, ease: "power3.out" },
           { height: "115%", duration: 0.4, ease: "power1.out" },
         ],
-      }, 17.5);
+      }, 20);
       bt.to(".blood-drip-2", {
         keyframes: [
           { height: "20%", duration: 0.6, ease: "power1.in" },
@@ -398,7 +400,7 @@ export default function HomeClient() {
           { height: "95%", duration: 0.7, ease: "power1.out" },
           { height: "115%", duration: 0.6, ease: "sine.out" },
         ],
-      }, 18.5);
+      }, 21);
       bt.to(".blood-drip-3", {
         keyframes: [
           { height: "25%", duration: 0.5, ease: "power2.in" },
@@ -406,46 +408,58 @@ export default function HomeClient() {
           { height: "105%", duration: 0.6, ease: "power2.out" },
           { height: "115%", duration: 0.4, ease: "sine.out" },
         ],
-      }, 19.5);
+      }, 22);
 
       // Wider flows — organic liquid speed variation (slower)
-      bt.to(".blood-drip-4", { height: "115%", duration: 3.5, ease: liquidEase }, 20.5);
-      bt.to(".blood-drip-5", { height: "115%", duration: 3.2, ease: liquidEase2 }, 21.0);
-      bt.to(".blood-drip-6", { height: "115%", duration: 3.5, ease: liquidEase }, 21.5);
-      bt.to(".blood-drip-7", { height: "115%", duration: 3.2, ease: liquidEase2 }, 22.0);
+      bt.to(".blood-drip-4", { height: "115%", duration: 3.5, ease: liquidEase }, 23);
+      bt.to(".blood-drip-5", { height: "115%", duration: 3.2, ease: liquidEase2 }, 23.5);
+      bt.to(".blood-drip-6", { height: "115%", duration: 3.5, ease: liquidEase }, 24);
+      bt.to(".blood-drip-7", { height: "115%", duration: 3.2, ease: liquidEase2 }, 24.5);
 
       // Solid fill within group ensures full coverage
-      bt.to(".blood-solid", { opacity: 1, duration: 0.8 }, 25);
+      bt.to(".blood-solid", { opacity: 1, duration: 0.8 }, 27.5);
 
       // Raise group opacity to fully opaque + fade to black
-      bt.to(".bond-blood-drips", { opacity: 1, duration: 0.2, ease: "power2.inOut" }, 25.8);
-      bt.to(".bond-assembly", { opacity: 0, duration: 0.2 }, 25.8);
-      bt.to(".blood-solid", { backgroundColor: "#000000", duration: 0.4, ease: "power2.in" }, 26);
-      bt.to(".blood-drip", { backgroundColor: "#000000", duration: 0.4, ease: "power2.in" }, 26);
+      bt.to(".bond-blood-drips", { opacity: 1, duration: 0.2, ease: "power2.inOut" }, 28.3);
+      bt.to(".bond-assembly", { opacity: 0, duration: 0.2 }, 28.3);
+      bt.to(".blood-solid", { backgroundColor: "#000000", duration: 0.4, ease: "power2.in" }, 28.5);
+      bt.to(".blood-drip", { backgroundColor: "#000000", duration: 0.4, ease: "power2.in" }, 28.5);
 
       // ═══════════════════════════════════════
       // MANIFESTO — appears inside Bond timeline (end of blood→black)
       // ═══════════════════════════════════════
       // Add manifesto animations to the Bond timeline itself (avoids
       // the issue of a separate ScrollTrigger on an already-pinned element)
-      bt.fromTo(".manifesto-overlay", { opacity: 0 }, { opacity: 1, duration: 1.5 }, 25);
-      bt.fromTo(".manifesto-line-1", { opacity: 0 }, { opacity: 1, duration: 1.2 }, 25.2);
-      bt.fromTo(".manifesto-line-2", { opacity: 0 }, { opacity: 1, duration: 1.2 }, 25.6);
-      bt.to(".manifesto-divider", { width: "120px", duration: 0.8, ease: "power3.inOut" }, 26);
-      bt.fromTo(".manifesto-line-3", { opacity: 0 }, { opacity: 1, duration: 1.2 }, 26.2);
+      bt.fromTo(".manifesto-overlay", { opacity: 0 }, { opacity: 1, duration: 1.5 }, 27.5);
+      bt.fromTo(".manifesto-line-1", { opacity: 0 }, { opacity: 1, duration: 1.2 }, 27.7);
+      bt.fromTo(".manifesto-line-2", { opacity: 0 }, { opacity: 1, duration: 1.2 }, 28.1);
+      bt.to(".manifesto-divider", { width: "120px", duration: 0.8, ease: "power3.inOut" }, 28.5);
+      bt.fromTo(".manifesto-line-3", { opacity: 0 }, { opacity: 1, duration: 1.2 }, 28.7);
       bt.fromTo(".manifesto-line-3",
         { textShadow: "0 0 0px rgba(229,9,20,0)" },
-        { textShadow: "0 0 30px rgba(229,9,20,0.5)", duration: 1 }, 26.8);
+        { textShadow: "0 0 30px rgba(229,9,20,0.5)", duration: 1 }, 29.3);
 
-      // Manifesto fades out as Services enters
+      // Manifesto fades out as Services enters — crossfade with green tint
       // Use fromTo + overwrite:false to avoid killing the Bond timeline's tween
       gsap.fromTo(".manifesto-overlay",
         { opacity: 1 },
         { opacity: 0, overwrite: false,
           scrollTrigger: {
             trigger: ".services-section",
-            start: "top 80%",
-            end: "top 20%",
+            start: "top 90%",
+            end: "top 30%",
+            scrub: true,
+          },
+        });
+
+      // Green tint crossfade — subtle green glow appears as manifesto fades
+      gsap.fromTo(".manifesto-green-tint",
+        { opacity: 0 },
+        { opacity: 1,
+          scrollTrigger: {
+            trigger: ".services-section",
+            start: "top 95%",
+            end: "top 40%",
             scrub: true,
           },
         });
@@ -454,11 +468,11 @@ export default function HomeClient() {
       // SERVICES SECTION — Matrix rain + cards
       // ═══════════════════════════════════════
 
-      // Pre-reveal: rain + header + corners appear as section scrolls into viewport
+      // Pre-reveal: rain starts fading in earlier (during manifesto exit)
       gsap.fromTo(".services-rain",
         { opacity: 0 },
         { opacity: 1, ease: "power2.out",
-          scrollTrigger: { trigger: ".services-section", start: "top bottom", end: "top 30%", scrub: true },
+          scrollTrigger: { trigger: ".services-section", start: "top 95%", end: "top 20%", scrub: true },
         });
       gsap.fromTo(".services-header",
         { opacity: 0 },
@@ -512,14 +526,64 @@ export default function HomeClient() {
         ease: "power2.out",
       }, 1.6);
 
+      // CTA appears after cards
+      st.fromTo(".services-cta",
+        { opacity: 0, y: 15 },
+        { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" }, 1.8);
+
       // Fade to black at end of services pin (no blur)
       st.to(".services-inner", {
         opacity: 0, duration: 1.2,
-      }, 2.8);
+      }, 3.0);
 
       // ═══════════════════════════════════════
       // PROCESS SECTION — handled by ProcessVersionA/B/C component
       // ═══════════════════════════════════════
+
+      // ═══════════════════════════════════════
+      // PORTFOLIO SECTION — Tron (scroll-through, no pin)
+      // ═══════════════════════════════════════
+
+      // Ambient glow pulse
+      gsap.fromTo(".portfolio-glow",
+        { opacity: 0, scale: 0.8 },
+        { opacity: 1, scale: 1.1, ease: "power2.out",
+          scrollTrigger: { trigger: ".portfolio-section", start: "top 80%", end: "top 20%", scrub: true },
+        });
+
+      // Header fade in
+      gsap.fromTo(".portfolio-header",
+        { opacity: 0, y: 30 },
+        { opacity: 1, y: 0, ease: "power2.out",
+          scrollTrigger: { trigger: ".portfolio-section", start: "top 80%", end: "top 50%", scrub: true },
+        });
+
+      // Divider expand
+      gsap.to(".portfolio-divider",
+        { scaleX: 1, ease: "power3.inOut",
+          scrollTrigger: { trigger: ".portfolio-section", start: "top 70%", end: "top 40%", scrub: true },
+        });
+
+      // Corner decorations
+      gsap.fromTo(".portfolio-corner",
+        { opacity: 0 },
+        { opacity: 1, stagger: 0.05,
+          scrollTrigger: { trigger: ".portfolio-section", start: "top 80%", end: "top 40%", scrub: true },
+        });
+
+      // Cards stagger in
+      gsap.fromTo(".portfolio-card",
+        { opacity: 0, y: 40 },
+        { opacity: 1, y: 0, stagger: 0.15, duration: 0.8, ease: "power2.out",
+          scrollTrigger: { trigger: ".portfolio-card", start: "top 85%", end: "top 55%", scrub: true },
+        });
+
+      // CTA fade in
+      gsap.fromTo(".portfolio-cta",
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, ease: "power2.out",
+          scrollTrigger: { trigger: ".portfolio-cta", start: "top 90%", end: "top 65%", scrub: true },
+        });
 
       // ═══════════════════════════════════════
       // TEAM SECTION — Blade Runner / Tyrell Corp
@@ -545,60 +609,131 @@ export default function HomeClient() {
         scrollTrigger: {
           trigger: ".team-section",
           start: "top top",
-          end: isMobile ? "+=600" : "+=1000",
+          end: isMobile ? "+=800" : "+=1200",
           scrub: true,
           pin: true,
         },
       });
 
-      // Card and content animate during pin
-      tt.fromTo(".team-card",
-        { opacity: 0, scaleY: 0.01 },
-        { opacity: 1, scaleY: 1, duration: 0.5, ease: "power2.out" }, 0);
+      // Dossier folder slides up and opens
+      tt.fromTo(".team-dossier",
+        { opacity: 0, y: 60 },
+        { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" }, 0);
 
+      // Photo "pins" itself — slides in from the left with a slight rotation
+      tt.fromTo(".team-photo-wrapper",
+        { opacity: 0, x: isMobile ? -30 : -60, rotation: -8 },
+        { opacity: 1, x: 0, rotation: isMobile ? -1.5 : -2.5, duration: 0.6, ease: "back.out(1.2)" }, 0.3);
+
+      // Pushpin drops in
+      tt.fromTo(".team-pushpin",
+        { opacity: 0, y: -20, scale: 0.5 },
+        { opacity: 1, y: 0, scale: 1, duration: 0.25, ease: "bounce.out" }, 0.7);
+
+      // Scan sweep over photo
       tt.fromTo(".team-photo-scan",
         { y: "-100%" },
-        { y: "100%", duration: 0.7, ease: "power2.inOut" }, 0.3);
+        { y: "100%", duration: 0.6, ease: "power2.inOut" }, 0.5);
+
+      // Photo image reveals
       tt.fromTo(".team-photo-img",
         { opacity: 0 },
-        { opacity: 1, duration: 0.4 }, 0.5);
+        { opacity: 1, duration: 0.4 }, 0.7);
 
+      // Case file header types in
+      tt.fromTo(".team-case-header",
+        { opacity: 0, y: -10 },
+        { opacity: 1, y: 0, duration: 0.3, ease: "power2.out" }, 0.6);
+
+      // Data entries appear one by one (typewriter style)
       tt.fromTo(".team-data-line",
-        { opacity: 0, x: -10 },
-        { opacity: 1, x: 0, stagger: 0.12, duration: 0.3, ease: "power2.out" }, 0.6);
+        { opacity: 0, x: -15 },
+        { opacity: 1, x: 0, stagger: 0.1, duration: 0.25, ease: "power2.out" }, 0.9);
 
-      tt.fromTo(".team-bio",
-        { opacity: 0 },
-        { opacity: 1, duration: 0.3 }, 1.4);
+      // CLASSIFIED stamp slams down with rotation
+      tt.fromTo(".team-classified",
+        { opacity: 0, scale: 2.5, rotation: -25 },
+        { opacity: 1, scale: 1, rotation: -12, duration: 0.2, ease: "power4.in" }, 1.6);
 
+      // Notes / bio section fades in
+      tt.fromTo(".team-notes",
+        { opacity: 0, y: 10 },
+        { opacity: 1, y: 0, duration: 0.3, ease: "power2.out" }, 1.8);
+
+      // External links fade in
       tt.fromTo(".team-social-link",
         { opacity: 0, y: 8 },
-        { opacity: 1, y: 0, stagger: 0.08, duration: 0.3 }, 1.5);
+        { opacity: 1, y: 0, stagger: 0.08, duration: 0.3 }, 2.0);
 
+      // String/connector line draws
+      tt.fromTo(".team-connector",
+        { scaleX: 0 },
+        { scaleX: 1, duration: 0.4, ease: "power2.inOut" }, 1.4);
+
+      // Quote appears like a handwritten annotation
       tt.fromTo(".team-quote",
-        { opacity: 0 },
-        { opacity: 1, duration: 0.5 }, 1.8);
+        { opacity: 0, rotation: 1, y: 10 },
+        { opacity: 1, rotation: -1, y: 0, duration: 0.5, ease: "power2.out" }, 2.3);
 
-      // Fade to black at end of team pin (no blur — just opacity)
+      // Fade to black at end of team pin
       tt.to(".team-inner", {
         opacity: 0, duration: 1.2,
-      }, 2.8);
+      }, 3.2);
 
       // ═══════════════════════════════════════
-      // HAL 9000 SECTION — fades in from black
+      // HAL 9000 SECTION — CRT power-on entrance from black
       // ═══════════════════════════════════════
 
-      // Pre-reveal: corners + eye glow appear as section scrolls into viewport
-      gsap.fromTo(".hal-corner",
+      // Keep content hidden initially — the power-on will reveal it
+      gsap.set(".hal-content", { opacity: 0 });
+      gsap.set(".hal-corner", { opacity: 0 });
+
+      // CRT power-on sequence as section scrolls into viewport
+      const halPowerTl = gsap.timeline({
+        scrollTrigger: {
+          trigger: ".hal-section",
+          start: "top 80%",
+          end: "top 10%",
+          scrub: true,
+        },
+      });
+
+      // Phase 1: Black overlay stays, CRT scan line appears (0→0.3)
+      halPowerTl.fromTo(".hal-power-overlay",
+        { opacity: 1 },
+        { opacity: 1, duration: 0.3 }, 0);
+      halPowerTl.fromTo(".hal-crt-line",
+        { scaleX: 0, opacity: 0 },
+        { scaleX: 1, opacity: 1, duration: 0.2, ease: "power2.out" }, 0.05);
+
+      // Phase 2: CRT line expands vertically — monitor powering on (0.3→0.6)
+      halPowerTl.to(".hal-crt-line",
+        { scaleY: 80, opacity: 0.6, duration: 0.3, ease: "power2.in" }, 0.3);
+
+      // Phase 3: Brief white flash then overlay fades revealing content (0.5→1)
+      halPowerTl.to(".hal-power-flash",
+        { opacity: 0.15, duration: 0.08 }, 0.5);
+      halPowerTl.to(".hal-power-flash",
+        { opacity: 0, duration: 0.12 }, 0.58);
+      halPowerTl.to(".hal-power-overlay",
+        { opacity: 0, duration: 0.4, ease: "power2.out" }, 0.55);
+      halPowerTl.to(".hal-crt-line",
+        { opacity: 0, duration: 0.2 }, 0.6);
+
+      // Content fades in during power-on reveal
+      halPowerTl.fromTo(".hal-content",
         { opacity: 0 },
-        { opacity: 1, stagger: 0.05,
-          scrollTrigger: { trigger: ".hal-section", start: "top bottom", end: "top 30%", scrub: true },
-        });
-      gsap.fromTo(".hal-content",
+        { opacity: 1, duration: 0.4, ease: "power2.out" }, 0.55);
+
+      // Red glow intensifies from nothing
+      halPowerTl.fromTo(".hal-power-glow",
+        { opacity: 0, scale: 0.5 },
+        { opacity: 1, scale: 1, duration: 0.5, ease: "power2.out" }, 0.5);
+
+      // Corners appear after power-on
+      halPowerTl.fromTo(".hal-corner",
         { opacity: 0 },
-        { opacity: 1, ease: "power2.out",
-          scrollTrigger: { trigger: ".hal-section", start: "top bottom", end: "top 20%", scrub: true },
-        });
+        { opacity: 1, stagger: 0.05, duration: 0.3 }, 0.7);
 
       const ht = gsap.timeline({
         scrollTrigger: {
@@ -616,9 +751,110 @@ export default function HomeClient() {
         { opacity: 1, y: 0, duration: 0.3, ease: "power2.out" }, 0);
 
       // ═══════════════════════════════════════
+      // FOOTER — Lava / Molten Steel Animations
+      // ═══════════════════════════════════════
+
+      // Lava gradient flow — continuous loop (layer 1: base)
+      gsap.to(".footer-lava-layer1", {
+        backgroundPosition: "200% 0%",
+        duration: 8,
+        repeat: -1,
+        ease: "none",
+      });
+
+      // Lava gradient flow — layer 2 (bright patches, slower & opposite)
+      gsap.to(".footer-lava-layer2", {
+        backgroundPosition: "-200% 0%",
+        duration: 12,
+        repeat: -1,
+        ease: "none",
+      });
+
+      // Lava gradient flow — layer 3 (surface highlights, medium speed)
+      gsap.to(".footer-lava-layer3", {
+        backgroundPosition: "200% 0%",
+        duration: 10,
+        repeat: -1,
+        ease: "none",
+      });
+
+      // Dark patches drift
+      gsap.to(".footer-lava-dark", {
+        backgroundPosition: "-150% 0%",
+        duration: 14,
+        repeat: -1,
+        ease: "none",
+      });
+
+      // Heat line shimmer
+      gsap.to(".footer-heat-line", {
+        opacity: 0.6,
+        duration: 2,
+        repeat: -1,
+        yoyo: true,
+        ease: "sine.inOut",
+      });
+
+      // Heat shimmer above lava — subtle pulsing glow
+      gsap.to(".footer-heat-shimmer", {
+        opacity: 0.7,
+        duration: 3,
+        repeat: -1,
+        yoyo: true,
+        ease: "sine.inOut",
+      });
+
+      // Lava bubble animations — each bubble rises and pops
+      [0,1,2,3,4,5].forEach((i) => {
+        const delay = i * 1.8 + Math.random() * 2;
+        const duration = 1.2 + Math.random() * 0.8;
+        gsap.to(`.footer-lava-bubble-${i}`, {
+          y: -(30 + Math.random() * 40),
+          opacity: 0.9,
+          scale: 1.3,
+          duration: duration * 0.6,
+          repeat: -1,
+          repeatDelay: 2 + Math.random() * 3,
+          delay: delay,
+          ease: "power1.out",
+          onRepeat: function() {
+            gsap.set(`.footer-lava-bubble-${i}`, {
+              left: `${10 + Math.random() * 80}%`,
+            });
+          },
+        });
+        // Pop (fade out) after rising
+        gsap.to(`.footer-lava-bubble-${i}`, {
+          opacity: 0,
+          scale: 2,
+          duration: duration * 0.4,
+          repeat: -1,
+          repeatDelay: 2 + Math.random() * 3,
+          delay: delay + duration * 0.6,
+          ease: "power2.out",
+        });
+      });
+
+      // T-800 Arm — rises from lava on scroll into view
+      gsap.fromTo(".footer-t800-arm",
+        { y: 40, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 1.5,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: ".footer-section",
+            start: "top 85%",
+            end: "top 50%",
+            scrub: true,
+          },
+        });
+
+      // ═══════════════════════════════════════
       // TRANSITION SCANLINES — red sweep between sections
       // ═══════════════════════════════════════
-      [".services-section", ".process-section", ".team-section", ".hal-section"].forEach((trigger) => {
+      [".services-section", ".process-section", ".portfolio-section", ".team-section", ".hal-section"].forEach((trigger) => {
         ScrollTrigger.create({
           trigger,
           start: "top 95%",
@@ -781,7 +1017,21 @@ export default function HomeClient() {
             <div className="hero-title-spacer h-[48px] w-[280px] md:h-[72px] md:w-[420px]" aria-hidden="true" />
             <div className="hero-divider mt-5 h-[1px] w-24 origin-center scale-x-0 bg-gradient-to-r from-transparent via-red-500/50 to-transparent" />
             <p className="hero-tagline mt-6 text-center font-mono text-sm tracking-[0.2em] text-white/50 uppercase opacity-0 md:text-base">{t("Hero.tagline")}</p>
-            <div className="hero-scroll-indicator mt-14 flex flex-col items-center gap-3 opacity-0">
+            <p className="hero-value-prop mt-4 text-center text-sm tracking-wide text-white/35 opacity-0 md:text-base">{t("Hero.valueProposition")}</p>
+            <a
+              href="#contacto"
+              onClick={(e) => {
+                e.preventDefault();
+                const el = document.querySelector("#contacto");
+                if (el) {
+                  gsap.to(window, { scrollTo: { y: el, offsetY: 80 }, duration: 1.2, ease: "power3.inOut" });
+                }
+              }}
+              className="hero-cta mt-6 border border-red-500/60 bg-transparent px-8 py-3 font-mono text-[10px] tracking-[0.2em] text-red-500 uppercase opacity-0 transition-all duration-300 hover:border-red-500 hover:bg-red-500/10 hover:text-red-400 md:text-xs"
+            >
+              {t("Hero.cta")}
+            </a>
+            <div className="hero-scroll-indicator mt-10 flex flex-col items-center gap-3 opacity-0">
               <span className="font-mono text-xs tracking-[0.3em] text-red-500/50 uppercase">{t("Hero.scroll")}</span>
               <div className="relative flex flex-col items-center">
                 <div className="hero-scroll-glow absolute h-10 w-10 rounded-full bg-[radial-gradient(circle,_rgba(229,9,20,0.4)_0%,_transparent_70%)] opacity-50" />
@@ -894,6 +1144,8 @@ export default function HomeClient() {
           MANIFESTO — Fixed overlay (appears during Bond→Services transition)
           ════════════════════════════════════════════ */}
       <div className="manifesto-overlay pointer-events-none fixed inset-0 z-[8] flex items-center justify-center" style={{ opacity: 0 }}>
+        {/* Green tint crossfade — subtly bridges manifesto to services */}
+        <div className="manifesto-green-tint pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(0,255,65,0.06)_0%,_rgba(0,255,65,0.02)_40%,_transparent_70%)] opacity-0" />
         <div className="flex flex-col items-center gap-4 text-center px-6 md:gap-6">
           <p className="manifesto-line-1 font-bold text-2xl tracking-[0.08em] text-[#ededed] opacity-0 md:text-4xl lg:text-5xl">
             {t("Manifesto.line1")}
@@ -1001,6 +1253,23 @@ export default function HomeClient() {
               </p>
             </div>
           </div>
+
+          {/* CTA */}
+          <div className="services-cta mt-8 flex justify-center opacity-0 md:mt-12">
+            <a
+              href="#contacto"
+              onClick={(e) => {
+                e.preventDefault();
+                const el = document.querySelector("#contacto");
+                if (el) {
+                  gsap.to(window, { scrollTo: { y: el, offsetY: 80 }, duration: 1.2, ease: "power3.inOut" });
+                }
+              }}
+              className="border border-[#00ff41]/40 bg-transparent px-8 py-3 font-mono text-[10px] tracking-[0.2em] text-[#00ff41] uppercase transition-all duration-300 hover:border-[#00ff41]/80 hover:bg-[#00ff41]/10 md:text-xs"
+            >
+              {t("Services.cta")}
+            </a>
+          </div>
         </div>
 
         {/* Corner decorations */}
@@ -1031,14 +1300,180 @@ export default function HomeClient() {
       <ProcessTesseract />
 
       {/* ════════════════════════════════════════════
-          TEAM SECTION — Blade Runner / Tyrell Corp
+          PORTFOLIO SECTION — Tron
+          ════════════════════════════════════════════ */}
+      <section id="portfolio" className="portfolio-section relative z-[5] overflow-hidden bg-black py-24 md:py-32">
+        {/* Tron grid background */}
+        <div className="pointer-events-none absolute inset-0 overflow-hidden">
+          {/* Perspective grid */}
+          <div className="absolute inset-0" style={{
+            backgroundImage: `
+              linear-gradient(rgba(0,212,255,0.06) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(0,212,255,0.06) 1px, transparent 1px)
+            `,
+            backgroundSize: '60px 60px',
+          }} />
+          {/* Perspective floor grid */}
+          <div className="absolute bottom-0 left-0 right-0 h-[40%]" style={{
+            backgroundImage: `
+              linear-gradient(rgba(0,212,255,0.08) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(0,212,255,0.08) 1px, transparent 1px)
+            `,
+            backgroundSize: '80px 80px',
+            transform: 'perspective(400px) rotateX(45deg)',
+            transformOrigin: 'bottom center',
+            maskImage: 'linear-gradient(to top, rgba(0,0,0,0.6), transparent)',
+            WebkitMaskImage: 'linear-gradient(to top, rgba(0,0,0,0.6), transparent)',
+          }} />
+          {/* Ambient cyan glow */}
+          <div className="portfolio-glow absolute left-1/2 top-1/2 h-[600px] w-[600px] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-0"
+            style={{ background: 'radial-gradient(circle, rgba(0,212,255,0.12) 0%, rgba(0,212,255,0.04) 40%, transparent 70%)' }}
+          />
+        </div>
+
+        <div className="relative z-10 mx-auto max-w-6xl px-4 md:px-10">
+          {/* Section header */}
+          <div className="portfolio-header mb-12 flex flex-col items-center gap-2 opacity-0 md:mb-16 md:gap-3">
+            <span className="font-mono text-[10px] tracking-[0.3em] text-[#00d4ff]/60 uppercase">
+              {t("Portfolio.subtitle")}
+            </span>
+            <h2 className="font-bold text-2xl tracking-[0.15em] text-[#00d4ff] md:text-5xl">
+              {t("Portfolio.title")}
+            </h2>
+            <div className="portfolio-divider h-[1px] w-16 origin-center scale-x-0 bg-gradient-to-r from-transparent via-[#00d4ff]/50 to-transparent" />
+          </div>
+
+          {/* Project cards grid */}
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-8">
+            {/* Project 1: NoEsGratis */}
+            <a
+              href="https://noesgratis.es"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="portfolio-card group relative overflow-hidden rounded border border-[#00d4ff]/20 bg-[#0a1628]/80 p-6 opacity-0 backdrop-blur-sm transition-colors duration-500 hover:border-[#00d4ff]/60 md:p-8"
+              style={{ boxShadow: '0 0 15px rgba(0,212,255,0.08)' }}
+            >
+              {/* Card scan line */}
+              <div className="pointer-events-none absolute inset-0 bg-[repeating-linear-gradient(0deg,transparent,transparent_3px,rgba(0,212,255,0.015)_3px,rgba(0,212,255,0.015)_6px)]" />
+              {/* Top accent line */}
+              <div className="absolute left-0 right-0 top-0 h-[1px] bg-gradient-to-r from-transparent via-[#00d4ff]/40 to-transparent" />
+
+              <div className="relative z-10">
+                <span className="inline-block rounded border border-[#00d4ff]/30 px-2 py-0.5 font-mono text-[9px] tracking-[0.2em] text-[#00d4ff]/70 uppercase">
+                  {t("Portfolio.project1Type")}
+                </span>
+                <h3 className="mt-3 text-lg font-bold tracking-[0.05em] text-[#00d4ff] md:text-xl">
+                  {t("Portfolio.project1Name")}
+                </h3>
+                <p className="mt-2 font-mono text-[11px] leading-relaxed text-white/50 md:text-xs">
+                  {t("Portfolio.project1Desc")}
+                </p>
+                {/* Tech tags */}
+                <div className="mt-4 flex flex-wrap gap-2">
+                  {t("Portfolio.project1Tech").split(" · ").map((tech: string) => (
+                    <span key={tech} className="rounded bg-[#00d4ff]/8 px-2 py-0.5 font-mono text-[9px] text-[#00d4ff]/60">
+                      {tech}
+                    </span>
+                  ))}
+                </div>
+                {/* Visit link */}
+                <span className="mt-5 inline-flex items-center gap-1.5 font-mono text-[10px] tracking-[0.15em] text-[#00d4ff]/60 uppercase transition-colors duration-300 group-hover:text-[#00d4ff] md:text-[11px]">
+                  {t("Portfolio.visitSite")}
+                </span>
+              </div>
+            </a>
+
+            {/* Project 2: The Rehab Studio */}
+            <a
+              href="https://therehabstudio.es"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="portfolio-card group relative overflow-hidden rounded border border-[#00d4ff]/20 bg-[#0a1628]/80 p-6 opacity-0 backdrop-blur-sm transition-colors duration-500 hover:border-[#00d4ff]/60 md:p-8"
+              style={{ boxShadow: '0 0 15px rgba(0,212,255,0.08)' }}
+            >
+              {/* Card scan line */}
+              <div className="pointer-events-none absolute inset-0 bg-[repeating-linear-gradient(0deg,transparent,transparent_3px,rgba(0,212,255,0.015)_3px,rgba(0,212,255,0.015)_6px)]" />
+              {/* Top accent line */}
+              <div className="absolute left-0 right-0 top-0 h-[1px] bg-gradient-to-r from-transparent via-[#00d4ff]/40 to-transparent" />
+
+              <div className="relative z-10">
+                <span className="inline-block rounded border border-[#00d4ff]/30 px-2 py-0.5 font-mono text-[9px] tracking-[0.2em] text-[#00d4ff]/70 uppercase">
+                  {t("Portfolio.project2Type")}
+                </span>
+                <h3 className="mt-3 text-lg font-bold tracking-[0.05em] text-[#00d4ff] md:text-xl">
+                  {t("Portfolio.project2Name")}
+                </h3>
+                <p className="mt-2 font-mono text-[11px] leading-relaxed text-white/50 md:text-xs">
+                  {t("Portfolio.project2Desc")}
+                </p>
+                {/* Tech tags */}
+                <div className="mt-4 flex flex-wrap gap-2">
+                  {t("Portfolio.project2Tech").split(" · ").map((tech: string) => (
+                    <span key={tech} className="rounded bg-[#00d4ff]/8 px-2 py-0.5 font-mono text-[9px] text-[#00d4ff]/60">
+                      {tech}
+                    </span>
+                  ))}
+                </div>
+                {/* Visit link */}
+                <span className="mt-5 inline-flex items-center gap-1.5 font-mono text-[10px] tracking-[0.15em] text-[#00d4ff]/60 uppercase transition-colors duration-300 group-hover:text-[#00d4ff] md:text-[11px]">
+                  {t("Portfolio.visitSite")}
+                </span>
+              </div>
+            </a>
+          </div>
+
+          {/* CTA */}
+          <div className="portfolio-cta mt-12 flex flex-col items-center gap-3 opacity-0 md:mt-16">
+            <h3 className="text-center font-bold text-sm tracking-[0.1em] text-[#00d4ff]/80 md:text-lg">
+              {t("Portfolio.cta")}
+            </h3>
+            <a
+              href="#contacto"
+              onClick={(e) => {
+                e.preventDefault();
+                const el = document.querySelector("#contacto");
+                if (el) {
+                  gsap.to(window, { scrollTo: { y: el, offsetY: 80 }, duration: 1.2, ease: "power3.inOut" });
+                }
+              }}
+              className="portfolio-cta-btn mt-2 inline-block rounded border border-[#00d4ff]/40 px-6 py-2.5 font-mono text-[10px] tracking-[0.2em] text-[#00d4ff] uppercase transition-all duration-500 hover:border-[#00d4ff] hover:bg-[#00d4ff]/10 md:text-xs"
+              style={{ boxShadow: '0 0 20px rgba(0,212,255,0.1)' }}
+            >
+              {t("Hero.cta")}
+            </a>
+          </div>
+        </div>
+
+        {/* Corner decorations — cyan */}
+        <div className="portfolio-corner absolute left-6 top-6 opacity-0">
+          <div className="h-8 w-[1px] bg-gradient-to-b from-[#00d4ff]/40 to-transparent" />
+          <div className="absolute top-0 h-[1px] w-8 bg-gradient-to-r from-[#00d4ff]/40 to-transparent" />
+          <span className="absolute left-3 top-3 font-mono text-[9px] tracking-[0.3em] text-[#00d4ff]/50">{t("Portfolio.cornerSys")}</span>
+        </div>
+        <div className="portfolio-corner absolute right-6 top-6 opacity-0">
+          <div className="ml-auto h-8 w-[1px] bg-gradient-to-b from-[#00d4ff]/40 to-transparent" />
+          <div className="absolute right-0 top-0 h-[1px] w-8 bg-gradient-to-l from-[#00d4ff]/40 to-transparent" />
+          <span className="absolute right-3 top-3 font-mono text-[9px] tracking-[0.3em] text-[#00d4ff]/50">{t("Portfolio.cornerLabel")}</span>
+        </div>
+        <div className="portfolio-corner absolute bottom-6 left-6 opacity-0">
+          <div className="h-8 w-[1px] bg-gradient-to-t from-[#00d4ff]/40 to-transparent" />
+          <div className="absolute bottom-0 h-[1px] w-8 bg-gradient-to-r from-[#00d4ff]/40 to-transparent" />
+        </div>
+        <div className="portfolio-corner absolute bottom-6 right-6 opacity-0">
+          <div className="ml-auto h-8 w-[1px] bg-gradient-to-t from-[#00d4ff]/40 to-transparent" />
+          <div className="absolute bottom-0 right-0 h-[1px] w-8 bg-gradient-to-l from-[#00d4ff]/40 to-transparent" />
+        </div>
+      </section>
+
+      {/* ════════════════════════════════════════════
+          TEAM SECTION — Detective Case File / Tyrell Corp Dossier
           ════════════════════════════════════════════ */}
       <section id="equipo" className="team-section relative z-[5] h-screen overflow-hidden bg-black">
         <div className="team-inner absolute inset-0">
         {/* Content */}
-        <div className="relative z-10 flex h-full flex-col items-center justify-center px-4 md:px-10">
+        <div className="relative z-10 flex h-full flex-col items-center justify-center px-3 md:px-10">
           {/* Section header */}
-          <div className="team-header mb-3 flex flex-col items-center gap-2 opacity-0 md:mb-10 md:gap-3">
+          <div className="team-header mb-3 flex flex-col items-center gap-2 opacity-0 md:mb-8 md:gap-3">
             <span className="font-mono text-[10px] tracking-[0.3em] text-[#F2A900]/60 uppercase">
               {t("Team.subtitle")}
             </span>
@@ -1048,88 +1483,120 @@ export default function HomeClient() {
             <div className="team-divider h-[1px] w-16 origin-center scale-x-0 bg-gradient-to-r from-transparent via-[#F2A900]/50 to-transparent" />
           </div>
 
-          {/* Replicant card */}
-          <div className="team-card w-full max-w-3xl origin-center overflow-hidden rounded border border-[#F2A900]/20 bg-black/80 backdrop-blur-sm">
-            <div className="flex flex-row">
-              {/* Photo side */}
-              <div className="relative w-1/3 overflow-hidden md:w-2/5">
-                <img
-                  src="/ruben-jarne.jpg"
-                  alt="Rubén Jarné Cabañero"
-                  className="team-photo-img h-full w-full object-cover opacity-0"
-                />
-                {/* Scan lines overlay */}
-                <div className="pointer-events-none absolute inset-0 bg-[repeating-linear-gradient(0deg,transparent,transparent_2px,rgba(0,0,0,0.12)_2px,rgba(0,0,0,0.12)_4px)]" />
-                {/* Amber tint */}
-                <div className="pointer-events-none absolute inset-0 bg-[#F2A900]/8 mix-blend-overlay" />
-                {/* Scan sweep bar */}
-                <div className="team-photo-scan pointer-events-none absolute left-0 right-0 h-1 bg-[#F2A900]/60 shadow-[0_0_20px_4px_rgba(242,169,0,0.4)]" style={{ top: 0 }} />
+          {/* Detective dossier — case file card */}
+          <div className="team-dossier relative w-full max-w-4xl opacity-0">
+            {/* Cork board / manila folder background */}
+            <div className="relative rounded-sm border border-[#F2A900]/15 bg-gradient-to-br from-[#1a1408]/90 via-[#0d0a04]/95 to-[#1a1408]/90 p-4 shadow-[inset_0_0_60px_rgba(242,169,0,0.03)] md:p-8">
+              {/* Paper texture overlay */}
+              <div className="pointer-events-none absolute inset-0 rounded-sm opacity-[0.03]" style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E\")", backgroundRepeat: "repeat", backgroundSize: "128px 128px" }} />
+
+              {/* Folder tab at top */}
+              <div className="absolute -top-3 left-6 rounded-t border border-b-0 border-[#F2A900]/20 bg-[#1a1408] px-4 py-1 md:left-10">
+                <span className="font-mono text-[8px] tracking-[0.3em] text-[#F2A900]/50 uppercase md:text-[10px]">{t("Team.caseFile")}: NEXUS-7</span>
               </div>
 
-              {/* Data side */}
-              <div className="flex flex-1 flex-col justify-center p-3 font-mono md:p-8">
-                {/* Header */}
-                <div className="team-data-line mb-2 border-b border-[#F2A900]/20 pb-2 md:mb-4 md:pb-3">
-                  <span className="text-[8px] tracking-[0.2em] text-[#F2A900]/40 md:text-[10px]">{t("Team.model")}</span>
-                  <h3 className="mt-0.5 text-sm font-bold tracking-[0.05em] text-[#F2A900] md:mt-1 md:text-xl">RUBÉN JARNÉ CABAÑERO</h3>
+              {/* CLASSIFIED stamp */}
+              <div className="team-classified pointer-events-none absolute right-4 top-4 z-20 opacity-0 md:right-8 md:top-6">
+                <span className="block border-2 border-[#e50914]/40 px-3 py-1 font-mono text-sm font-bold tracking-[0.3em] text-[#e50914]/35 uppercase md:px-4 md:py-1.5 md:text-lg" style={{ transform: "rotate(-12deg)" }}>
+                  {t("Team.classified")}
+                </span>
+              </div>
+
+              {/* Main content */}
+              <div className="mt-2 flex flex-col gap-4 md:mt-4 md:flex-row md:gap-8">
+
+                {/* LEFT: Photo "pinned" to the board */}
+                <div className="team-photo-wrapper relative mx-auto flex-shrink-0 opacity-0 md:mx-0" style={{ width: "clamp(140px, 30vw, 240px)" }}>
+                  <div className="absolute -inset-2 rounded-sm bg-[#d4c9a8]/[0.06] shadow-[2px_3px_12px_rgba(0,0,0,0.6)] md:-inset-3" />
+                  {/* Pushpin */}
+                  <div className="team-pushpin absolute -top-2 left-1/2 z-30 -translate-x-1/2 opacity-0 md:-top-3">
+                    <div className="relative">
+                      <div className="h-3 w-3 rounded-full bg-[#e50914] shadow-[0_0_8px_rgba(229,9,20,0.5),0_2px_4px_rgba(0,0,0,0.8)] md:h-4 md:w-4" />
+                      <div className="absolute left-1/2 top-full h-1 w-1 -translate-x-1/2 rounded-full bg-black/40" />
+                    </div>
+                  </div>
+                  {/* Photo */}
+                  <div className="relative overflow-hidden rounded-sm">
+                    <img
+                      src="/ruben-jarne.jpg"
+                      alt="Rubén Jarné Cabañero"
+                      className="team-photo-img relative z-10 h-auto w-full object-cover opacity-0"
+                      style={{ aspectRatio: "3/4" }}
+                    />
+                    <div className="pointer-events-none absolute inset-0 z-20 bg-[repeating-linear-gradient(0deg,transparent,transparent_2px,rgba(0,0,0,0.1)_2px,rgba(0,0,0,0.1)_4px)]" />
+                    <div className="pointer-events-none absolute inset-0 z-20 bg-[#F2A900]/[0.06] mix-blend-overlay" />
+                    <div className="team-photo-scan pointer-events-none absolute left-0 right-0 z-20 h-1 bg-[#F2A900]/60 shadow-[0_0_20px_4px_rgba(242,169,0,0.4)]" style={{ top: 0 }} />
+                  </div>
+                  <div className="pointer-events-none absolute -bottom-1 -right-1 z-20 h-5 w-8 bg-[#F2A900]/[0.04] md:-bottom-1.5 md:-right-1.5 md:h-6 md:w-10" style={{ transform: "rotate(25deg)" }} />
                 </div>
 
-                {/* Data fields */}
-                <div className="space-y-1.5 text-[10px] md:space-y-2.5 md:text-xs">
-                  <div className="team-data-line flex gap-1 md:gap-2">
-                    <span className="shrink-0 text-[#F2A900]/50">{t("Team.inception")}:</span>
-                    <span className="text-white/80">2019</span>
+                {/* RIGHT: Case file data */}
+                <div className="flex flex-1 flex-col font-mono">
+                  <div className="team-case-header mb-3 border-b border-[#F2A900]/20 pb-2 opacity-0 md:mb-4 md:pb-3">
+                    <span className="text-[8px] tracking-[0.2em] text-[#F2A900]/35 md:text-[10px]">{t("Team.model")}</span>
+                    <h3 className="mt-0.5 text-sm font-bold tracking-[0.08em] text-[#F2A900] md:mt-1 md:text-xl">RUBÉN JARNÉ CABAÑERO</h3>
+                    <div className="team-connector mt-2 hidden h-[1px] origin-left scale-x-0 bg-gradient-to-r from-[#F2A900]/30 to-transparent md:block" />
                   </div>
-                  <div className="team-data-line flex gap-1 md:gap-2">
-                    <span className="shrink-0 text-[#F2A900]/50">{t("Team.function")}:</span>
-                    <span className="text-white/80">{t("Team.functionValue")}</span>
-                  </div>
-                  <div className="team-data-line flex gap-1 md:gap-2">
-                    <span className="shrink-0 text-[#F2A900]/50">{t("Team.specializations")}:</span>
-                    <span className="text-white/80">{t("Team.specList")}</span>
-                  </div>
-                  <div className="team-data-line flex gap-1 md:gap-2">
-                    <span className="shrink-0 text-[#F2A900]/50">{t("Team.priorAssignments")}:</span>
-                    <span className="text-white/80">{t("Team.assignments")}</span>
-                  </div>
-                  <div className="team-data-line flex gap-1 md:gap-2">
-                    <span className="shrink-0 text-[#F2A900]/50">{t("Team.additionalProtocols")}:</span>
-                    <span className="text-white/80">{t("Team.protocols")}</span>
-                  </div>
-                </div>
 
-                {/* Bio */}
-                <div className="team-bio mt-2 border-t border-[#F2A900]/10 pt-2 opacity-0 md:mt-4 md:pt-3">
-                  <p className="text-[10px] italic text-white/50 md:text-xs">&quot;{t("Team.bio")}&quot;</p>
-                </div>
+                  <div className="space-y-1.5 text-[10px] md:space-y-2 md:text-xs">
+                    <div className="team-data-line flex gap-1 opacity-0 md:gap-2">
+                      <span className="shrink-0 text-[#F2A900]/50">{t("Team.inception")}:</span>
+                      <span className="text-white/70"><span className="inline-block bg-[#F2A900]/10 px-0.5 text-[#F2A900]/30">████</span> 2019</span>
+                    </div>
+                    <div className="team-data-line flex gap-1 opacity-0 md:gap-2">
+                      <span className="shrink-0 text-[#F2A900]/50">{t("Team.function")}:</span>
+                      <span className="text-white/70">{t("Team.functionValue")}</span>
+                    </div>
+                    <div className="team-data-line flex gap-1 opacity-0 md:gap-2">
+                      <span className="shrink-0 text-[#F2A900]/50">{t("Team.specializations")}:</span>
+                      <span className="text-white/70">{t("Team.specList")}</span>
+                    </div>
+                    <div className="team-data-line flex gap-1 opacity-0 md:gap-2">
+                      <span className="shrink-0 text-[#F2A900]/50">{t("Team.priorAssignments")}:</span>
+                      <span className="text-white/70">{t("Team.assignments")}</span>
+                    </div>
+                    <div className="team-data-line flex gap-1 opacity-0 md:gap-2">
+                      <span className="shrink-0 text-[#F2A900]/50">{t("Team.additionalProtocols")}:</span>
+                      <span className="text-white/70">{t("Team.protocols")}</span>
+                    </div>
+                  </div>
 
-                {/* Social links */}
-                <div className="mt-2 flex gap-4 md:mt-4">
-                  <a
-                    href="https://github.com/rubenbros"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="team-social-link font-mono text-[9px] tracking-[0.15em] text-[#F2A900]/50 uppercase transition-colors duration-300 hover:text-[#F2A900] opacity-0 md:text-[10px]"
-                  >
-                    GitHub ↗
-                  </a>
-                  <a
-                    href="https://www.linkedin.com/in/rubenbros"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="team-social-link font-mono text-[9px] tracking-[0.15em] text-[#F2A900]/50 uppercase transition-colors duration-300 hover:text-[#F2A900] opacity-0 md:text-[10px]"
-                  >
-                    LinkedIn ↗
-                  </a>
+                  <div className="my-2 h-[1px] w-full bg-[repeating-linear-gradient(90deg,#F2A900_0px,#F2A900_4px,transparent_4px,transparent_8px)] opacity-15 md:my-3" />
+
+                  <div className="team-notes opacity-0">
+                    <span className="mb-1 block text-[8px] tracking-[0.25em] text-[#F2A900]/35 uppercase md:text-[9px]">{t("Team.notes")}:</span>
+                    <p className="text-[10px] leading-relaxed text-white/45 italic md:text-xs">&quot;{t("Team.bio")}&quot;</p>
+                  </div>
+
+                  <div className="mt-2 md:mt-3">
+                    <span className="mb-1.5 block text-[8px] tracking-[0.25em] text-[#F2A900]/35 uppercase md:text-[9px]">{t("Team.externalLinks")}:</span>
+                    <div className="flex gap-4">
+                      <a href="https://github.com/rubenbros" target="_blank" rel="noopener noreferrer"
+                        className="team-social-link font-mono text-[9px] tracking-[0.15em] text-[#F2A900]/40 uppercase opacity-0 transition-colors duration-300 hover:text-[#F2A900] md:text-[10px]">
+                        [GITHUB] ↗
+                      </a>
+                      <a href="https://www.linkedin.com/in/rubenbros" target="_blank" rel="noopener noreferrer"
+                        className="team-social-link font-mono text-[9px] tracking-[0.15em] text-[#F2A900]/40 uppercase opacity-0 transition-colors duration-300 hover:text-[#F2A900] md:text-[10px]">
+                        [LINKEDIN] ↗
+                      </a>
+                    </div>
+                  </div>
                 </div>
+              </div>
+
+              {/* Bottom edge decoration */}
+              <div className="mt-4 flex items-center justify-between md:mt-6">
+                <div className="h-[1px] w-3 bg-[#F2A900]/15" />
+                <div className="h-[1px] flex-1 bg-[repeating-linear-gradient(90deg,#F2A900_0px,#F2A900_1px,transparent_1px,transparent_6px)] opacity-10 mx-2" />
+                <div className="h-[1px] w-3 bg-[#F2A900]/15" />
               </div>
             </div>
           </div>
 
-          {/* Blade Runner quote */}
-          <div className="team-quote mt-4 opacity-0 md:mt-8">
-            <p className="text-center font-mono text-[9px] italic tracking-[0.1em] text-[#F2A900]/25 md:text-xs">
-              {t("Team.quote")}
+          {/* Quote — handwritten annotation style */}
+          <div className="team-quote mt-4 opacity-0 md:mt-6">
+            <p className="text-center font-mono text-[9px] tracking-[0.08em] text-[#F2A900]/20 italic md:text-xs" style={{ fontStyle: "italic" }}>
+              &mdash; {t("Team.quote")}
             </p>
           </div>
         </div>
@@ -1160,8 +1627,14 @@ export default function HomeClient() {
           HAL 9000 SECTION
           ════════════════════════════════════════════ */}
       <section id="contacto" className="hal-section relative z-[6] h-screen overflow-hidden bg-black">
-        {/* Pre-entrance glow */}
-        {/* Fadeout overlay — covers content before unpin */}
+        {/* CRT power-on overlay — starts fully black */}
+        <div className="hal-power-overlay pointer-events-none absolute inset-0 z-[60] bg-black" />
+        {/* CRT scan line — horizontal white line that expands */}
+        <div className="hal-crt-line pointer-events-none absolute left-0 right-0 top-1/2 z-[61] h-[2px] origin-center -translate-y-1/2 scale-x-0 bg-white/90 shadow-[0_0_20px_4px_rgba(255,255,255,0.4)]" />
+        {/* Brief white flash during power-on */}
+        <div className="hal-power-flash pointer-events-none absolute inset-0 z-[62] bg-white opacity-0" />
+        {/* Red glow that intensifies during power-on */}
+        <div className="hal-power-glow pointer-events-none absolute left-1/2 top-1/2 z-[1] h-[400px] w-[400px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,_rgba(229,9,20,0.15)_0%,_transparent_70%)] opacity-0" />
         {/* HAL eye — centered */}
         <div className="hal-content flex h-full items-center justify-center">
           <div className="flex flex-col items-center gap-6 md:gap-10">
@@ -1198,70 +1671,275 @@ export default function HomeClient() {
       <div className="final-fade-spacer relative h-[8vh] bg-black" />
 
       {/* ════════════════════════════════════════════
-          FOOTER
+          FOOTER — Terminator 2 Lava Scene
           ════════════════════════════════════════════ */}
-      <footer className="relative border-t border-white/5 bg-black px-6 py-12 md:px-10">
-        <div className="mx-auto max-w-6xl">
-          <div className="grid grid-cols-1 gap-10 md:grid-cols-3">
-            {/* Column 1: Logo + description */}
-            <div>
-              <div className="mb-4 flex items-center gap-3">
-                <img src="/logo-small.png" alt="T800 Labs" className="h-8" />
-                <span className="text-lg font-bold text-white">T800<span className="text-[#e50914]">Labs</span></span>
-              </div>
-              <p className="font-mono text-[11px] leading-relaxed text-white/40">
-                {t("Footer.description")}
-              </p>
-            </div>
+      <footer className="footer-section relative z-[999] bg-black">
 
-            {/* Column 2: Contact */}
-            <div>
-              <h4 className="mb-4 font-mono text-[10px] tracking-[0.2em] text-white/60 uppercase">{t("Footer.contact")}</h4>
-              <div className="space-y-2 font-mono text-[11px] text-white/40">
-                <a
-                  href="mailto:ruben.jarne.cabanero@gmail.com"
-                  className="block transition-colors duration-300 hover:text-[#e50914]"
-                >
-                  ruben.jarne.cabanero@gmail.com
-                </a>
-                <a
-                  href="https://wa.me/34646515267"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="block transition-colors duration-300 hover:text-[#e50914]"
-                >
-                  +34 646 515 267
-                </a>
-              </div>
-            </div>
+        {/* Heat shimmer / glow above lava */}
+        <div className="footer-heat-shimmer pointer-events-none relative h-16 overflow-hidden">
+          <div
+            className="absolute inset-0"
+            style={{
+              background: "linear-gradient(to bottom, transparent 0%, rgba(255,69,0,0.03) 30%, rgba(255,140,0,0.08) 60%, rgba(255,69,0,0.15) 100%)",
+            }}
+          />
+          {/* Bright heat line at the boundary */}
+          <div
+            className="footer-heat-line absolute bottom-0 left-0 right-0 h-[2px]"
+            style={{
+              background: "linear-gradient(90deg, transparent 0%, #ff4500 15%, #fbbf24 35%, #ff8c00 50%, #fbbf24 65%, #ff4500 85%, transparent 100%)",
+              boxShadow: "0 0 20px 4px rgba(255,140,0,0.5), 0 0 60px 10px rgba(255,69,0,0.3)",
+            }}
+          />
+        </div>
 
-            {/* Column 3: Social */}
-            <div>
-              <h4 className="mb-4 font-mono text-[10px] tracking-[0.2em] text-white/60 uppercase">{t("Footer.followUs")}</h4>
-              <div className="flex gap-5">
-                <a
-                  href="https://github.com/rubenbros"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="font-mono text-[11px] text-white/40 transition-colors duration-300 hover:text-[#e50914]"
-                >
-                  GitHub
-                </a>
-                <a
-                  href="https://www.linkedin.com/in/rubenbros"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="font-mono text-[11px] text-white/40 transition-colors duration-300 hover:text-[#e50914]"
-                >
-                  LinkedIn
-                </a>
-              </div>
-            </div>
+        {/* Molten steel / lava band */}
+        <div className="footer-lava-container relative overflow-hidden" style={{ height: "150px" }}>
+          {/* Lava layer 1 — deep base */}
+          <div
+            className="footer-lava-layer1 absolute inset-0"
+            style={{
+              background: "linear-gradient(90deg, #8b1a00 0%, #dc2626 15%, #ff4500 30%, #ff8c00 45%, #fbbf24 55%, #ff8c00 65%, #ff4500 80%, #dc2626 90%, #8b1a00 100%)",
+              backgroundSize: "200% 100%",
+            }}
+          />
+          {/* Lava layer 2 — bright flowing overlay */}
+          <div
+            className="footer-lava-layer2 absolute inset-0"
+            style={{
+              background: "radial-gradient(ellipse 40% 60% at 20% 50%, rgba(251,191,36,0.6) 0%, transparent 70%), radial-gradient(ellipse 35% 50% at 60% 40%, rgba(255,140,0,0.5) 0%, transparent 70%), radial-gradient(ellipse 30% 55% at 80% 60%, rgba(251,191,36,0.4) 0%, transparent 70%)",
+              backgroundSize: "200% 100%",
+            }}
+          />
+          {/* Lava layer 3 — surface highlights */}
+          <div
+            className="footer-lava-layer3 absolute inset-0"
+            style={{
+              background: "radial-gradient(ellipse 20% 30% at 30% 30%, rgba(255,255,200,0.3) 0%, transparent 70%), radial-gradient(ellipse 15% 25% at 70% 50%, rgba(255,255,200,0.25) 0%, transparent 70%), radial-gradient(ellipse 25% 35% at 50% 70%, rgba(255,200,100,0.2) 0%, transparent 70%)",
+              backgroundSize: "200% 100%",
+            }}
+          />
+          {/* Dark patches for depth */}
+          <div
+            className="footer-lava-dark absolute inset-0"
+            style={{
+              background: "radial-gradient(ellipse 15% 40% at 10% 60%, rgba(50,0,0,0.5) 0%, transparent 70%), radial-gradient(ellipse 12% 35% at 45% 80%, rgba(50,0,0,0.4) 0%, transparent 70%), radial-gradient(ellipse 18% 30% at 90% 40%, rgba(50,0,0,0.45) 0%, transparent 70%)",
+              backgroundSize: "200% 100%",
+            }}
+          />
+          {/* Bottom fade to dark */}
+          <div
+            className="absolute bottom-0 left-0 right-0 h-12"
+            style={{
+              background: "linear-gradient(to bottom, transparent, rgba(30,5,0,0.6) 50%, rgba(15,2,0,0.9) 100%)",
+            }}
+          />
+
+          {/* Lava bubble particles */}
+          {[0,1,2,3,4,5].map((i) => (
+            <div
+              key={`lava-bubble-${i}`}
+              className={`footer-lava-bubble footer-lava-bubble-${i} absolute rounded-full opacity-0`}
+              style={{
+                width: `${6 + (i % 3) * 4}px`,
+                height: `${6 + (i % 3) * 4}px`,
+                left: `${12 + i * 16}%`,
+                bottom: "30%",
+                background: "radial-gradient(circle, #fbbf24 0%, #ff8c00 50%, #ff4500 100%)",
+                boxShadow: "0 0 8px 2px rgba(251,191,36,0.6)",
+              }}
+            />
+          ))}
+
+          {/* Terminator arm with thumbs up (SVG) */}
+          <div className="footer-t800-arm absolute left-1/2 -translate-x-1/2" style={{ bottom: "10px", width: "80px", height: "170px" }}>
+            <svg
+              viewBox="0 0 80 170"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-full w-full"
+              style={{ filter: "drop-shadow(0 0 12px rgba(255,140,0,0.4))" }}
+            >
+              <defs>
+                {/* Chrome metallic gradient */}
+                <linearGradient id="arm-chrome" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stopColor="#e8e8e8" />
+                  <stop offset="25%" stopColor="#c0c0c0" />
+                  <stop offset="50%" stopColor="#9a9a9a" />
+                  <stop offset="70%" stopColor="#c0c0c0" />
+                  <stop offset="100%" stopColor="#6a6a6a" />
+                </linearGradient>
+                {/* Lava reflection on lower arm */}
+                <linearGradient id="arm-lava-reflect" x1="0.5" y1="0" x2="0.5" y2="1">
+                  <stop offset="0%" stopColor="transparent" />
+                  <stop offset="50%" stopColor="rgba(255,100,0,0.15)" />
+                  <stop offset="100%" stopColor="rgba(255,69,0,0.5)" />
+                </linearGradient>
+                {/* Fade mask — arm disappears into lava at the bottom */}
+                <linearGradient id="arm-fade" x1="0.5" y1="0" x2="0.5" y2="1">
+                  <stop offset="0%" stopColor="white" />
+                  <stop offset="75%" stopColor="white" />
+                  <stop offset="95%" stopColor="black" />
+                </linearGradient>
+                <mask id="arm-mask">
+                  <rect x="0" y="0" width="80" height="170" fill="url(#arm-fade)" />
+                </mask>
+              </defs>
+              <g mask="url(#arm-mask)">
+                {/* Forearm */}
+                <path
+                  d="M32 170 L32 70 Q32 62 36 58 L36 58 L44 58 Q48 62 48 70 L48 170 Z"
+                  fill="url(#arm-chrome)"
+                  stroke="#555"
+                  strokeWidth="0.5"
+                />
+                {/* Wrist taper */}
+                <path
+                  d="M34 70 L34 58 Q34 55 36 53 L44 53 Q46 55 46 58 L46 70 Z"
+                  fill="url(#arm-chrome)"
+                  stroke="#555"
+                  strokeWidth="0.5"
+                />
+                {/* Fist / palm */}
+                <path
+                  d="M30 55 Q28 50 28 44 Q28 36 34 33 L46 33 Q52 36 52 44 Q52 50 50 55 Z"
+                  fill="url(#arm-chrome)"
+                  stroke="#555"
+                  strokeWidth="0.5"
+                />
+                {/* Curled fingers — index */}
+                <path
+                  d="M30 44 Q27 42 27 38 Q27 34 30 33 L34 33"
+                  fill="none"
+                  stroke="#999"
+                  strokeWidth="2.5"
+                  strokeLinecap="round"
+                />
+                {/* Curled fingers — middle */}
+                <path
+                  d="M32 42 Q29 39 29 35 Q29 32 32 31"
+                  fill="none"
+                  stroke="#999"
+                  strokeWidth="2.5"
+                  strokeLinecap="round"
+                />
+                {/* Curled fingers — ring */}
+                <path
+                  d="M48 42 Q51 39 51 35 Q51 32 48 31"
+                  fill="none"
+                  stroke="#999"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                />
+                {/* Curled fingers — pinky */}
+                <path
+                  d="M50 44 Q53 42 53 38 Q53 34 50 33"
+                  fill="none"
+                  stroke="#888"
+                  strokeWidth="1.8"
+                  strokeLinecap="round"
+                />
+                {/* Thumb — extended upward */}
+                <path
+                  d="M30 44 Q26 43 24 38 Q22 30 24 20 Q25 14 28 10 Q31 7 33 8 Q36 9 36 14 L35 30 Q34 38 32 42"
+                  fill="url(#arm-chrome)"
+                  stroke="#666"
+                  strokeWidth="0.8"
+                />
+                {/* Thumb highlight */}
+                <path
+                  d="M28 14 Q29 10 31 9"
+                  fill="none"
+                  stroke="rgba(255,255,255,0.4)"
+                  strokeWidth="1"
+                  strokeLinecap="round"
+                />
+                {/* Mechanical joint lines on forearm */}
+                <line x1="34" y1="80" x2="46" y2="80" stroke="#666" strokeWidth="0.5" />
+                <line x1="34" y1="95" x2="46" y2="95" stroke="#666" strokeWidth="0.5" />
+                <line x1="34" y1="110" x2="46" y2="110" stroke="#666" strokeWidth="0.5" />
+                {/* Chrome highlight streak */}
+                <line x1="38" y1="60" x2="38" y2="130" stroke="rgba(255,255,255,0.15)" strokeWidth="2" />
+                {/* Lava reflection overlay */}
+                <rect x="30" y="0" width="22" height="170" fill="url(#arm-lava-reflect)" />
+                {/* Knuckle details */}
+                <circle cx="33" cy="36" r="1.5" fill="#777" />
+                <circle cx="40" cy="34" r="1.5" fill="#777" />
+                <circle cx="47" cy="36" r="1.5" fill="#777" />
+              </g>
+            </svg>
           </div>
+        </div>
 
-          {/* Copyright */}
-          <div className="mt-10 border-t border-white/5 pt-6 text-center">
-            <span className="font-mono text-[10px] text-white/20">{t("Footer.copyright")}</span>
+        {/* Footer content — below lava */}
+        <div
+          className="relative px-6 py-12 md:px-10"
+          style={{
+            background: "linear-gradient(to bottom, #1a0500 0%, #0d0200 20%, #050100 40%, #000000 100%)",
+          }}
+        >
+          <div className="mx-auto max-w-6xl">
+            <div className="grid grid-cols-1 gap-10 md:grid-cols-3">
+              {/* Column 1: Logo + description */}
+              <div>
+                <div className="mb-4 flex items-center gap-3">
+                  <img src="/logo-small.png" alt="T800 Labs" className="h-8" />
+                  <span className="text-lg font-bold text-white">T800<span className="text-[#e50914]">Labs</span></span>
+                </div>
+                <p className="font-mono text-[11px] leading-relaxed text-white/40">
+                  {t("Footer.description")}
+                </p>
+              </div>
+
+              {/* Column 2: Contact */}
+              <div>
+                <h4 className="mb-4 font-mono text-[10px] tracking-[0.2em] text-white/60 uppercase">{t("Footer.contact")}</h4>
+                <div className="space-y-2 font-mono text-[11px] text-white/40">
+                  <a
+                    href="mailto:ruben.jarne.cabanero@gmail.com"
+                    className="block transition-colors duration-300 hover:text-[#e50914]"
+                  >
+                    ruben.jarne.cabanero@gmail.com
+                  </a>
+                  <a
+                    href="https://wa.me/34646515267"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block transition-colors duration-300 hover:text-[#e50914]"
+                  >
+                    +34 646 515 267
+                  </a>
+                </div>
+              </div>
+
+              {/* Column 3: Social */}
+              <div>
+                <h4 className="mb-4 font-mono text-[10px] tracking-[0.2em] text-white/60 uppercase">{t("Footer.followUs")}</h4>
+                <div className="flex gap-5">
+                  <a
+                    href="https://github.com/rubenbros"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="font-mono text-[11px] text-white/40 transition-colors duration-300 hover:text-[#e50914]"
+                  >
+                    GitHub
+                  </a>
+                  <a
+                    href="https://www.linkedin.com/in/rubenbros"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="font-mono text-[11px] text-white/40 transition-colors duration-300 hover:text-[#e50914]"
+                  >
+                    LinkedIn
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            {/* Copyright */}
+            <div className="mt-10 border-t border-white/5 pt-6 text-center">
+              <span className="font-mono text-[10px] text-white/20">{t("Footer.copyright")}</span>
+            </div>
           </div>
         </div>
       </footer>

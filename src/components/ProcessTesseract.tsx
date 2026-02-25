@@ -12,6 +12,13 @@ const GAPS: [number, number][] = [
   [1, 1], [4, 0], [6, 2], [2, 3], [5, 4],
 ];
 const WORMHOLE_RINGS = 12;
+const WORMHOLE_STARS = 50;
+
+/* Deterministic pseudo-random from index (no Math.random per render) */
+function seededValue(index: number, seed: number): number {
+  const x = Math.sin(index * 9301 + seed * 4973) * 49297;
+  return x - Math.floor(x); // 0..1
+}
 
 const STEP_IMAGES = [
   "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&q=80",
@@ -162,6 +169,41 @@ export default function ProcessTesseract() {
         { opacity: 0 },
         { opacity: 1, duration: 0.3 }, 0);
 
+      // Stars: appear, then get pulled toward center and stretch
+      const starEls = sectionRef.current?.querySelectorAll(".tess-star");
+      if (starEls) {
+        starEls.forEach((star, i) => {
+          const el = star as HTMLElement;
+          // Read the deterministic position from inline style
+          const startLeft = parseFloat(el.style.left);
+          const startTop = parseFloat(el.style.top);
+          // Compute pull direction toward center (50%, 50%)
+          const dx = 50 - startLeft;
+          const dy = 50 - startTop;
+          // Stagger the star appearance slightly
+          const delay = 0.05 + seededValue(i, 10) * 0.4;
+
+          // Phase 1: Stars fade in at their starting positions
+          pt.fromTo(el,
+            { opacity: 0 },
+            { opacity: 1, duration: 0.5, ease: "power1.out" },
+            delay,
+          );
+
+          // Phase 2: Stars get pulled toward center and stretch into streaks
+          pt.to(el, {
+            x: `${dx * 0.9}vw`,  // pull ~90% toward center
+            y: `${dy * 0.9}vh`,
+            scaleY: 8 + seededValue(i, 11) * 12,  // stretch 8-20x vertically
+            scaleX: 0.5,  // squeeze horizontally
+            rotation: Math.atan2(dy, dx) * (180 / Math.PI) + 90, // rotate to point toward center
+            opacity: 0,
+            duration: 2.0,
+            ease: "power3.in",
+          }, 0.8 + seededValue(i, 12) * 0.4);
+        });
+      }
+
       pt.fromTo(".tess-ring",
         { scale: 0, opacity: 0 },
         {
@@ -220,12 +262,7 @@ export default function ProcessTesseract() {
         5.5,
       );
 
-      // ═══════════════════════════════════════
-      // FADE TO BLACK (end of pin — no blur)
-      // ═══════════════════════════════════════
-      pt.to(".process-inner", {
-        opacity: 0, duration: 1.2,
-      }, totalDur - 1.2);
+      // (fade-to-black removed — process section stays visible as it unpins)
 
       // ── ambient loops ──
       gsap.to(".tess-ambient", {
@@ -252,6 +289,39 @@ export default function ProcessTesseract() {
 
       {/* ═══ WORMHOLE TUNNEL ═══ */}
       <div className="tess-wormhole pointer-events-none absolute inset-0 z-40 flex items-center justify-center opacity-0">
+        {/* Stars — behind rings (rendered first = lower in stacking) */}
+        {Array.from({ length: WORMHOLE_STARS }).map((_, i) => {
+          // Deterministic position spread across viewport (rounded to avoid hydration mismatch)
+          const r = (v: number, d = 2) => Math.round(v * (10 ** d)) / (10 ** d);
+          const angle = seededValue(i, 1) * Math.PI * 2;
+          const radius = 15 + seededValue(i, 2) * 40; // 15-55% from center
+          const x = r(50 + Math.cos(angle) * radius);
+          const y = r(50 + Math.sin(angle) * radius);
+          const size = r(2 + seededValue(i, 3)); // 2-3px
+          // Mix golden and warm white
+          const isGolden = seededValue(i, 4) > 0.5;
+          const alpha = r(isGolden ? 0.4 + seededValue(i, 5) * 0.3 : 0.5 + seededValue(i, 6) * 0.3, 3);
+          const color = isGolden
+            ? `rgba(212,160,23,${alpha})`
+            : `rgba(255,255,255,${alpha})`;
+          const glow = r(2 + seededValue(i, 7) * 3);
+
+          return (
+            <div
+              key={`star-${i}`}
+              className="tess-star absolute rounded-full opacity-0"
+              style={{
+                width: `${size}px`,
+                height: `${size}px`,
+                backgroundColor: color,
+                left: `${x}%`,
+                top: `${y}%`,
+                zIndex: 0, // behind rings
+                boxShadow: `0 0 ${glow}px ${color}`,
+              }}
+            />
+          );
+        })}
         {/* Concentric rings */}
         {Array.from({ length: WORMHOLE_RINGS }).map((_, i) => {
           const size = 60 + i * 80;
