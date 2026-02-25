@@ -424,39 +424,36 @@ export default function HomeClient() {
       bt.to(".blood-drip", { backgroundColor: "#000000", duration: 0.4, ease: "power2.in" }, 26);
 
       // ═══════════════════════════════════════
-      // MANIFESTO SECTION — Statement reveal
+      // MANIFESTO — Fixed overlay during Bond→Services gap
       // ═══════════════════════════════════════
-      // Manifesto — scroll-through with scrub animation (no pin, no gap)
+      // Manifesto fades in at end of Bond pin (during blood→black)
       const mft = gsap.timeline({
         scrollTrigger: {
-          trigger: ".manifesto-section",
-          start: "top 80%",
-          end: "bottom 20%",
+          trigger: ".bond-section",
+          start: "bottom-=400 top",
+          end: "bottom top",
           scrub: true,
         },
       });
-
-      mft.fromTo(".manifesto-line-1",
-        { opacity: 0, y: 20 },
-        { opacity: 1, y: 0, duration: 0.3, ease: "power2.out" }, 0);
-
-      mft.fromTo(".manifesto-line-2",
-        { opacity: 0, y: 20 },
-        { opacity: 1, y: 0, duration: 0.3, ease: "power2.out" }, 0.15);
-
-      mft.to(".manifesto-divider",
-        { width: "120px", duration: 0.2, ease: "power3.inOut" }, 0.25);
-
-      mft.fromTo(".manifesto-line-3",
-        { opacity: 0, y: 20 },
-        { opacity: 1, y: 0, duration: 0.3, ease: "power2.out" }, 0.3);
-
+      mft.fromTo(".manifesto-overlay", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 0);
+      mft.fromTo(".manifesto-line-1", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 0.1);
+      mft.fromTo(".manifesto-line-2", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 0.25);
+      mft.to(".manifesto-divider", { width: "120px", duration: 0.2, ease: "power3.inOut" }, 0.35);
+      mft.fromTo(".manifesto-line-3", { opacity: 0 }, { opacity: 1, duration: 0.3 }, 0.4);
       mft.fromTo(".manifesto-line-3",
         { textShadow: "0 0 0px rgba(229,9,20,0)" },
-        { textShadow: "0 0 30px rgba(229,9,20,0.5)", duration: 0.3, ease: "power2.inOut" }, 0.5);
+        { textShadow: "0 0 30px rgba(229,9,20,0.5)", duration: 0.3 }, 0.6);
 
-      // Hold visible through most of scroll range
-      mft.to(".manifesto-content", { opacity: 1, duration: 0.2 }, 0.6);
+      // Manifesto fades out as Services enters
+      gsap.to(".manifesto-overlay", {
+        opacity: 0,
+        scrollTrigger: {
+          trigger: ".services-section",
+          start: "top 80%",
+          end: "top 30%",
+          scrub: true,
+        },
+      });
 
       // ═══════════════════════════════════════
       // SERVICES SECTION — Matrix rain + cards
@@ -469,8 +466,8 @@ export default function HomeClient() {
           scrollTrigger: { trigger: ".services-section", start: "top bottom", end: "top 30%", scrub: true },
         });
       gsap.fromTo(".services-header",
-        { opacity: 0, y: 20 },
-        { opacity: 1, y: 0, ease: "power2.out",
+        { opacity: 0 },
+        { opacity: 1, ease: "power2.out",
           scrollTrigger: { trigger: ".services-section", start: "top bottom", end: "top 20%", scrub: true },
         });
       gsap.to(".services-divider",
@@ -535,8 +532,8 @@ export default function HomeClient() {
 
       // Pre-reveal: header + corners appear as section scrolls into viewport
       gsap.fromTo(".team-header",
-        { opacity: 0, y: 30 },
-        { opacity: 1, y: 0, ease: "power2.out",
+        { opacity: 0 },
+        { opacity: 1, ease: "power2.out",
           scrollTrigger: { trigger: ".team-section", start: "top bottom", end: "top 20%", scrub: true },
         });
       gsap.to(".team-divider",
@@ -603,8 +600,8 @@ export default function HomeClient() {
           scrollTrigger: { trigger: ".hal-section", start: "top bottom", end: "top 30%", scrub: true },
         });
       gsap.fromTo(".hal-content",
-        { opacity: 0, scale: 0.9 },
-        { opacity: 1, scale: 1, ease: "power2.out",
+        { opacity: 0 },
+        { opacity: 1, ease: "power2.out",
           scrollTrigger: { trigger: ".hal-section", start: "top bottom", end: "top 20%", scrub: true },
         });
 
@@ -899,24 +896,22 @@ export default function HomeClient() {
       </section>
 
       {/* ════════════════════════════════════════════
-          MANIFESTO SECTION — Statement
+          MANIFESTO — Fixed overlay (appears during Bond→Services transition)
           ════════════════════════════════════════════ */}
-      <section className="manifesto-section relative z-[2] overflow-hidden bg-black py-20 md:py-28">
-        <div className="relative z-10 flex flex-col items-center justify-center px-6 md:px-10">
-          <div className="manifesto-content flex flex-col items-center gap-4 text-center md:gap-6">
-            <p className="manifesto-line-1 font-bold text-2xl tracking-[0.08em] text-[#ededed] opacity-0 md:text-4xl lg:text-5xl">
-              {t("Manifesto.line1")}
-            </p>
-            <p className="manifesto-line-2 font-bold text-2xl tracking-[0.08em] text-[#ededed] opacity-0 md:text-4xl lg:text-5xl">
-              {t("Manifesto.line2")}
-            </p>
-            <div className="manifesto-divider h-[1px] w-0 bg-gradient-to-r from-transparent via-[#e50914] to-transparent" />
-            <p className="manifesto-line-3 font-bold text-2xl tracking-[0.08em] text-[#e50914] opacity-0 md:text-4xl lg:text-5xl">
-              {t("Manifesto.line3")}
-            </p>
-          </div>
+      <div className="manifesto-overlay pointer-events-none fixed inset-0 z-[8] flex items-center justify-center opacity-0">
+        <div className="flex flex-col items-center gap-4 text-center px-6 md:gap-6">
+          <p className="manifesto-line-1 font-bold text-2xl tracking-[0.08em] text-[#ededed] opacity-0 md:text-4xl lg:text-5xl">
+            {t("Manifesto.line1")}
+          </p>
+          <p className="manifesto-line-2 font-bold text-2xl tracking-[0.08em] text-[#ededed] opacity-0 md:text-4xl lg:text-5xl">
+            {t("Manifesto.line2")}
+          </p>
+          <div className="manifesto-divider h-[1px] w-0 bg-gradient-to-r from-transparent via-[#e50914] to-transparent" />
+          <p className="manifesto-line-3 font-bold text-2xl tracking-[0.08em] text-[#e50914] opacity-0 md:text-4xl lg:text-5xl">
+            {t("Manifesto.line3")}
+          </p>
         </div>
-      </section>
+      </div>
 
       {/* ════════════════════════════════════════════
           SERVICES SECTION — Matrix Rain
