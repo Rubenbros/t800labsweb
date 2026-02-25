@@ -21,11 +21,11 @@ function seededValue(index: number, seed: number): number {
 }
 
 const STEP_IMAGES = [
-  "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&q=80",
-  "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&q=80",
-  "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80",
-  "https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=800&q=80",
-  "https://images.unsplash.com/photo-1517976487492-5750f3195933?w=800&q=80",
+  "/process/step1-contacto.jpg",
+  "/process/step2-analisis.jpg",
+  "/process/step3-propuesta.jpg",
+  "/process/step4-desarrollo.jpg",
+  "/process/step5-lanzamiento.jpg",
 ];
 
 const BOOK_COLORS = [
