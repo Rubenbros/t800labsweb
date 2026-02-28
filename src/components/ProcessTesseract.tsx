@@ -486,14 +486,14 @@ export default function ProcessTesseract() {
             transformStyle: "preserve-3d",
           }}>
             {/* Shelf "depth" — back panel */}
-            <div className="absolute inset-0" style={{
+            <div className="pointer-events-none absolute inset-0" style={{
               transform: "translateZ(-30px)",
               background: "linear-gradient(135deg, rgba(212,160,23,0.03) 0%, rgba(0,0,0,0.8) 50%, rgba(212,160,23,0.02) 100%)",
               border: "1px solid rgba(212,160,23,0.08)",
             }} />
 
-            {/* Grid lines (golden) */}
-            <svg className="absolute inset-0 h-full w-full" viewBox={`0 0 ${COLS * 100} ${ROWS * 100}`} preserveAspectRatio="none">
+            {/* Grid lines (golden) — pointer-events-none so clicks pass through to gap buttons */}
+            <svg className="pointer-events-none absolute inset-0 h-full w-full" viewBox={`0 0 ${COLS * 100} ${ROWS * 100}`} preserveAspectRatio="none">
               {Array.from({ length: ROWS + 1 }).map((_, i) => (
                 <line key={`h-${i}`}
                   x1="0" y1={i * 100} x2={COLS * 100} y2={i * 100}
@@ -514,7 +514,7 @@ export default function ProcessTesseract() {
 
             {/* 3D shelf edges — horizontal shelves with depth */}
             {Array.from({ length: ROWS + 1 }).map((_, i) => (
-              <div key={`shelf3d-${i}`} className="absolute" style={{
+              <div key={`shelf3d-${i}`} className="pointer-events-none absolute" style={{
                 left: 0,
                 right: 0,
                 top: `${(i / ROWS) * 100}%`,
@@ -527,7 +527,7 @@ export default function ProcessTesseract() {
 
             {/* 3D vertical dividers with depth */}
             {Array.from({ length: COLS + 1 }).map((_, i) => (
-              <div key={`vert3d-${i}`} className="absolute" style={{
+              <div key={`vert3d-${i}`} className="pointer-events-none absolute" style={{
                 top: 0,
                 bottom: 0,
                 left: `${(i / COLS) * 100}%`,
@@ -584,7 +584,7 @@ export default function ProcessTesseract() {
                     ) : (
                       <button
                         className={`tess-gap-btn tess-gap-${gapIndex + 1} flex h-full w-full cursor-pointer items-center justify-center`}
-                        style={{ pointerEvents: "none", background: "none", border: "none", padding: 0 }}
+                        style={{ pointerEvents: "none", background: "none", border: "none", padding: 0, position: "relative", zIndex: 10 }}
                         onClick={() => handleGapClick(gapIndex)}
                       >
                         <div
