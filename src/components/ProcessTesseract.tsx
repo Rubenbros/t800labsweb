@@ -476,7 +476,6 @@ export default function ProcessTesseract() {
             width: "80vw",
             maxWidth: "900px",
             aspectRatio: `${COLS} / ${ROWS}`,
-            transformStyle: "preserve-3d",
           }}>
             {/* Shelf "depth" — back panel */}
             <div className="pointer-events-none absolute inset-0" style={{
@@ -551,6 +550,7 @@ export default function ProcessTesseract() {
                       alignItems: cellIsGap ? "center" : "flex-end",
                       justifyContent: "center",
                       gap: "2px",
+                      pointerEvents: cellIsGap ? "auto" : "none",
                     }}
                   >
                     {!cellIsGap ? (
