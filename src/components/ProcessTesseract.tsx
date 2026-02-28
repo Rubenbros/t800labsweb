@@ -464,7 +464,8 @@ export default function ProcessTesseract() {
       </div>
 
       {/* ═══ THE BOOKSHELF — 3D perspective container ═══ */}
-      <div className="absolute inset-0 z-10 flex items-center justify-center overflow-hidden"
+      {/* NOTE: no overflow-hidden here — it flattens preserve-3d hit testing */}
+      <div className="absolute inset-0 z-10 flex items-center justify-center"
         style={{ perspective: "1200px" }}>
         <div className="tess-perspective" style={{
           transformStyle: "preserve-3d",
