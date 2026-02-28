@@ -203,15 +203,7 @@ export default function ProcessTesseract() {
           scrub: true,
           pin: true,
           onUpdate: (self) => {
-            const revealed = self.progress >= 4.8 / totalDur;
-            gapsRevealedRef.current = revealed;
-
-            const btns = sectionRef.current?.querySelectorAll(".tess-gap-btn");
-            if (btns) {
-              btns.forEach((el) => {
-                (el as HTMLElement).style.pointerEvents = revealed ? "auto" : "none";
-              });
-            }
+            gapsRevealedRef.current = self.progress >= 4.8 / totalDur;
           },
         },
       });
@@ -584,7 +576,7 @@ export default function ProcessTesseract() {
                     ) : (
                       <button
                         className={`tess-gap-btn tess-gap-${gapIndex + 1} flex h-full w-full cursor-pointer items-center justify-center`}
-                        style={{ pointerEvents: "none", background: "none", border: "none", padding: 0, position: "relative", zIndex: 10 }}
+                        style={{ background: "none", border: "none", padding: 0, position: "relative", zIndex: 10 }}
                         onClick={() => handleGapClick(gapIndex)}
                       >
                         <div
