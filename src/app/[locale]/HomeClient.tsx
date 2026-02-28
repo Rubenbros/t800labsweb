@@ -262,7 +262,7 @@ export default function HomeClient() {
         scrollTrigger: {
           trigger: ".bond-section",
           start: "top top",
-          end: isMobile ? "+=1500" : "+=2700",
+          end: isMobile ? "+=1400" : "+=2500",
           scrub: true,
           pin: true,
         },
@@ -431,14 +431,14 @@ export default function HomeClient() {
       // ═══════════════════════════════════════
       // Add manifesto animations to the Bond timeline itself (avoids
       // the issue of a separate ScrollTrigger on an already-pinned element)
-      bt.fromTo(".manifesto-overlay", { opacity: 0 }, { opacity: 1, duration: 1.5 }, 27.5);
-      bt.fromTo(".manifesto-line-1", { opacity: 0 }, { opacity: 1, duration: 1.2 }, 27.7);
-      bt.fromTo(".manifesto-line-2", { opacity: 0 }, { opacity: 1, duration: 1.2 }, 28.1);
-      bt.to(".manifesto-divider", { width: "120px", duration: 0.8, ease: "power3.inOut" }, 28.5);
-      bt.fromTo(".manifesto-line-3", { opacity: 0 }, { opacity: 1, duration: 1.2 }, 28.7);
+      bt.fromTo(".manifesto-overlay", { opacity: 0 }, { opacity: 1, duration: 0.8 }, 27.5);
+      bt.fromTo(".manifesto-line-1", { opacity: 0 }, { opacity: 1, duration: 0.6 }, 27.6);
+      bt.fromTo(".manifesto-line-2", { opacity: 0 }, { opacity: 1, duration: 0.6 }, 27.9);
+      bt.to(".manifesto-divider", { width: "120px", duration: 0.5, ease: "power3.inOut" }, 28.1);
+      bt.fromTo(".manifesto-line-3", { opacity: 0 }, { opacity: 1, duration: 0.6 }, 28.2);
       bt.fromTo(".manifesto-line-3",
         { textShadow: "0 0 0px rgba(229,9,20,0)" },
-        { textShadow: "0 0 30px rgba(229,9,20,0.5)", duration: 1 }, 29.3);
+        { textShadow: "0 0 30px rgba(229,9,20,0.5)", duration: 0.5 }, 28.5);
 
       // Manifesto stays visible through Bond→Services transition
       // (fades out at the start of Services pin — crossfade effect)
@@ -574,6 +574,8 @@ export default function HomeClient() {
       // (all entrance animations inside pin to avoid visible scroll-in)
       // ═══════════════════════════════════════
 
+      gsap.set(".team-inner", { opacity: 0 });
+
       const tt = gsap.timeline({
         scrollTrigger: {
           trigger: ".team-section",
@@ -583,6 +585,11 @@ export default function HomeClient() {
           pin: true,
         },
       });
+
+      // Fade in container (bg-black + content, matches services/portfolio pattern)
+      tt.fromTo(".team-inner",
+        { opacity: 0 },
+        { opacity: 1, duration: 0.4 }, 0);
 
       // Phase 0: Header + corners entrance from black (0→0.8)
       tt.fromTo(".team-header",
@@ -666,8 +673,20 @@ export default function HomeClient() {
       // ═══════════════════════════════════════
 
       // Keep content hidden initially — the power-on will reveal it
+      gsap.set(".hal-inner", { opacity: 0 });
       gsap.set(".hal-content", { opacity: 0 });
       gsap.set(".hal-corner", { opacity: 0 });
+
+      // Align CRT line + glow with the HAL eye center (not screen center)
+      const halInner = document.querySelector(".hal-inner") as HTMLElement;
+      const halEye = document.querySelector(".hal-container") as HTMLElement;
+      if (halInner && halEye) {
+        const innerRect = halInner.getBoundingClientRect();
+        const eyeRect = halEye.getBoundingClientRect();
+        const eyeCenterY = eyeRect.top + eyeRect.height / 2 - innerRect.top;
+        gsap.set(".hal-crt-line", { top: eyeCenterY });
+        gsap.set(".hal-power-glow", { top: eyeCenterY, yPercent: -50 });
+      }
 
       const ht = gsap.timeline({
         scrollTrigger: {
@@ -678,6 +697,11 @@ export default function HomeClient() {
           pin: true,
         },
       });
+
+      // Fade in container (black overlay inside = still looks black, no visible scroll-in)
+      ht.fromTo(".hal-inner",
+        { opacity: 0 },
+        { opacity: 1, duration: 0.2 }, 0);
 
       // Phase 0: CRT power-on sequence (0→1.5)
       ht.fromTo(".hal-power-overlay",
@@ -715,6 +739,11 @@ export default function HomeClient() {
       ht.fromTo(".hal-quote",
         { opacity: 0, y: 15 },
         { opacity: 1, y: 0, duration: 0.3, ease: "power2.out" }, 1.5);
+
+      // Fade to black at end of HAL pin
+      ht.to(".hal-inner", {
+        opacity: 0, duration: 1.0,
+      }, 2.5);
 
       // ═══════════════════════════════════════
       // FOOTER — Lava / Molten Steel Animations
@@ -899,7 +928,7 @@ export default function HomeClient() {
   }, []);
 
   return (
-    <div ref={wrapperRef} className="relative bg-black">
+    <div ref={wrapperRef} className="relative overflow-hidden bg-black">
 
       {/* ════════════════════════════════════════════
           NAVBAR (fixed, initially invisible)
@@ -1596,16 +1625,16 @@ export default function HomeClient() {
       {/* ════════════════════════════════════════════
           HAL 9000 SECTION
           ════════════════════════════════════════════ */}
-      <section id="contacto" className="hal-section relative z-[7] h-[10vh] overflow-visible">
+      <section id="contacto" className="hal-section relative z-[1000] h-[10vh] overflow-visible">
         <div className="hal-inner absolute inset-x-0 top-0 h-screen bg-black">
         {/* CRT power-on overlay — starts fully black */}
         <div className="hal-power-overlay pointer-events-none absolute inset-0 z-[60] bg-black" />
-        {/* CRT scan line — horizontal white line that expands */}
-        <div className="hal-crt-line pointer-events-none absolute left-0 right-0 top-1/2 z-[61] h-[2px] origin-center -translate-y-1/2 scale-x-0 bg-white/90 shadow-[0_0_20px_4px_rgba(255,255,255,0.4)]" />
+        {/* CRT scan line — horizontal white line that expands (top set by JS to align with HAL eye) */}
+        <div className="hal-crt-line pointer-events-none absolute left-0 right-0 top-0 z-[61] h-[2px] origin-center scale-x-0 bg-white/90 shadow-[0_0_20px_4px_rgba(255,255,255,0.4)]" />
         {/* Brief white flash during power-on */}
         <div className="hal-power-flash pointer-events-none absolute inset-0 z-[62] bg-white opacity-0" />
-        {/* Red glow that intensifies during power-on */}
-        <div className="hal-power-glow pointer-events-none absolute left-1/2 top-1/2 z-[1] h-[400px] w-[400px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,_rgba(229,9,20,0.15)_0%,_transparent_70%)] opacity-0" />
+        {/* Red glow that intensifies during power-on (position set by JS to align with HAL eye) */}
+        <div className="hal-power-glow pointer-events-none absolute left-1/2 top-0 z-[1] h-[400px] w-[400px] -translate-x-1/2 rounded-full bg-[radial-gradient(circle,_rgba(229,9,20,0.15)_0%,_transparent_70%)] opacity-0" />
         {/* HAL eye — centered */}
         <div className="hal-content flex h-full items-center justify-center">
           <div className="flex flex-col items-center gap-6 md:gap-10">

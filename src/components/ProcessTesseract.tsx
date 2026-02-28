@@ -49,6 +49,9 @@ export default function ProcessTesseract() {
   const sectionRef = useRef<HTMLElement>(null);
   const zoomTlRef = useRef<gsap.core.Timeline | null>(null);
   const activeGapRef = useRef<number | null>(null);
+  const isExitingRef = useRef(false);
+  const overlayRef = useRef<HTMLDivElement>(null);
+  const touchStartYRef = useRef(0);
   const [activeGap, setActiveGap] = useState<number | null>(null);
   const [portalTarget, setPortalTarget] = useState<HTMLElement | null>(null);
   const gapsRevealedRef = useRef(false);
@@ -103,9 +106,10 @@ export default function ProcessTesseract() {
     }, 0.5);
   }, []);
 
-  /* ── click: zoom back out ── */
+  /* ── click or scroll-down: zoom back out ── */
   const handleBack = useCallback(() => {
-    if (activeGapRef.current === null) return;
+    if (activeGapRef.current === null || isExitingRef.current) return;
+    isExitingRef.current = true;
     const prevGap = activeGapRef.current;
 
     if (zoomTlRef.current) zoomTlRef.current.kill();
@@ -115,6 +119,7 @@ export default function ProcessTesseract() {
         activeGapRef.current = null;
         setActiveGap(null);
         zoomTlRef.current = null;
+        isExitingRef.current = false;
       },
     });
     zoomTlRef.current = tl;
@@ -131,14 +136,61 @@ export default function ProcessTesseract() {
     }, 0.3);
   }, []);
 
+  /* ── scroll-down inside detail overlay → exit back to shelf ── */
+  useEffect(() => {
+    if (activeGap === null) return;
+
+    const overlay = overlayRef.current;
+    if (!overlay) return;
+
+    // Freeze page scroll while detail overlay is open
+    const scrollY = window.scrollY;
+    document.documentElement.style.overflow = "hidden";
+    document.body.style.overflow = "hidden";
+
+    const handleWheel = (e: WheelEvent) => {
+      e.preventDefault();
+      e.stopPropagation();
+      if (e.deltaY > 0 && !isExitingRef.current) {
+        handleBack();
+      }
+    };
+
+    const handleTouchStart = (e: TouchEvent) => {
+      touchStartYRef.current = e.touches[0].clientY;
+    };
+
+    const handleTouchMove = (e: TouchEvent) => {
+      e.preventDefault();
+      const deltaY = touchStartYRef.current - e.touches[0].clientY;
+      if (deltaY > 30 && !isExitingRef.current) {
+        handleBack();
+      }
+    };
+
+    overlay.addEventListener("wheel", handleWheel, { passive: false });
+    overlay.addEventListener("touchstart", handleTouchStart, { passive: true });
+    overlay.addEventListener("touchmove", handleTouchMove, { passive: false });
+
+    return () => {
+      overlay.removeEventListener("wheel", handleWheel);
+      overlay.removeEventListener("touchstart", handleTouchStart);
+      overlay.removeEventListener("touchmove", handleTouchMove);
+      // Restore scroll
+      document.documentElement.style.overflow = "";
+      document.body.style.overflow = "";
+      window.scrollTo(0, scrollY);
+    };
+  }, [activeGap, handleBack]);
+
   /* ── GSAP scroll-driven timeline ── */
   useEffect(() => {
     if (!sectionRef.current) return;
 
     const ctx = gsap.context(() => {
       const isMobile = window.innerWidth < 768;
-      const scrollEnd = isMobile ? "+=500" : "+=800";
-      const totalDur = 6;
+      const scrollEnd = isMobile ? "+=700" : "+=1100";
+      const totalDur = 8;
 
       // Start hidden — all entrance inside pin (section bg-black + opacity 0 = no visible scroll)
       gsap.set(".process-inner", { opacity: 0 });
@@ -588,6 +640,7 @@ export default function ProcessTesseract() {
     {/* ═══ DETAIL OVERLAY — portalled to body to escape transform containment ═══ */}
     {portalTarget && createPortal(
       <div
+        ref={overlayRef}
         className="tess-detail-overlay fixed inset-0"
         style={{ zIndex: 9999, opacity: 0, pointerEvents: activeGap !== null ? "auto" : "none" }}
       >
