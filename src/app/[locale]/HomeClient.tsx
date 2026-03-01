@@ -1298,7 +1298,7 @@ export default function HomeClient() {
           PORTFOLIO SECTION — Tron
           ════════════════════════════════════════════ */}
       <section id="portfolio" className="portfolio-section relative z-[5] h-[10vh] overflow-visible">
-        <div className="portfolio-inner absolute inset-x-0 top-0 h-screen bg-black">
+        <div className="portfolio-inner absolute inset-x-0 top-0 h-screen overflow-visible bg-black">
         {/* Tron grid background */}
         <div className="pointer-events-none absolute inset-0 overflow-hidden">
           {/* Perspective grid */}
@@ -1329,7 +1329,7 @@ export default function HomeClient() {
           <TronBikes />
         </div>
 
-        <div className="relative z-10 mx-auto flex h-full max-w-6xl flex-col items-center justify-center px-4 md:px-10">
+        <div className="relative z-10 mx-auto flex h-full max-w-6xl flex-col items-center justify-center px-4 py-14 md:px-10 md:py-0">
           {/* Section header */}
           <div className="portfolio-header mb-6 flex flex-col items-center gap-2 opacity-0 md:mb-16 md:gap-3">
             <span className="font-mono text-[10px] tracking-[0.3em] text-[#00d4ff]/60 uppercase">
