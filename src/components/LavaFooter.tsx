@@ -156,7 +156,7 @@ export default function LavaFooter({ t }: LavaFooterProps) {
         style={{ marginTop: "18vh" }}
       >
         <div className="mx-auto max-w-6xl">
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-3 md:gap-10">
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-4 md:gap-10">
             {/* Column 1: Logo + description */}
             <div>
               <div className="mb-3 flex items-center gap-3">
@@ -170,7 +170,31 @@ export default function LavaFooter({ t }: LavaFooterProps) {
               </p>
             </div>
 
-            {/* Column 2: Contact */}
+            {/* Column 2: Navigation */}
+            <div>
+              <h4 className="mb-3 font-mono text-[10px] uppercase tracking-[0.2em] text-white/60">
+                {t("Footer.navigation")}
+              </h4>
+              <div className="space-y-1.5 font-mono text-[10px] text-white/40">
+                <a href="#servicios" className="pointer-events-auto block transition-colors duration-300 hover:text-[#e50914]">
+                  {t("Navbar.servicios")}
+                </a>
+                <a href="#proceso" className="pointer-events-auto block transition-colors duration-300 hover:text-[#e50914]">
+                  {t("Navbar.proceso")}
+                </a>
+                <a href="#portfolio" className="pointer-events-auto block transition-colors duration-300 hover:text-[#e50914]">
+                  {t("Navbar.portfolio")}
+                </a>
+                <a href="#equipo" className="pointer-events-auto block transition-colors duration-300 hover:text-[#e50914]">
+                  {t("Navbar.equipo")}
+                </a>
+                <a href="#contacto" className="pointer-events-auto block transition-colors duration-300 hover:text-[#e50914]">
+                  {t("Navbar.contacto")}
+                </a>
+              </div>
+            </div>
+
+            {/* Column 3: Contact */}
             <div>
               <h4 className="mb-3 font-mono text-[10px] uppercase tracking-[0.2em] text-white/60">
                 {t("Footer.contact")}
@@ -178,7 +202,7 @@ export default function LavaFooter({ t }: LavaFooterProps) {
               <div className="space-y-1.5 font-mono text-[10px] text-white/40">
                 <a
                   href="mailto:hola@t800labs.com"
-                  className="block transition-colors duration-300 hover:text-[#e50914]"
+                  className="pointer-events-auto block transition-colors duration-300 hover:text-[#e50914]"
                 >
                   hola@t800labs.com
                 </a>
@@ -186,14 +210,14 @@ export default function LavaFooter({ t }: LavaFooterProps) {
                   href="https://wa.me/34645515267"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="block transition-colors duration-300 hover:text-[#e50914]"
+                  className="pointer-events-auto block transition-colors duration-300 hover:text-[#e50914]"
                 >
                   +34 646 515 267
                 </a>
               </div>
             </div>
 
-            {/* Column 3: Social */}
+            {/* Column 4: Social */}
             <div>
               <h4 className="mb-3 font-mono text-[10px] uppercase tracking-[0.2em] text-white/60">
                 {t("Footer.followUs")}
@@ -203,7 +227,7 @@ export default function LavaFooter({ t }: LavaFooterProps) {
                   href="https://github.com/rubenbros"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="font-mono text-[10px] text-white/40 transition-colors duration-300 hover:text-[#e50914]"
+                  className="pointer-events-auto font-mono text-[10px] text-white/40 transition-colors duration-300 hover:text-[#e50914]"
                 >
                   GitHub
                 </a>
@@ -211,7 +235,7 @@ export default function LavaFooter({ t }: LavaFooterProps) {
                   href="https://www.linkedin.com/in/rubenbros"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="font-mono text-[10px] text-white/40 transition-colors duration-300 hover:text-[#e50914]"
+                  className="pointer-events-auto font-mono text-[10px] text-white/40 transition-colors duration-300 hover:text-[#e50914]"
                 >
                   LinkedIn
                 </a>
