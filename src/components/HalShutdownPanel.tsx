@@ -224,7 +224,7 @@ export default function HalShutdownPanel() {
             </button>
 
             <a
-              href={`https://wa.me/34646515267?text=${encodeURIComponent(t("contactWhatsappMsg"))}`}
+              href={`https://wa.me/34645515267?text=${encodeURIComponent(t("contactWhatsappMsg"))}`}
               target="_blank"
               rel="noopener noreferrer"
               className="hal-contact-option group flex flex-1 cursor-pointer flex-col items-center gap-2 rounded border border-red-500/30 bg-transparent px-4 py-4 transition-all duration-300 hover:border-red-500/60 hover:bg-red-500/5 sm:py-5"

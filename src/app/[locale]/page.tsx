@@ -29,7 +29,7 @@ export default async function Page({
         contactPoint: {
           "@type": "ContactPoint",
           email: "ruben.jarne.cabanero@gmail.com",
-          telephone: "+34646515267",
+          telephone: "+34645515267",
           contactType: "sales",
           availableLanguage: ["Spanish", "English"],
         },
@@ -44,7 +44,7 @@ export default async function Page({
         name: "T800 Labs",
         url: BASE_URL,
         image: `${BASE_URL}/logo-t800labs.png`,
-        telephone: "+34646515267",
+        telephone: "+34645515267",
         email: "ruben.jarne.cabanero@gmail.com",
         address: {
           "@type": "PostalAddress",

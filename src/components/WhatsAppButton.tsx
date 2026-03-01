@@ -14,7 +14,7 @@ export default function WhatsAppButton() {
 
   return (
     <a
-      href="https://wa.me/34646515267?text=Hola%2C%20me%20interesa%20contactar%20con%20T800%20Labs."
+      href="https://wa.me/34645515267?text=Hola%2C%20me%20interesa%20contactar%20con%20T800%20Labs."
       target="_blank"
       rel="noopener noreferrer"
       aria-label="Chat en WhatsApp"

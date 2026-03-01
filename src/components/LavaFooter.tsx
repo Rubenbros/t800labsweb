@@ -183,7 +183,7 @@ export default function LavaFooter({ t }: LavaFooterProps) {
                   ruben.jarne.cabanero@gmail.com
                 </a>
                 <a
-                  href="https://wa.me/34646515267"
+                  href="https://wa.me/34645515267"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="block transition-colors duration-300 hover:text-[#e50914]"
