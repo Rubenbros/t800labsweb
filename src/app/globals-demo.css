@@ -1,0 +1,43 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-demo-primary: var(--demo-primary);
+  --color-demo-primary-light: var(--demo-primary-light);
+  --color-demo-primary-dark: var(--demo-primary-dark);
+  --color-demo-secondary: var(--demo-secondary);
+  --color-demo-bg: var(--demo-bg-main);
+  --color-demo-bg-section: var(--demo-bg-section);
+  --color-demo-bg-dark: var(--demo-bg-dark);
+  --color-demo-text: var(--demo-text-primary);
+  --color-demo-text-muted: var(--demo-text-secondary);
+  --color-demo-text-on-primary: var(--demo-text-on-primary);
+  --color-demo-border: var(--demo-border);
+  --color-demo-card: var(--demo-card-bg);
+  --font-demo: var(--font-inter);
+}
+
+body {
+  overflow-x: hidden;
+}
+
+::selection {
+  background: var(--demo-primary);
+  color: white;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--demo-primary);
+  border-radius: 3px;
+}
+
+html {
+  scroll-behavior: smooth;
+}
