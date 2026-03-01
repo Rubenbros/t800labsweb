@@ -51,6 +51,8 @@ export default function ProcessTesseract() {
   const activeGapRef = useRef<number | null>(null);
   const isExitingRef = useRef(false);
   const overlayRef = useRef<HTMLDivElement>(null);
+  const clickOverlayRef = useRef<HTMLDivElement>(null);
+  const gapBtnRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const touchStartYRef = useRef(0);
   const [activeGap, setActiveGap] = useState<number | null>(null);
   const [portalTarget, setPortalTarget] = useState<HTMLElement | null>(null);
@@ -68,6 +70,19 @@ export default function ProcessTesseract() {
       const img = new window.Image();
       img.src = src;
     });
+  }, []);
+
+  /* ── coordinate-based gap detection (bypasses 3D hit-testing) ── */
+  const findGapAtPoint = useCallback((x: number, y: number): number => {
+    for (let i = 0; i < GAPS.length; i++) {
+      const btn = gapBtnRefs.current[i];
+      if (!btn) continue;
+      const rect = btn.getBoundingClientRect();
+      if (x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom) {
+        return i;
+      }
+    }
+    return -1;
   }, []);
 
   /* ── click: zoom into a gap ── */
@@ -135,6 +150,25 @@ export default function ProcessTesseract() {
       boxShadow: "none", duration: 0.3,
     }, 0.3);
   }, []);
+
+  /* ── click overlay handlers (bypass 3D hit-testing issues) ── */
+  const handleOverlayClick = useCallback((e: React.MouseEvent) => {
+    if (!gapsRevealedRef.current || activeGapRef.current !== null) return;
+    const gapIndex = findGapAtPoint(e.clientX, e.clientY);
+    if (gapIndex !== -1) {
+      handleGapClick(gapIndex);
+    }
+  }, [findGapAtPoint, handleGapClick]);
+
+  const handleOverlayMouseMove = useCallback((e: React.MouseEvent) => {
+    if (!clickOverlayRef.current) return;
+    if (!gapsRevealedRef.current || activeGapRef.current !== null) {
+      clickOverlayRef.current.style.cursor = "default";
+      return;
+    }
+    const gapIndex = findGapAtPoint(e.clientX, e.clientY);
+    clickOverlayRef.current.style.cursor = gapIndex !== -1 ? "pointer" : "default";
+  }, [findGapAtPoint]);
 
   /* ── scroll-down inside detail overlay → exit back to shelf ── */
   useEffect(() => {
@@ -328,6 +362,14 @@ export default function ProcessTesseract() {
     <>
     <section ref={sectionRef} id="proceso" className="process-section relative z-[4] h-[10vh] overflow-visible">
       <div className="process-inner absolute inset-x-0 top-0 h-screen bg-black">
+
+      {/* Click capture overlay — sits above 3D shelf, detects gaps via getBoundingClientRect */}
+      <div
+        ref={clickOverlayRef}
+        className="absolute inset-0 z-50"
+        onClick={handleOverlayClick}
+        onMouseMove={handleOverlayMouseMove}
+      />
 
       {/* ═══ WORMHOLE TUNNEL ═══ */}
       <div className="tess-wormhole pointer-events-none absolute inset-0 z-40 flex items-center justify-center">
@@ -576,9 +618,9 @@ export default function ProcessTesseract() {
                       </>
                     ) : (
                       <button
-                        className={`tess-gap-btn tess-gap-${gapIndex + 1} flex h-full w-full cursor-pointer items-center justify-center`}
-                        style={{ background: "none", border: "none", padding: 0, position: "relative", zIndex: 10 }}
-                        onClick={() => handleGapClick(gapIndex)}
+                        ref={(el) => { gapBtnRefs.current[gapIndex] = el; }}
+                        className={`tess-gap-btn tess-gap-${gapIndex + 1} flex h-full w-full items-center justify-center`}
+                        style={{ background: "none", border: "none", padding: 0, pointerEvents: "none" }}
                       >
                         <div
                           className="tess-gap-glow flex h-[70%] w-[60%] items-center justify-center rounded-sm border border-[#d4a017]/30 transition-colors hover:border-[#d4a017]/70"
