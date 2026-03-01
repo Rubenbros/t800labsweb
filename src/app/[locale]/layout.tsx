@@ -96,6 +96,9 @@ export async function generateMetadata({
       ],
     },
     manifest: "/manifest.json",
+    verification: {
+      google: "cq7KEYnrxCBCzIwgfHG2AxSxfDHSwbWKPA0r_oPebco",
+    },
   };
 }
 
