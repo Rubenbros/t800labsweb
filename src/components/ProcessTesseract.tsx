@@ -237,7 +237,7 @@ export default function ProcessTesseract() {
           scrub: true,
           pin: true,
           onUpdate: (self) => {
-            gapsRevealedRef.current = self.progress >= 4.8 / totalDur;
+            gapsRevealedRef.current = self.progress >= 4.0 / totalDur;
           },
         },
       });
