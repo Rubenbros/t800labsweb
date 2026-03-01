@@ -6,6 +6,7 @@ import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
 import Script from "next/script";
 import WhatsAppButton from "@/components/WhatsAppButton";
+import { Analytics } from "@vercel/analytics/next";
 import "../globals.css";
 
 const geistSans = Geist({
@@ -137,6 +138,7 @@ export default async function LocaleLayout({ children, params }: Props) {
       >
         <NextIntlClientProvider>{children}</NextIntlClientProvider>
         <WhatsAppButton />
+        <Analytics />
       </body>
     </html>
   );
