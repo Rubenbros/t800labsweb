@@ -1331,24 +1331,24 @@ export default function HomeClient() {
 
         <div className="relative z-10 mx-auto flex h-full max-w-6xl flex-col items-center justify-center px-4 md:px-10">
           {/* Section header */}
-          <div className="portfolio-header mb-12 flex flex-col items-center gap-2 opacity-0 md:mb-16 md:gap-3">
+          <div className="portfolio-header mb-6 flex flex-col items-center gap-2 opacity-0 md:mb-16 md:gap-3">
             <span className="font-mono text-[10px] tracking-[0.3em] text-[#00d4ff]/60 uppercase">
               {t("Portfolio.subtitle")}
             </span>
-            <h2 className="font-bold text-2xl tracking-[0.15em] text-[#00d4ff] md:text-5xl">
+            <h2 className="font-bold text-xl tracking-[0.15em] text-[#00d4ff] md:text-5xl">
               {t("Portfolio.title")}
             </h2>
             <div className="portfolio-divider h-[1px] w-16 origin-center scale-x-0 bg-gradient-to-r from-transparent via-[#00d4ff]/50 to-transparent" />
           </div>
 
           {/* Project cards grid */}
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-8">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-8">
             {/* Project 1: NoEsGratis */}
             <a
               href="https://noesgratis.es"
               target="_blank"
               rel="noopener noreferrer"
-              className="portfolio-card group relative overflow-hidden rounded border border-[#00d4ff]/20 bg-[#0a1628]/80 p-6 opacity-0 backdrop-blur-sm transition-colors duration-500 hover:border-[#00d4ff]/60 md:p-8"
+              className="portfolio-card group relative overflow-hidden rounded border border-[#00d4ff]/20 bg-[#0a1628]/80 p-4 opacity-0 backdrop-blur-sm transition-colors duration-500 hover:border-[#00d4ff]/60 md:p-8"
               style={{ boxShadow: '0 0 15px rgba(0,212,255,0.08)' }}
             >
               {/* Card scan line */}
@@ -1360,14 +1360,14 @@ export default function HomeClient() {
                 <span className="inline-block rounded border border-[#00d4ff]/30 px-2 py-0.5 font-mono text-[9px] tracking-[0.2em] text-[#00d4ff]/70 uppercase">
                   {t("Portfolio.project1Type")}
                 </span>
-                <h3 className="mt-3 text-lg font-bold tracking-[0.05em] text-[#00d4ff] md:text-xl">
+                <h3 className="mt-2 text-base font-bold tracking-[0.05em] text-[#00d4ff] md:mt-3 md:text-xl">
                   {t("Portfolio.project1Name")}
                 </h3>
-                <p className="mt-2 font-mono text-[11px] leading-relaxed text-white/50 md:text-xs">
+                <p className="mt-1.5 font-mono text-[10px] leading-relaxed text-white/50 md:mt-2 md:text-xs">
                   {t("Portfolio.project1Desc")}
                 </p>
                 {/* Tech tags */}
-                <div className="mt-4 flex flex-wrap gap-2">
+                <div className="mt-2.5 flex flex-wrap gap-1.5 md:mt-4 md:gap-2">
                   {t("Portfolio.project1Tech").split(" · ").map((tech: string) => (
                     <span key={tech} className="rounded bg-[#00d4ff]/8 px-2 py-0.5 font-mono text-[9px] text-[#00d4ff]/60">
                       {tech}
@@ -1375,7 +1375,7 @@ export default function HomeClient() {
                   ))}
                 </div>
                 {/* Visit link */}
-                <span className="mt-5 inline-flex items-center gap-1.5 font-mono text-[10px] tracking-[0.15em] text-[#00d4ff]/60 uppercase transition-colors duration-300 group-hover:text-[#00d4ff] md:text-[11px]">
+                <span className="mt-3 inline-flex items-center gap-1.5 font-mono text-[10px] tracking-[0.15em] text-[#00d4ff]/60 uppercase transition-colors duration-300 group-hover:text-[#00d4ff] md:mt-5 md:text-[11px]">
                   {t("Portfolio.visitSite")}
                 </span>
               </div>
@@ -1386,7 +1386,7 @@ export default function HomeClient() {
               href="https://therehabstudio.es"
               target="_blank"
               rel="noopener noreferrer"
-              className="portfolio-card group relative overflow-hidden rounded border border-[#00d4ff]/20 bg-[#0a1628]/80 p-6 opacity-0 backdrop-blur-sm transition-colors duration-500 hover:border-[#00d4ff]/60 md:p-8"
+              className="portfolio-card group relative overflow-hidden rounded border border-[#00d4ff]/20 bg-[#0a1628]/80 p-4 opacity-0 backdrop-blur-sm transition-colors duration-500 hover:border-[#00d4ff]/60 md:p-8"
               style={{ boxShadow: '0 0 15px rgba(0,212,255,0.08)' }}
             >
               {/* Card scan line */}
@@ -1398,14 +1398,14 @@ export default function HomeClient() {
                 <span className="inline-block rounded border border-[#00d4ff]/30 px-2 py-0.5 font-mono text-[9px] tracking-[0.2em] text-[#00d4ff]/70 uppercase">
                   {t("Portfolio.project2Type")}
                 </span>
-                <h3 className="mt-3 text-lg font-bold tracking-[0.05em] text-[#00d4ff] md:text-xl">
+                <h3 className="mt-2 text-base font-bold tracking-[0.05em] text-[#00d4ff] md:mt-3 md:text-xl">
                   {t("Portfolio.project2Name")}
                 </h3>
-                <p className="mt-2 font-mono text-[11px] leading-relaxed text-white/50 md:text-xs">
+                <p className="mt-1.5 font-mono text-[10px] leading-relaxed text-white/50 md:mt-2 md:text-xs">
                   {t("Portfolio.project2Desc")}
                 </p>
                 {/* Tech tags */}
-                <div className="mt-4 flex flex-wrap gap-2">
+                <div className="mt-2.5 flex flex-wrap gap-1.5 md:mt-4 md:gap-2">
                   {t("Portfolio.project2Tech").split(" · ").map((tech: string) => (
                     <span key={tech} className="rounded bg-[#00d4ff]/8 px-2 py-0.5 font-mono text-[9px] text-[#00d4ff]/60">
                       {tech}
@@ -1413,7 +1413,7 @@ export default function HomeClient() {
                   ))}
                 </div>
                 {/* Visit link */}
-                <span className="mt-5 inline-flex items-center gap-1.5 font-mono text-[10px] tracking-[0.15em] text-[#00d4ff]/60 uppercase transition-colors duration-300 group-hover:text-[#00d4ff] md:text-[11px]">
+                <span className="mt-3 inline-flex items-center gap-1.5 font-mono text-[10px] tracking-[0.15em] text-[#00d4ff]/60 uppercase transition-colors duration-300 group-hover:text-[#00d4ff] md:mt-5 md:text-[11px]">
                   {t("Portfolio.visitSite")}
                 </span>
               </div>
@@ -1421,8 +1421,8 @@ export default function HomeClient() {
           </div>
 
           {/* CTA */}
-          <div className="portfolio-cta mt-12 flex flex-col items-center gap-3 opacity-0 md:mt-16">
-            <h3 className="text-center font-bold text-sm tracking-[0.1em] text-[#00d4ff]/80 md:text-lg">
+          <div className="portfolio-cta mt-6 flex flex-col items-center gap-2 opacity-0 md:mt-16 md:gap-3">
+            <h3 className="text-center font-bold text-xs tracking-[0.1em] text-[#00d4ff]/80 md:text-lg">
               {t("Portfolio.cta")}
             </h3>
             <a
@@ -1434,7 +1434,7 @@ export default function HomeClient() {
                   gsap.to(window, { scrollTo: { y: el, offsetY: 80 }, duration: 1.2, ease: "power3.inOut" });
                 }
               }}
-              className="portfolio-cta-btn mt-2 inline-block rounded border border-[#00d4ff]/40 px-6 py-2.5 font-mono text-[10px] tracking-[0.2em] text-[#00d4ff] uppercase transition-all duration-500 hover:border-[#00d4ff] hover:bg-[#00d4ff]/10 md:text-xs"
+              className="portfolio-cta-btn mt-1 inline-block rounded border border-[#00d4ff]/40 px-5 py-2 font-mono text-[10px] tracking-[0.2em] text-[#00d4ff] uppercase transition-all duration-500 hover:border-[#00d4ff] hover:bg-[#00d4ff]/10 md:mt-2 md:px-6 md:py-2.5 md:text-xs"
               style={{ boxShadow: '0 0 20px rgba(0,212,255,0.1)' }}
             >
               {t("Hero.cta")}
