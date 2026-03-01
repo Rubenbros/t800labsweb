@@ -1,13 +1,13 @@
 {
   "Metadata": {
-    "title": "T800 Labs | Websites, Apps & AI for Businesses in Zaragoza",
-    "description": "Web & app development for SMBs in Zaragoza, Spain. Online bookings, e-commerce, AI automation. Free quote, no commitment.",
-    "ogTitle": "T800 Labs — Websites & Apps for Your Business in Zaragoza",
+    "title": "T800 Labs | Custom Web, Apps & AI Development",
+    "description": "Web & app development for businesses. Online bookings, e-commerce, AI automation. Free quote, no commitment.",
+    "ogTitle": "T800 Labs — Websites, Apps & AI for Your Business",
     "ogDescription": "Professional websites, online bookings, e-commerce and AI automation. Direct contact, no middlemen. Free quote."
   },
   "Hero": {
     "tagline": "Your business, visible and automated",
-    "valueProposition": "Websites, apps and AI automation for businesses in Zaragoza",
+    "valueProposition": "Websites, apps and AI automation for your business",
     "cta": "Let's talk — it's free",
     "scroll": "Scroll"
   },
@@ -91,7 +91,7 @@
     "project1Tech": "Next.js · React · TypeScript · Tailwind · Auth · DB",
     "project1Type": "OWN PRODUCT",
     "project2Name": "The Rehab Studio",
-    "project2Desc": "Professional website for a sports physiotherapy clinic in Zaragoza. Elegant design with online booking system, detailed services and SEO optimized to rank on Google.",
+    "project2Desc": "Professional website for a sports physiotherapy clinic. Elegant design with online booking system, detailed services and SEO optimized to rank on Google.",
     "project2Tech": "Next.js · React · TypeScript · Tailwind · i18n",
     "project2Type": "CLIENT",
     "visitSite": "View project ↗",
@@ -131,7 +131,7 @@
     "assignments": "Centro Zaragoza · Tragsatec · ISYC · Softek",
     "additionalProtocols": "ADDITIONAL_PROTOCOLS",
     "protocols": "CS College Professor · AI Speaker",
-    "bio": "I've worked at Centro Zaragoza, Tragsatec and ISYC building software for large organizations. Now I bring that same quality to local businesses, with direct contact and AI as my ally.",
+    "bio": "I've worked at Centro Zaragoza, Tragsatec and ISYC building software for large organizations. Now I bring that same quality to your business, with direct contact and AI as my ally.",
     "quote": "\"All those moments will be lost in time, like tears in rain.\"",
     "cornerSys": "SYS.04",
     "cornerLabel": "TYRELL"
@@ -149,13 +149,13 @@
     "a5": "Don't worry, it's more common than you think. I can guide you with logo design, use professional stock photography and write your website copy. All included in the project.",
     "q6": "How much does monthly maintenance cost?",
     "a6": "Hosting and domain cost €10-30/month depending on the project. Technical maintenance (updates, security, backups) starts from €50/month. Many clients don't need ongoing maintenance.",
-    "q7": "Do you only work in Zaragoza?",
-    "a7": "I'm based in Zaragoza and can meet in person, but I work with clients across Spain. The process is 100% digital: video calls, online deliveries and smooth communication via WhatsApp or email.",
+    "q7": "Do you work remotely or only in person?",
+    "a7": "I work with clients anywhere in the world. The process is 100% digital: video calls, online deliveries and smooth communication via WhatsApp or email. No matter where you are.",
     "q8": "What's this AI thing? Is it useful for my business?",
     "a8": "AI can automate repetitive tasks in your business: answer common questions, send appointment reminders, manage inventory, generate social media content... If something takes up your time every day, AI can probably do it for you."
   },
   "Footer": {
-    "description": "Websites, apps and AI automation for businesses in Zaragoza. Direct contact, no middlemen.",
+    "description": "Websites, apps and AI automation for your business. Direct contact, no middlemen.",
     "contact": "CONTACT",
     "navigation": "NAVIGATION",
     "followUs": "FOLLOW US",

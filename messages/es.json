@@ -1,13 +1,13 @@
 {
   "Metadata": {
-    "title": "T800 Labs | Webs, Apps e IA para Negocios en Zaragoza",
-    "description": "Desarrollo web y apps para pymes en Zaragoza. Reservas online, tiendas, automatización con IA. Presupuesto sin compromiso.",
-    "ogTitle": "T800 Labs — Webs y Apps para tu Negocio en Zaragoza",
-    "ogDescription": "Tu web profesional, reservas online, tienda y automatización con IA. Trato directo, sin intermediarios. Presupuesto gratis."
+    "title": "T800 Labs | Desarrollo Web, Apps e IA a Medida",
+    "description": "Desarrollo web y apps para negocios. Reservas online, tiendas, automatización con IA. Presupuesto sin compromiso.",
+    "ogTitle": "T800 Labs — Webs, Apps e IA para tu Negocio",
+    "ogDescription": "Tu web profesional, reservas online, tienda y automatización con IA. Trato directo, sin intermediarios. Presupuesto sin compromiso."
   },
   "Hero": {
     "tagline": "Tu negocio, visible y automatizado",
-    "valueProposition": "Webs, apps y automatización con IA para negocios en Zaragoza",
+    "valueProposition": "Webs, apps y automatización con IA para tu negocio",
     "cta": "Hablemos — es gratis",
     "scroll": "Scroll"
   },
@@ -91,7 +91,7 @@
     "project1Tech": "Next.js · React · TypeScript · Tailwind · Auth · DB",
     "project1Type": "PRODUCTO PROPIO",
     "project2Name": "The Rehab Studio",
-    "project2Desc": "Web profesional para clínica de fisioterapia deportiva en Zaragoza. Diseño elegante con reservas online, servicios detallados y SEO optimizado para aparecer en Google.",
+    "project2Desc": "Web profesional para clínica de fisioterapia deportiva. Diseño elegante con reservas online, servicios detallados y SEO optimizado para aparecer en Google.",
     "project2Tech": "Next.js · React · TypeScript · Tailwind · i18n",
     "project2Type": "CLIENTE",
     "visitSite": "Ver proyecto ↗",
@@ -131,7 +131,7 @@
     "assignments": "Centro Zaragoza · Tragsatec · ISYC · Softek",
     "additionalProtocols": "PROTOCOLOS_ADICIONALES",
     "protocols": "Profesor Grado Superior · Speaker IA",
-    "bio": "He trabajado en Centro Zaragoza, Tragsatec e ISYC creando software para grandes organizaciones. Ahora traigo esa misma calidad a negocios locales, con trato directo y la IA como aliada.",
+    "bio": "He trabajado en Centro Zaragoza, Tragsatec e ISYC creando software para grandes organizaciones. Ahora traigo esa misma calidad a tu negocio, con trato directo y la IA como aliada.",
     "quote": "\"Todos esos momentos se perderán en el tiempo, como lágrimas en la lluvia.\"",
     "cornerSys": "SYS.04",
     "cornerLabel": "TYRELL"
@@ -149,13 +149,13 @@
     "a5": "No te preocupes, es más habitual de lo que crees. Puedo orientarte con el diseño del logo, usar fotografía profesional de stock y redactar los textos de tu web. Todo incluido en el proyecto.",
     "q6": "¿Cuánto cuesta mantener la web al mes?",
     "a6": "El hosting y dominio cuestan entre 10-30€/mes dependiendo del proyecto. El mantenimiento técnico (actualizaciones, seguridad, copias de seguridad) lo ofrezco desde 50€/mes. Muchos clientes no necesitan mantenimiento continuo.",
-    "q7": "¿Solo trabajáis en Zaragoza?",
-    "a7": "Estoy en Zaragoza y puedo reunirme en persona, pero trabajo con clientes de toda España. El proceso es 100% digital: videollamada, entregas online y comunicación fluida por WhatsApp o email.",
+    "q7": "¿Trabajáis en remoto o solo presencial?",
+    "a7": "Trabajo con clientes de cualquier parte del mundo. El proceso es 100% digital: videollamada, entregas online y comunicación fluida por WhatsApp o email. Sin importar dónde estés.",
     "q8": "¿Qué es eso de la inteligencia artificial? ¿Me sirve para algo?",
     "a8": "La IA puede automatizar tareas repetitivas de tu negocio: responder consultas frecuentes, enviar recordatorios de citas, gestionar inventario, generar contenido para redes... Si algo te quita tiempo cada día, probablemente la IA puede hacerlo por ti."
   },
   "Footer": {
-    "description": "Webs, apps y automatización con IA para negocios en Zaragoza. Trato directo, sin intermediarios.",
+    "description": "Webs, apps y automatización con IA para tu negocio. Trato directo, sin intermediarios.",
     "contact": "CONTACTO",
     "navigation": "NAVEGACIÓN",
     "followUs": "SÍGUENOS",
