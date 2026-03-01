@@ -1,0 +1,28 @@
+# T800 Labs
+
+> Software development company based in Zaragoza, Spain. We build custom web applications, AI integrations, mobile apps, cloud infrastructure, and bespoke software solutions.
+
+## Services
+
+- **Web Development**: Custom websites and web applications using React, Next.js, and full-stack technologies
+- **AI & Automation**: AI integrations, chatbots, and business process automation
+- **Mobile Apps**: Native and hybrid applications for iOS and Android
+- **Cloud & DevOps**: Cloud infrastructure, CI/CD pipelines, containers, and automated deployments
+- **Custom Software**: Bespoke software solutions for specific business needs
+
+## About
+
+Founded by Rubén Jarné Cabañero, a full-stack developer specializing in AI-assisted development. Based in Zaragoza, Spain, serving clients nationally and internationally.
+
+## Contact
+
+- Website: https://t800labs.com
+- Email: ruben.jarne.cabanero@gmail.com
+- WhatsApp: +34 646 515 267
+- GitHub: https://github.com/rubenbros
+- LinkedIn: https://www.linkedin.com/in/rubenbros
+
+## Languages
+
+- Spanish (default): https://t800labs.com
+- English: https://t800labs.com/en

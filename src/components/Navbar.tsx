@@ -24,7 +24,7 @@ export default function Navbar() {
     "#proceso": 0.75,    // numbers revealed and clickable
     "#portfolio": 0.50,  // cards visible (now pinned)
     "#equipo": 0.60,     // all content revealed before fade (entrance inside pin)
-    "#contacto": 0.55,   // HAL eye visible (CRT power-on now inside pin)
+    "#contacto": 0.38,   // HAL eye + Iniciar Contacto button visible
   };
 
   const handleNavClick = useCallback(

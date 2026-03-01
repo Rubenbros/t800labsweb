@@ -10,10 +10,42 @@ import Navbar from "@/components/Navbar";
 import MatrixRain from "@/components/MatrixRain";
 import ProcessTesseract from "@/components/ProcessTesseract";
 import TronBikes from "@/components/TronBikes";
+import LavaFooter from "@/components/LavaFooter";
 
 export default function HomeClient() {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const t = useTranslations();
+
+  // Scroll to pinned sections correctly (accounts for ScrollTrigger pin offsets)
+  const PIN_PROGRESS: Record<string, number> = {
+    "#servicios": 0.60,
+    "#proceso": 0.75,
+    "#portfolio": 0.50,
+    "#equipo": 0.60,
+    "#contacto": 0.38,
+  };
+
+  const scrollToSection = (e: React.MouseEvent, href: string) => {
+    e.preventDefault();
+    const target = document.querySelector(href);
+    if (!target) return;
+
+    const progress = PIN_PROGRESS[href];
+    if (progress !== undefined) {
+      const st = ScrollTrigger.getAll().find(
+        (t) => t.trigger === target && t.pin,
+      );
+      if (st) {
+        gsap.to(window, {
+          scrollTo: { y: st.start + progress * (st.end - st.start) },
+          duration: 1.2,
+          ease: "power3.inOut",
+        });
+        return;
+      }
+    }
+    gsap.to(window, { scrollTo: { y: target, offsetY: 80 }, duration: 1.2, ease: "power3.inOut" });
+  };
 
   useEffect(() => {
     if (!wrapperRef.current) return;
@@ -692,7 +724,7 @@ export default function HomeClient() {
         scrollTrigger: {
           trigger: ".hal-section",
           start: "top top",
-          end: isMobile ? "+=700" : "+=1200",
+          end: isMobile ? "+=1400" : "+=2400",
           scrub: true,
           pin: true,
         },
@@ -740,111 +772,128 @@ export default function HomeClient() {
         { opacity: 0, y: 15 },
         { opacity: 1, y: 0, duration: 0.3, ease: "power2.out" }, 1.5);
 
-      // Fade to black at end of HAL pin
-      ht.to(".hal-inner", {
-        opacity: 0, pointerEvents: "none", duration: 1.0,
-      }, 2.5);
-
       // ═══════════════════════════════════════
-      // FOOTER — Lava / Molten Steel Animations
+      // LAVA RISING — replaces fade-to-black
       // ═══════════════════════════════════════
 
-      // Lava gradient flow — continuous loop (layer 1: base)
-      gsap.to(".footer-lava-layer1", {
-        backgroundPosition: "200% 0%",
-        duration: 8,
-        repeat: -1,
-        ease: "none",
-      });
+      // Phase 2: Fade out HAL corners + shutdown panel (make room for lava)
+      ht.to(".hal-corner", { opacity: 0, duration: 0.3, stagger: 0.05 }, 2.0);
+      ht.to(".hal-quote", { opacity: 0, y: -20, duration: 0.3 }, 2.0);
 
-      // Lava gradient flow — layer 2 (bright patches, slower & opposite)
-      gsap.to(".footer-lava-layer2", {
-        backgroundPosition: "-200% 0%",
-        duration: 12,
-        repeat: -1,
-        ease: "none",
-      });
+      // Initial state: lava hidden below
+      gsap.set(".lava-rising-container", { yPercent: 100 });
 
-      // Lava gradient flow — layer 3 (surface highlights, medium speed)
-      gsap.to(".footer-lava-layer3", {
-        backgroundPosition: "200% 0%",
+      // Phase 3: Lava rises from bottom (2.5 → 4.5)
+      // yPercent 55 = lava surface well below HAL eye, footer visible at bottom
+      ht.fromTo(".lava-rising-container",
+        { yPercent: 100 },
+        { yPercent: 55, duration: 2.0, ease: "power1.inOut" },
+      2.5);
+
+      // Heat shimmer fades in as lava rises
+      ht.to(".lava-heat-shimmer", {
+        opacity: 1,
+        duration: 0.5,
+      }, 3.0);
+
+      // Hand wobble starts (fade in)
+      ht.fromTo(".lava-hand", { opacity: 0, y: 20 }, {
+        opacity: 1,
+        y: 0,
+        duration: 0.5,
+        ease: "power2.out",
+      }, 3.5);
+
+      // Footer content becomes clickable once lava has risen
+      ht.to(".lava-footer-content", {
+        pointerEvents: "auto",
+        duration: 0.01,
+      }, 4.0);
+
+      // ═══════════════════════════════════════
+      // LAVA CONTINUOUS ANIMATIONS (loops)
+      // ═══════════════════════════════════════
+
+      // Back wave — slow horizontal drift
+      gsap.to(".lava-wave-back", {
+        x: "-50%",
         duration: 10,
         repeat: -1,
         ease: "none",
       });
 
-      // Dark patches drift
-      gsap.to(".footer-lava-dark", {
-        backgroundPosition: "-150% 0%",
-        duration: 14,
+      // Mid wave — medium speed, opposite direction
+      gsap.to(".lava-wave-mid", {
+        x: "50%",
+        duration: 7,
         repeat: -1,
         ease: "none",
       });
 
-      // Heat line shimmer
-      gsap.to(".footer-heat-line", {
+      // Front wave — fastest
+      gsap.to(".lava-wave-front", {
+        x: "-50%",
+        duration: 5,
+        repeat: -1,
+        ease: "none",
+      });
+
+      // Heat shimmer pulse
+      gsap.to(".lava-heat-shimmer", {
         opacity: 0.6,
-        duration: 2,
+        duration: 2.5,
         repeat: -1,
         yoyo: true,
         ease: "sine.inOut",
+        delay: 2,
       });
 
-      // Heat shimmer above lava — subtle pulsing glow
-      gsap.to(".footer-heat-shimmer", {
-        opacity: 0.7,
-        duration: 3,
-        repeat: -1,
-        yoyo: true,
-        ease: "sine.inOut",
-      });
-
-      // Lava bubble animations — each bubble rises and pops
-      [0,1,2,3,4,5].forEach((i) => {
-        const delay = i * 1.8 + Math.random() * 2;
-        const duration = 1.2 + Math.random() * 0.8;
-        gsap.to(`.footer-lava-bubble-${i}`, {
-          y: -(30 + Math.random() * 40),
+      // Bubble particles — each rises and pops
+      [0,1,2,3,4,5,6,7].forEach((i) => {
+        const delay = i * 1.5 + Math.random() * 2;
+        const dur = 1.0 + Math.random() * 0.6;
+        gsap.to(`.lava-bubble-${i}`, {
+          y: -(30 + Math.random() * 50),
           opacity: 0.9,
           scale: 1.3,
-          duration: duration * 0.6,
+          duration: dur * 0.6,
           repeat: -1,
           repeatDelay: 2 + Math.random() * 3,
-          delay: delay,
+          delay,
           ease: "power1.out",
-          onRepeat: function() {
-            gsap.set(`.footer-lava-bubble-${i}`, {
-              left: `${10 + Math.random() * 80}%`,
-            });
+          onRepeat() {
+            gsap.set(`.lava-bubble-${i}`, { left: `${8 + Math.random() * 84}%` });
           },
         });
-        // Pop (fade out) after rising
-        gsap.to(`.footer-lava-bubble-${i}`, {
+        // Pop fade
+        gsap.to(`.lava-bubble-${i}`, {
           opacity: 0,
           scale: 2,
-          duration: duration * 0.4,
+          duration: dur * 0.4,
           repeat: -1,
           repeatDelay: 2 + Math.random() * 3,
-          delay: delay + duration * 0.6,
+          delay: delay + dur * 0.6,
           ease: "power2.out",
         });
       });
 
-      // T-800 Arm — rises from lava on scroll into view
-      gsap.fromTo(".footer-t800-arm",
-        { y: 40, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          duration: 1.5,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: ".footer-section",
-            start: "top 85%",
-            end: "top 50%",
-            scrub: true,
-          },
-        });
+      // Terminator hand wobble
+      gsap.to(".lava-hand", {
+        rotation: -6,
+        duration: 2.5,
+        repeat: -1,
+        yoyo: true,
+        ease: "sine.inOut",
+        delay: 1,
+      });
+      gsap.to(".lava-hand", {
+        y: -4,
+        duration: 1.8,
+        repeat: -1,
+        yoyo: true,
+        ease: "sine.inOut",
+        delay: 0.5,
+      });
 
       // ═══════════════════════════════════════
       // TRANSITION SCANLINES — red sweep between sections
@@ -867,10 +916,23 @@ export default function HomeClient() {
       // ═══════════════════════════════════════
       // PERSISTENT SCROLL INDICATOR
       // ═══════════════════════════════════════
-      // Fade in after hero entrance
-      gsap.fromTo(".scroll-persistent",
-        { opacity: 0, y: 20 },
-        { opacity: 1, y: 0, duration: 0.8, delay: 3 });
+      gsap.set(".scroll-persistent", { opacity: 0, y: 20 });
+
+      // Show only between hero exit and HAL lava phase
+      ScrollTrigger.create({
+        trigger: ".hero-section",
+        start: "bottom top",
+        onEnterBack: () => gsap.to(".scroll-persistent", { opacity: 0, y: 20, duration: 0.4, overwrite: true }),
+        onLeave: () => gsap.to(".scroll-persistent", { opacity: 1, y: 0, duration: 0.6, overwrite: true }),
+      });
+
+      // Hide at bottom of page (spacer after HAL)
+      ScrollTrigger.create({
+        trigger: ".lava-end-spacer",
+        start: "top bottom",
+        onEnter: () => gsap.to(".scroll-persistent", { opacity: 0, duration: 0.3, overwrite: true }),
+        onLeaveBack: () => gsap.to(".scroll-persistent", { opacity: 1, duration: 0.3, overwrite: true }),
+      });
 
       // Arrow bounce loop
       gsap.to(".scroll-persistent-arrow", {
@@ -884,31 +946,6 @@ export default function HomeClient() {
         scrollTrigger: {
           trigger: wrapperRef.current,
           start: "top top",
-          end: "bottom bottom",
-          scrub: true,
-        },
-      });
-
-      // Hide indicator near bottom of page
-      gsap.to(".scroll-persistent", {
-        opacity: 0,
-        scrollTrigger: {
-          trigger: wrapperRef.current,
-          start: "bottom-=300 bottom",
-          end: "bottom bottom",
-          scrub: true,
-        },
-      });
-
-      // ═══════════════════════════════════════
-      // FINAL FADE TO BLACK — quick blackout at the end
-      // ═══════════════════════════════════════
-      gsap.to(".final-blackout", {
-        opacity: 1,
-        ease: "power2.in",
-        scrollTrigger: {
-          trigger: ".final-fade-spacer",
-          start: "top bottom",
           end: "bottom bottom",
           scrub: true,
         },
@@ -928,7 +965,7 @@ export default function HomeClient() {
   }, []);
 
   return (
-    <div ref={wrapperRef} className="relative overflow-hidden bg-black">
+    <main ref={wrapperRef} className="relative overflow-hidden bg-black">
 
       {/* ════════════════════════════════════════════
           NAVBAR (fixed, initially invisible)
@@ -955,10 +992,10 @@ export default function HomeClient() {
       {/* ════════════════════════════════════════════
           FLYING TITLE (fixed, morphs from hero → navbar)
           ════════════════════════════════════════════ */}
-      <div className="flying-title fixed z-[991] flex items-baseline overflow-hidden whitespace-nowrap opacity-0">
+      <h1 className="flying-title fixed z-[991] flex items-baseline overflow-hidden whitespace-nowrap opacity-0">
         <span className="flying-t800 font-bold tracking-[-0.04em] text-white opacity-0">T800</span>
         <span className="flying-labs font-bold tracking-[-0.04em] text-[#e50914] opacity-0">Labs</span>
-      </div>
+      </h1>
 
       {/* ════════════════════════════════════════════
           PERSISTENT SCROLL INDICATOR (fixed)
@@ -1015,13 +1052,7 @@ export default function HomeClient() {
             <p className="hero-value-prop mt-4 text-center text-sm tracking-wide text-white/35 opacity-0 md:text-base">{t("Hero.valueProposition")}</p>
             <a
               href="#contacto"
-              onClick={(e) => {
-                e.preventDefault();
-                const el = document.querySelector("#contacto");
-                if (el) {
-                  gsap.to(window, { scrollTo: { y: el, offsetY: 80 }, duration: 1.2, ease: "power3.inOut" });
-                }
-              }}
+              onClick={(e) => scrollToSection(e, "#contacto")}
               className="hero-cta mt-6 border border-red-500/60 bg-transparent px-8 py-3 font-mono text-[10px] tracking-[0.2em] text-red-500 uppercase opacity-0 transition-all duration-300 hover:border-red-500 hover:bg-red-500/10 hover:text-red-400 md:text-xs"
             >
               {t("Hero.cta")}
@@ -1253,13 +1284,7 @@ export default function HomeClient() {
           <div className="services-cta mt-8 flex justify-center opacity-0 md:mt-12">
             <a
               href="#contacto"
-              onClick={(e) => {
-                e.preventDefault();
-                const el = document.querySelector("#contacto");
-                if (el) {
-                  gsap.to(window, { scrollTo: { y: el, offsetY: 80 }, duration: 1.2, ease: "power3.inOut" });
-                }
-              }}
+              onClick={(e) => scrollToSection(e, "#contacto")}
               className="border border-[#00ff41]/40 bg-transparent px-8 py-3 font-mono text-[10px] tracking-[0.2em] text-[#00ff41] uppercase transition-all duration-300 hover:border-[#00ff41]/80 hover:bg-[#00ff41]/10 md:text-xs"
             >
               {t("Services.cta")}
@@ -1427,13 +1452,7 @@ export default function HomeClient() {
             </h3>
             <a
               href="#contacto"
-              onClick={(e) => {
-                e.preventDefault();
-                const el = document.querySelector("#contacto");
-                if (el) {
-                  gsap.to(window, { scrollTo: { y: el, offsetY: 80 }, duration: 1.2, ease: "power3.inOut" });
-                }
-              }}
+              onClick={(e) => scrollToSection(e, "#contacto")}
               className="portfolio-cta-btn mt-1 inline-block rounded border border-[#00d4ff]/40 px-5 py-2 font-mono text-[10px] tracking-[0.2em] text-[#00d4ff] uppercase transition-all duration-500 hover:border-[#00d4ff] hover:bg-[#00d4ff]/10 md:mt-2 md:px-6 md:py-2.5 md:text-xs"
               style={{ boxShadow: '0 0 20px rgba(0,212,255,0.1)' }}
             >
@@ -1626,7 +1645,7 @@ export default function HomeClient() {
           HAL 9000 SECTION
           ════════════════════════════════════════════ */}
       <section id="contacto" className="hal-section relative z-[1000] h-[10vh] overflow-visible">
-        <div className="hal-inner absolute inset-x-0 top-0 h-screen bg-black">
+        <div className="hal-inner absolute inset-x-0 top-0 h-screen overflow-hidden bg-black">
         {/* CRT power-on overlay — starts fully black */}
         <div className="hal-power-overlay pointer-events-none absolute inset-0 z-[60] bg-black" />
         {/* CRT scan line — horizontal white line that expands (top set by JS to align with HAL eye) */}
@@ -1636,7 +1655,7 @@ export default function HomeClient() {
         {/* Red glow that intensifies during power-on (position set by JS to align with HAL eye) */}
         <div className="hal-power-glow pointer-events-none absolute left-1/2 top-0 z-[1] h-[400px] w-[400px] -translate-x-1/2 rounded-full bg-[radial-gradient(circle,_rgba(229,9,20,0.15)_0%,_transparent_70%)] opacity-0" />
         {/* HAL eye — centered */}
-        <div className="hal-content flex h-full items-center justify-center">
+        <div className="hal-content relative z-[30] flex h-full items-center justify-center">
           <div className="flex flex-col items-center gap-6 md:gap-10">
             <Hal9000 />
             <HalShutdownPanel />
@@ -1644,305 +1663,32 @@ export default function HomeClient() {
         </div>
 
         {/* Corner decorations */}
-        <div className="hal-corner absolute left-6 top-6 opacity-0">
+        <div className="hal-corner absolute left-6 top-6 z-[30] opacity-0">
           <div className="h-8 w-[1px] bg-gradient-to-b from-red-500/50 to-transparent" />
           <div className="absolute top-0 h-[1px] w-8 bg-gradient-to-r from-red-500/50 to-transparent" />
           <span className="absolute left-3 top-3 font-mono text-[9px] tracking-[0.3em] text-red-500/50">{t("HalCorners.sys02")}</span>
         </div>
-        <div className="hal-corner absolute right-6 top-6 opacity-0">
+        <div className="hal-corner absolute right-6 top-6 z-[30] opacity-0">
           <div className="ml-auto h-8 w-[1px] bg-gradient-to-b from-red-500/50 to-transparent" />
           <div className="absolute right-0 top-0 h-[1px] w-8 bg-gradient-to-l from-red-500/50 to-transparent" />
           <span className="absolute right-3 top-3 font-mono text-[9px] tracking-[0.3em] text-red-500/50">{t("HalCorners.active")}</span>
         </div>
-        <div className="hal-corner absolute bottom-6 left-6 opacity-0">
+        <div className="hal-corner absolute bottom-6 left-6 z-[30] opacity-0">
           <div className="h-8 w-[1px] bg-gradient-to-t from-red-500/50 to-transparent" />
           <div className="absolute bottom-0 h-[1px] w-8 bg-gradient-to-r from-red-500/50 to-transparent" />
         </div>
-        <div className="hal-corner absolute bottom-6 right-6 opacity-0">
+        <div className="hal-corner absolute bottom-6 right-6 z-[30] opacity-0">
           <div className="ml-auto h-8 w-[1px] bg-gradient-to-t from-red-500/50 to-transparent" />
           <div className="absolute bottom-0 right-0 h-[1px] w-8 bg-gradient-to-l from-red-500/50 to-transparent" />
         </div>
+        {/* Lava rising from below */}
+        <LavaFooter t={t} />
+
         </div>{/* /hal-inner */}
       </section>
 
-      {/* ════════════════════════════════════════════
-          FINAL FADE-TO-BLACK SPACER
-          ════════════════════════════════════════════ */}
-      <div className="final-fade-spacer relative h-[8vh] bg-black" />
-
-      {/* ════════════════════════════════════════════
-          FOOTER — Terminator 2 Lava Scene
-          ════════════════════════════════════════════ */}
-      <footer className="footer-section relative z-[999] bg-black">
-
-        {/* Heat shimmer / glow above lava */}
-        <div className="footer-heat-shimmer pointer-events-none relative h-16 overflow-hidden">
-          <div
-            className="absolute inset-0"
-            style={{
-              background: "linear-gradient(to bottom, transparent 0%, rgba(255,69,0,0.03) 30%, rgba(255,140,0,0.08) 60%, rgba(255,69,0,0.15) 100%)",
-            }}
-          />
-          {/* Bright heat line at the boundary */}
-          <div
-            className="footer-heat-line absolute bottom-0 left-0 right-0 h-[2px]"
-            style={{
-              background: "linear-gradient(90deg, transparent 0%, #ff4500 15%, #fbbf24 35%, #ff8c00 50%, #fbbf24 65%, #ff4500 85%, transparent 100%)",
-              boxShadow: "0 0 20px 4px rgba(255,140,0,0.5), 0 0 60px 10px rgba(255,69,0,0.3)",
-            }}
-          />
-        </div>
-
-        {/* Molten steel / lava band */}
-        <div className="footer-lava-container relative overflow-hidden" style={{ height: "150px" }}>
-          {/* Lava layer 1 — deep base */}
-          <div
-            className="footer-lava-layer1 absolute inset-0"
-            style={{
-              background: "linear-gradient(90deg, #8b1a00 0%, #dc2626 15%, #ff4500 30%, #ff8c00 45%, #fbbf24 55%, #ff8c00 65%, #ff4500 80%, #dc2626 90%, #8b1a00 100%)",
-              backgroundSize: "200% 100%",
-            }}
-          />
-          {/* Lava layer 2 — bright flowing overlay */}
-          <div
-            className="footer-lava-layer2 absolute inset-0"
-            style={{
-              background: "radial-gradient(ellipse 40% 60% at 20% 50%, rgba(251,191,36,0.6) 0%, transparent 70%), radial-gradient(ellipse 35% 50% at 60% 40%, rgba(255,140,0,0.5) 0%, transparent 70%), radial-gradient(ellipse 30% 55% at 80% 60%, rgba(251,191,36,0.4) 0%, transparent 70%)",
-              backgroundSize: "200% 100%",
-            }}
-          />
-          {/* Lava layer 3 — surface highlights */}
-          <div
-            className="footer-lava-layer3 absolute inset-0"
-            style={{
-              background: "radial-gradient(ellipse 20% 30% at 30% 30%, rgba(255,255,200,0.3) 0%, transparent 70%), radial-gradient(ellipse 15% 25% at 70% 50%, rgba(255,255,200,0.25) 0%, transparent 70%), radial-gradient(ellipse 25% 35% at 50% 70%, rgba(255,200,100,0.2) 0%, transparent 70%)",
-              backgroundSize: "200% 100%",
-            }}
-          />
-          {/* Dark patches for depth */}
-          <div
-            className="footer-lava-dark absolute inset-0"
-            style={{
-              background: "radial-gradient(ellipse 15% 40% at 10% 60%, rgba(50,0,0,0.5) 0%, transparent 70%), radial-gradient(ellipse 12% 35% at 45% 80%, rgba(50,0,0,0.4) 0%, transparent 70%), radial-gradient(ellipse 18% 30% at 90% 40%, rgba(50,0,0,0.45) 0%, transparent 70%)",
-              backgroundSize: "200% 100%",
-            }}
-          />
-          {/* Bottom fade to dark */}
-          <div
-            className="absolute bottom-0 left-0 right-0 h-12"
-            style={{
-              background: "linear-gradient(to bottom, transparent, rgba(30,5,0,0.6) 50%, rgba(15,2,0,0.9) 100%)",
-            }}
-          />
-
-          {/* Lava bubble particles */}
-          {[0,1,2,3,4,5].map((i) => (
-            <div
-              key={`lava-bubble-${i}`}
-              className={`footer-lava-bubble footer-lava-bubble-${i} absolute rounded-full opacity-0`}
-              style={{
-                width: `${6 + (i % 3) * 4}px`,
-                height: `${6 + (i % 3) * 4}px`,
-                left: `${12 + i * 16}%`,
-                bottom: "30%",
-                background: "radial-gradient(circle, #fbbf24 0%, #ff8c00 50%, #ff4500 100%)",
-                boxShadow: "0 0 8px 2px rgba(251,191,36,0.6)",
-              }}
-            />
-          ))}
-
-          {/* Terminator arm with thumbs up (SVG) */}
-          <div className="footer-t800-arm absolute left-1/2 -translate-x-1/2" style={{ bottom: "10px", width: "80px", height: "170px" }}>
-            <svg
-              viewBox="0 0 80 170"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-full w-full"
-              style={{ filter: "drop-shadow(0 0 12px rgba(255,140,0,0.4))" }}
-            >
-              <defs>
-                {/* Chrome metallic gradient */}
-                <linearGradient id="arm-chrome" x1="0" y1="0" x2="1" y2="1">
-                  <stop offset="0%" stopColor="#e8e8e8" />
-                  <stop offset="25%" stopColor="#c0c0c0" />
-                  <stop offset="50%" stopColor="#9a9a9a" />
-                  <stop offset="70%" stopColor="#c0c0c0" />
-                  <stop offset="100%" stopColor="#6a6a6a" />
-                </linearGradient>
-                {/* Lava reflection on lower arm */}
-                <linearGradient id="arm-lava-reflect" x1="0.5" y1="0" x2="0.5" y2="1">
-                  <stop offset="0%" stopColor="transparent" />
-                  <stop offset="50%" stopColor="rgba(255,100,0,0.15)" />
-                  <stop offset="100%" stopColor="rgba(255,69,0,0.5)" />
-                </linearGradient>
-                {/* Fade mask — arm disappears into lava at the bottom */}
-                <linearGradient id="arm-fade" x1="0.5" y1="0" x2="0.5" y2="1">
-                  <stop offset="0%" stopColor="white" />
-                  <stop offset="75%" stopColor="white" />
-                  <stop offset="95%" stopColor="black" />
-                </linearGradient>
-                <mask id="arm-mask">
-                  <rect x="0" y="0" width="80" height="170" fill="url(#arm-fade)" />
-                </mask>
-              </defs>
-              <g mask="url(#arm-mask)">
-                {/* Forearm */}
-                <path
-                  d="M32 170 L32 70 Q32 62 36 58 L36 58 L44 58 Q48 62 48 70 L48 170 Z"
-                  fill="url(#arm-chrome)"
-                  stroke="#555"
-                  strokeWidth="0.5"
-                />
-                {/* Wrist taper */}
-                <path
-                  d="M34 70 L34 58 Q34 55 36 53 L44 53 Q46 55 46 58 L46 70 Z"
-                  fill="url(#arm-chrome)"
-                  stroke="#555"
-                  strokeWidth="0.5"
-                />
-                {/* Fist / palm */}
-                <path
-                  d="M30 55 Q28 50 28 44 Q28 36 34 33 L46 33 Q52 36 52 44 Q52 50 50 55 Z"
-                  fill="url(#arm-chrome)"
-                  stroke="#555"
-                  strokeWidth="0.5"
-                />
-                {/* Curled fingers — index */}
-                <path
-                  d="M30 44 Q27 42 27 38 Q27 34 30 33 L34 33"
-                  fill="none"
-                  stroke="#999"
-                  strokeWidth="2.5"
-                  strokeLinecap="round"
-                />
-                {/* Curled fingers — middle */}
-                <path
-                  d="M32 42 Q29 39 29 35 Q29 32 32 31"
-                  fill="none"
-                  stroke="#999"
-                  strokeWidth="2.5"
-                  strokeLinecap="round"
-                />
-                {/* Curled fingers — ring */}
-                <path
-                  d="M48 42 Q51 39 51 35 Q51 32 48 31"
-                  fill="none"
-                  stroke="#999"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                />
-                {/* Curled fingers — pinky */}
-                <path
-                  d="M50 44 Q53 42 53 38 Q53 34 50 33"
-                  fill="none"
-                  stroke="#888"
-                  strokeWidth="1.8"
-                  strokeLinecap="round"
-                />
-                {/* Thumb — extended upward */}
-                <path
-                  d="M30 44 Q26 43 24 38 Q22 30 24 20 Q25 14 28 10 Q31 7 33 8 Q36 9 36 14 L35 30 Q34 38 32 42"
-                  fill="url(#arm-chrome)"
-                  stroke="#666"
-                  strokeWidth="0.8"
-                />
-                {/* Thumb highlight */}
-                <path
-                  d="M28 14 Q29 10 31 9"
-                  fill="none"
-                  stroke="rgba(255,255,255,0.4)"
-                  strokeWidth="1"
-                  strokeLinecap="round"
-                />
-                {/* Mechanical joint lines on forearm */}
-                <line x1="34" y1="80" x2="46" y2="80" stroke="#666" strokeWidth="0.5" />
-                <line x1="34" y1="95" x2="46" y2="95" stroke="#666" strokeWidth="0.5" />
-                <line x1="34" y1="110" x2="46" y2="110" stroke="#666" strokeWidth="0.5" />
-                {/* Chrome highlight streak */}
-                <line x1="38" y1="60" x2="38" y2="130" stroke="rgba(255,255,255,0.15)" strokeWidth="2" />
-                {/* Lava reflection overlay */}
-                <rect x="30" y="0" width="22" height="170" fill="url(#arm-lava-reflect)" />
-                {/* Knuckle details */}
-                <circle cx="33" cy="36" r="1.5" fill="#777" />
-                <circle cx="40" cy="34" r="1.5" fill="#777" />
-                <circle cx="47" cy="36" r="1.5" fill="#777" />
-              </g>
-            </svg>
-          </div>
-        </div>
-
-        {/* Footer content — below lava */}
-        <div
-          className="relative px-6 py-12 md:px-10"
-          style={{
-            background: "linear-gradient(to bottom, #1a0500 0%, #0d0200 20%, #050100 40%, #000000 100%)",
-          }}
-        >
-          <div className="mx-auto max-w-6xl">
-            <div className="grid grid-cols-1 gap-10 md:grid-cols-3">
-              {/* Column 1: Logo + description */}
-              <div>
-                <div className="mb-4 flex items-center gap-3">
-                  <img src="/logo-small.png" alt="T800 Labs" className="h-8" />
-                  <span className="text-lg font-bold text-white">T800<span className="text-[#e50914]">Labs</span></span>
-                </div>
-                <p className="font-mono text-[11px] leading-relaxed text-white/40">
-                  {t("Footer.description")}
-                </p>
-              </div>
-
-              {/* Column 2: Contact */}
-              <div>
-                <h4 className="mb-4 font-mono text-[10px] tracking-[0.2em] text-white/60 uppercase">{t("Footer.contact")}</h4>
-                <div className="space-y-2 font-mono text-[11px] text-white/40">
-                  <a
-                    href="mailto:ruben.jarne.cabanero@gmail.com"
-                    className="block transition-colors duration-300 hover:text-[#e50914]"
-                  >
-                    ruben.jarne.cabanero@gmail.com
-                  </a>
-                  <a
-                    href="https://wa.me/34646515267"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="block transition-colors duration-300 hover:text-[#e50914]"
-                  >
-                    +34 646 515 267
-                  </a>
-                </div>
-              </div>
-
-              {/* Column 3: Social */}
-              <div>
-                <h4 className="mb-4 font-mono text-[10px] tracking-[0.2em] text-white/60 uppercase">{t("Footer.followUs")}</h4>
-                <div className="flex gap-5">
-                  <a
-                    href="https://github.com/rubenbros"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="font-mono text-[11px] text-white/40 transition-colors duration-300 hover:text-[#e50914]"
-                  >
-                    GitHub
-                  </a>
-                  <a
-                    href="https://www.linkedin.com/in/rubenbros"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="font-mono text-[11px] text-white/40 transition-colors duration-300 hover:text-[#e50914]"
-                  >
-                    LinkedIn
-                  </a>
-                </div>
-              </div>
-            </div>
-
-            {/* Copyright */}
-            <div className="mt-10 border-t border-white/5 pt-6 text-center">
-              <span className="font-mono text-[10px] text-white/20">{t("Footer.copyright")}</span>
-            </div>
-          </div>
-        </div>
-      </footer>
+      {/* Scroll spacer — ensures HAL pin can complete fully */}
+      <div className="lava-end-spacer bg-black" style={{ height: "100vh" }} />
 
       {/* Transition scanline — sweeps between sections */}
       <div
@@ -1953,9 +1699,6 @@ export default function HomeClient() {
         <div className="absolute inset-x-0 top-1/2 h-8 -translate-y-1/2 bg-gradient-to-b from-transparent via-red-500/15 to-transparent" />
       </div>
 
-      {/* Fixed blackout overlay — fades in at the very end */}
-      <div className="final-blackout pointer-events-none fixed inset-0 z-[998] bg-black opacity-0" />
-
-    </div>
+    </main>
   );
 }
