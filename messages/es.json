@@ -136,6 +136,20 @@
     "cornerSys": "SYS.04",
     "cornerLabel": "TYRELL"
   },
+  "FAQ": {
+    "q1": "¿Cuánto cuesta desarrollar una web o app a medida?",
+    "a1": "Cada proyecto es único. Ofrecemos presupuesto cerrado sin compromiso tras analizar tus necesidades. Los proyectos web suelen partir desde 2.000€ y las apps desde 5.000€.",
+    "q2": "¿Cuánto tiempo tarda en estar listo mi proyecto?",
+    "a2": "Depende de la complejidad: una web corporativa puede estar en 2-4 semanas, una aplicación web completa en 1-3 meses. Hacemos entregas funcionales cada 1-2 semanas para que veas el avance.",
+    "q3": "¿Trabajáis con inteligencia artificial?",
+    "a3": "Sí, integramos IA en proyectos existentes y nuevos: chatbots, automatización de procesos, análisis de datos, generación de contenido y más. Usamos APIs de OpenAI, Anthropic y modelos open source.",
+    "q4": "¿Ofrecéis mantenimiento y soporte después del lanzamiento?",
+    "a4": "Sí, todos nuestros proyectos incluyen soporte post-lanzamiento. Ofrecemos planes de mantenimiento mensual que cubren actualizaciones, correcciones y mejoras continuas.",
+    "q5": "¿En qué tecnologías trabajáis?",
+    "a5": "Principalmente React, Next.js, TypeScript, Node.js, Java/Spring Boot, Python, y cloud con AWS/GCP. Elegimos la tecnología que mejor se adapte a cada proyecto.",
+    "q6": "¿Trabajáis solo en Zaragoza o también en remoto?",
+    "a6": "Trabajamos con clientes de toda España y Europa. Nuestro proceso es 100% digital: reuniones por videollamada, entregas online y comunicación fluida sin importar la ubicación."
+  },
   "Footer": {
     "description": "Software de nueva generación. Webs, apps y sistemas que marcan la diferencia.",
     "contact": "CONTACTO",

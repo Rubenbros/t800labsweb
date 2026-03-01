@@ -10,6 +10,7 @@ export default async function Page({
 }) {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "Metadata" });
+  const faq = await getTranslations({ locale, namespace: "FAQ" });
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -115,6 +116,17 @@ export default async function Page({
         name: service.name,
         description: service.description,
       })),
+      {
+        "@type": "FAQPage",
+        mainEntity: [1, 2, 3, 4, 5, 6].map((i) => ({
+          "@type": "Question",
+          name: faq(`q${i}`),
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: faq(`a${i}`),
+          },
+        })),
+      },
     ],
   };
 
