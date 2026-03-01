@@ -177,10 +177,10 @@ export default function LavaFooter({ t }: LavaFooterProps) {
               </h4>
               <div className="space-y-1.5 font-mono text-[10px] text-white/40">
                 <a
-                  href="mailto:ruben.jarne.cabanero@gmail.com"
+                  href="mailto:hola@t800labs.com"
                   className="block transition-colors duration-300 hover:text-[#e50914]"
                 >
-                  ruben.jarne.cabanero@gmail.com
+                  hola@t800labs.com
                 </a>
                 <a
                   href="https://wa.me/34645515267"

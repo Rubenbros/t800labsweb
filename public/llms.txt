@@ -17,7 +17,7 @@ Founded by Rubén Jarné Cabañero, a full-stack developer specializing in AI-as
 ## Contact
 
 - Website: https://t800labs.com
-- Email: ruben.jarne.cabanero@gmail.com
+- Email: hola@t800labs.com
 - WhatsApp: +34 646 515 267
 - GitHub: https://github.com/rubenbros
 - LinkedIn: https://www.linkedin.com/in/rubenbros

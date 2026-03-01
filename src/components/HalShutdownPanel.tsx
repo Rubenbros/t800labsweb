@@ -56,7 +56,7 @@ export default function HalShutdownPanel() {
           `Nombre: ${formName}\nEmail: ${formEmail}\n\n${formMessage}`
         );
         window.open(
-          `mailto:ruben.jarne.cabanero@gmail.com?subject=${subject}&body=${body}`,
+          `mailto:hola@t800labs.com?subject=${subject}&body=${body}`,
           "_self"
         );
         setPhase("email-sent");
@@ -68,7 +68,7 @@ export default function HalShutdownPanel() {
         `Nombre: ${formName}\nEmail: ${formEmail}\n\n${formMessage}`
       );
       window.open(
-        `mailto:ruben.jarne.cabanero@gmail.com?subject=${subject}&body=${body}`,
+        `mailto:hola@t800labs.com?subject=${subject}&body=${body}`,
         "_self"
       );
       setPhase("email-sent");

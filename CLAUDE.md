@@ -142,7 +142,7 @@ El Hero ocupa `h-screen`, fondo negro, y contiene:
 - 3 columnas: Logo+descripción, Contacto (email+WhatsApp), Social (GitHub+LinkedIn)
 - Línea de copyright
 - Font mono, estilo minimalista acorde al resto
-- Email: ruben.jarne.cabanero@gmail.com
+- Email: hola@t800labs.com
 - WhatsApp: +34 646 515 267
 
 ## Secciones pendientes

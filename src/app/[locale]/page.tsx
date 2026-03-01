@@ -28,7 +28,7 @@ export default async function Page({
         },
         contactPoint: {
           "@type": "ContactPoint",
-          email: "ruben.jarne.cabanero@gmail.com",
+          email: "hola@t800labs.com",
           telephone: "+34645515267",
           contactType: "sales",
           availableLanguage: ["Spanish", "English"],
@@ -45,7 +45,7 @@ export default async function Page({
         url: BASE_URL,
         image: `${BASE_URL}/logo-t800labs.png`,
         telephone: "+34645515267",
-        email: "ruben.jarne.cabanero@gmail.com",
+        email: "hola@t800labs.com",
         address: {
           "@type": "PostalAddress",
           addressLocality: "Zaragoza",
@@ -75,39 +75,39 @@ export default async function Page({
       },
       ...[
         {
-          name: locale === "es" ? "Desarrollo Web" : "Web Development",
+          name: locale === "es" ? "Diseño y Desarrollo Web" : "Web Design & Development",
           description:
             locale === "es"
-              ? "Webs y aplicaciones web a medida con React, Next.js, full-stack."
-              : "Custom websites and web applications with React, Next.js, full-stack.",
+              ? "Webs profesionales desde cero, rápidas, adaptadas a móvil y optimizadas para Google."
+              : "Professional websites from scratch, fast, mobile-ready and optimized for Google.",
         },
         {
-          name: locale === "es" ? "IA y Automatización" : "AI & Automation",
+          name: locale === "es" ? "Automatización con IA" : "AI Automation",
           description:
             locale === "es"
-              ? "Integraciones de inteligencia artificial, chatbots y automatización de procesos."
-              : "AI integrations, chatbots, and business process automation.",
+              ? "Automatización de tareas con inteligencia artificial: respuestas automáticas, facturación, gestión de stock."
+              : "Task automation with AI: auto-replies, invoicing, stock management.",
         },
         {
-          name: locale === "es" ? "Apps Móviles" : "Mobile Apps",
+          name: locale === "es" ? "Reservas y Citas Online" : "Online Bookings & Appointments",
           description:
             locale === "es"
-              ? "Aplicaciones nativas e híbridas para iOS y Android."
-              : "Native and hybrid applications for iOS and Android.",
+              ? "Sistemas de reservas online para que tus clientes reserven sin llamar. Avisos automáticos incluidos."
+              : "Online booking systems so your customers can book without calling. Automatic reminders included.",
         },
         {
-          name: "Cloud & DevOps",
+          name: locale === "es" ? "Tienda Online" : "Online Store",
           description:
             locale === "es"
-              ? "Infraestructura cloud, CI/CD, contenedores y despliegues automatizados."
-              : "Cloud infrastructure, CI/CD pipelines, containers and automated deployments.",
+              ? "E-commerce con catálogo, carrito, pagos seguros y gestión desde el móvil."
+              : "E-commerce with catalog, cart, secure payments and mobile management.",
         },
         {
-          name: locale === "es" ? "Software a Medida" : "Custom Software",
+          name: locale === "es" ? "Apps a Medida" : "Custom Apps",
           description:
             locale === "es"
-              ? "Soluciones de software a medida para necesidades empresariales específicas."
-              : "Tailored software solutions for specific business needs.",
+              ? "Aplicaciones y paneles de gestión a medida para necesidades específicas de tu negocio."
+              : "Custom applications and admin panels for your specific business needs.",
         },
       ].map((service) => ({
         "@type": "Service",
@@ -118,7 +118,7 @@ export default async function Page({
       })),
       {
         "@type": "FAQPage",
-        mainEntity: [1, 2, 3, 4, 5, 6].map((i) => ({
+        mainEntity: [1, 2, 3, 4, 5, 6, 7, 8].map((i) => ({
           "@type": "Question",
           name: faq(`q${i}`),
           acceptedAnswer: {
