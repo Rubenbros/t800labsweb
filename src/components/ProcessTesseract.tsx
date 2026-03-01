@@ -193,7 +193,7 @@ export default function ProcessTesseract() {
       const totalDur = 8;
 
       // Start hidden — all entrance inside pin (section bg-black + opacity 0 = no visible scroll)
-      gsap.set(".process-inner", { opacity: 0 });
+      gsap.set(".process-inner", { opacity: 0, pointerEvents: "none" });
 
       const pt = gsap.timeline({
         scrollTrigger: {
@@ -210,8 +210,8 @@ export default function ProcessTesseract() {
 
       // Fade in container (stars appear, section is pinned so no visible scroll)
       pt.fromTo(".process-inner",
-        { opacity: 0 },
-        { opacity: 1, duration: 0.3 }, 0);
+        { opacity: 0, pointerEvents: "none" },
+        { opacity: 1, pointerEvents: "auto", duration: 0.3 }, 0);
 
       // ═══════════════════════════════════════
       // PHASE 0: WORMHOLE TUNNEL (0→2)
@@ -303,7 +303,7 @@ export default function ProcessTesseract() {
 
       // Fade to black at end of process pin
       pt.to(".process-inner", {
-        opacity: 0, duration: 1.0,
+        opacity: 0, pointerEvents: "none", duration: 1.0,
       }, totalDur - 1.0);
 
       // ── ambient loops ──

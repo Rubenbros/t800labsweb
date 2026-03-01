@@ -449,7 +449,7 @@ export default function HomeClient() {
       // so scrolling into pin position is invisible — just black on black)
       // ═══════════════════════════════════════
 
-      gsap.set(".services-inner", { opacity: 0 });
+      gsap.set(".services-inner", { opacity: 0, pointerEvents: "none" });
       gsap.set(".services-rain", { opacity: 1 }); // rain visible as soon as inner fades in
 
       const st = gsap.timeline({
@@ -467,8 +467,8 @@ export default function HomeClient() {
 
       // Fade in container (rain appears, individual elements still at their own opacity 0)
       st.fromTo(".services-inner",
-        { opacity: 0 },
-        { opacity: 1, duration: 0.4 }, 0);
+        { opacity: 0, pointerEvents: "none" },
+        { opacity: 1, pointerEvents: "auto", duration: 0.4 }, 0);
 
       // Phase 0: Header + corners entrance
       st.fromTo(".services-header",
@@ -514,7 +514,7 @@ export default function HomeClient() {
 
       // Phase 2: Fade to black at end of services pin
       st.to(".services-inner", {
-        opacity: 0, duration: 1.2,
+        opacity: 0, pointerEvents: "none", duration: 1.2,
       }, 3.5);
 
       // ═══════════════════════════════════════
@@ -526,7 +526,7 @@ export default function HomeClient() {
       // All entrance inside pin (bg-black + opacity 0 = no visible scroll)
       // ═══════════════════════════════════════
 
-      gsap.set(".portfolio-inner", { opacity: 0 });
+      gsap.set(".portfolio-inner", { opacity: 0, pointerEvents: "none" });
       gsap.set(".portfolio-glow", { opacity: 1, scale: 1.1 });
 
       const pt2 = gsap.timeline({
@@ -541,8 +541,8 @@ export default function HomeClient() {
 
       // Fade in container (Tron grid/bikes appear, elements still at their own opacity 0)
       pt2.fromTo(".portfolio-inner",
-        { opacity: 0 },
-        { opacity: 1, duration: 0.4 }, 0);
+        { opacity: 0, pointerEvents: "none" },
+        { opacity: 1, pointerEvents: "auto", duration: 0.4 }, 0);
 
       // Phase 0: Header + corners entrance
       pt2.fromTo(".portfolio-header",
@@ -566,7 +566,7 @@ export default function HomeClient() {
 
       // Phase 2: Fade to black
       pt2.to(".portfolio-inner", {
-        opacity: 0, duration: 1.2,
+        opacity: 0, pointerEvents: "none", duration: 1.2,
       }, 2.8);
 
       // ═══════════════════════════════════════
@@ -574,7 +574,7 @@ export default function HomeClient() {
       // (all entrance animations inside pin to avoid visible scroll-in)
       // ═══════════════════════════════════════
 
-      gsap.set(".team-inner", { opacity: 0 });
+      gsap.set(".team-inner", { opacity: 0, pointerEvents: "none" });
 
       const tt = gsap.timeline({
         scrollTrigger: {
@@ -588,8 +588,8 @@ export default function HomeClient() {
 
       // Fade in container (bg-black + content, matches services/portfolio pattern)
       tt.fromTo(".team-inner",
-        { opacity: 0 },
-        { opacity: 1, duration: 0.4 }, 0);
+        { opacity: 0, pointerEvents: "none" },
+        { opacity: 1, pointerEvents: "auto", duration: 0.4 }, 0);
 
       // Phase 0: Header + corners entrance from black (0→0.8)
       tt.fromTo(".team-header",
@@ -664,7 +664,7 @@ export default function HomeClient() {
 
       // Fade to black at end of team pin
       tt.to(".team-inner", {
-        opacity: 0, duration: 1.2,
+        opacity: 0, pointerEvents: "none", duration: 1.2,
       }, 4.0);
 
       // ═══════════════════════════════════════
@@ -673,7 +673,7 @@ export default function HomeClient() {
       // ═══════════════════════════════════════
 
       // Keep content hidden initially — the power-on will reveal it
-      gsap.set(".hal-inner", { opacity: 0 });
+      gsap.set(".hal-inner", { opacity: 0, pointerEvents: "none" });
       gsap.set(".hal-content", { opacity: 0 });
       gsap.set(".hal-corner", { opacity: 0 });
 
@@ -700,8 +700,8 @@ export default function HomeClient() {
 
       // Fade in container (black overlay inside = still looks black, no visible scroll-in)
       ht.fromTo(".hal-inner",
-        { opacity: 0 },
-        { opacity: 1, duration: 0.2 }, 0);
+        { opacity: 0, pointerEvents: "none" },
+        { opacity: 1, pointerEvents: "auto", duration: 0.2 }, 0);
 
       // Phase 0: CRT power-on sequence (0→1.5)
       ht.fromTo(".hal-power-overlay",
@@ -742,7 +742,7 @@ export default function HomeClient() {
 
       // Fade to black at end of HAL pin
       ht.to(".hal-inner", {
-        opacity: 0, duration: 1.0,
+        opacity: 0, pointerEvents: "none", duration: 1.0,
       }, 2.5);
 
       // ═══════════════════════════════════════
