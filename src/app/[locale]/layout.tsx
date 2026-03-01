@@ -5,6 +5,7 @@ import { getTranslations } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
 import Script from "next/script";
+import WhatsAppButton from "@/components/WhatsAppButton";
 import "../globals.css";
 
 const geistSans = Geist({
@@ -129,6 +130,7 @@ export default async function LocaleLayout({ children, params }: Props) {
         className={`${geistSans.variable} ${geistMono.variable} font-sans antialiased`}
       >
         <NextIntlClientProvider>{children}</NextIntlClientProvider>
+        <WhatsAppButton />
       </body>
     </html>
   );
