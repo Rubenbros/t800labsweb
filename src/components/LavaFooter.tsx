@@ -75,7 +75,7 @@ export default function LavaFooter({ t }: LavaFooterProps) {
         <div
           className="lava-hand absolute z-[5]"
           style={{
-            top: "-220px",
+            top: "clamp(-220px, -18vw, -110px)",
             right: "18%",
             width: "clamp(70px, 10vw, 120px)",
             height: "clamp(140px, 22vw, 260px)",
