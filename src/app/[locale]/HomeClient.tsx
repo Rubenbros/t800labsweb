@@ -784,10 +784,12 @@ export default function HomeClient() {
       gsap.set(".lava-rising-container", { yPercent: 100 });
 
       // Phase 3: Lava rises from bottom (2.5 → 4.5)
-      // yPercent 55 = lava surface well below HAL eye, footer visible at bottom
+      // Mobile needs lower yPercent so footer content is fully visible
+      const isMobile = window.innerWidth < 768;
+      const lavaTarget = isMobile ? 30 : 55;
       ht.fromTo(".lava-rising-container",
         { yPercent: 100 },
-        { yPercent: 55, duration: 2.0, ease: "power1.inOut" },
+        { yPercent: lavaTarget, duration: 2.0, ease: "power1.inOut" },
       2.5);
 
       // Heat shimmer fades in as lava rises

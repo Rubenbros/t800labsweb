@@ -7,7 +7,7 @@ interface LavaFooterProps {
 export default function LavaFooter({ t }: LavaFooterProps) {
   return (
     <div
-      className="lava-rising-container absolute inset-x-0 bottom-0 z-[20] pointer-events-none"
+      className="lava-rising-container absolute inset-x-0 bottom-0 z-[40] pointer-events-none"
       style={{ height: "100vh" }}
     >
       {/* Full container gradient: lava orange → red → dark → black */}
@@ -152,8 +152,8 @@ export default function LavaFooter({ t }: LavaFooterProps) {
 
       {/* ── FOOTER CONTENT ── */}
       <div
-        className="lava-footer-content pointer-events-auto relative z-[70] px-6 py-6 md:px-10 md:py-8"
-        style={{ marginTop: "18vh" }}
+        className="lava-footer-content pointer-events-auto relative z-[70] px-6 py-4 md:px-10 md:py-8"
+        style={{ marginTop: "clamp(6vh, 12vh, 18vh)" }}
       >
         <div className="mx-auto max-w-6xl">
           <div className="grid grid-cols-1 gap-6 md:grid-cols-4 md:gap-10">
