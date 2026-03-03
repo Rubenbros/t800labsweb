@@ -785,7 +785,6 @@ export default function HomeClient() {
 
       // Phase 3: Lava rises from bottom (2.5 → 4.5)
       // Mobile needs lower yPercent so footer content is fully visible
-      const isMobile = window.innerWidth < 768;
       const lavaTarget = isMobile ? 30 : 55;
       ht.fromTo(".lava-rising-container",
         { yPercent: 100 },
