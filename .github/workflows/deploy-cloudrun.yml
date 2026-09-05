@@ -86,7 +86,7 @@ jobs:
             --timeout 60 \
             --cpu-boost \
             --set-env-vars "NODE_ENV=production,UPSTASH_REDIS_REST_URL=${{ vars.UPSTASH_REDIS_REST_URL }}" \
-            --set-secrets "DEMO_API_KEY=demo-api-key:latest,UPSTASH_REDIS_REST_TOKEN=upstash-redis-rest-token:latest"
+            --set-secrets "DEMO_API_KEY=DEMO_API_KEY:latest,UPSTASH_REDIS_REST_TOKEN=UPSTASH_REDIS_REST_TOKEN:latest"
 
       - name: URL del servicio
         run: |
