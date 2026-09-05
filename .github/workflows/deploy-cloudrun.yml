@@ -1,0 +1,96 @@
+name: Deploy to Cloud Run
+
+# Despliegue de producción a Google Cloud Run (europe-west1).
+# Este workflow construye la imagen y la despliega. Requiere que el runbook de
+# primer despliegue manual haya creado: repo de Artifact Registry, Service Accounts
+# (deploy y runtime), Workload Identity Federation y los secretos en Secret Manager
+# (demo-api-key, upstash-redis-rest-token).
+
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - "docs/**"
+      - "**/*.md"
+  workflow_dispatch: {}
+
+# WIF (OIDC) necesita id-token; checkout necesita contents.
+permissions:
+  contents: read
+  id-token: write
+
+# No solapar despliegues del mismo servicio; encola sin cancelar el que corre.
+concurrency:
+  group: deploy-cloudrun
+  cancel-in-progress: false
+
+env:
+  GCP_REGION: europe-west1
+  AR_HOST: europe-west1-docker.pkg.dev
+  SERVICE: t800labsweb
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    # Entorno de GitHub 'production' (permite añadir reglas de aprobación luego).
+    environment: production
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Autenticar en GCP (Workload Identity Federation)
+        id: auth
+        uses: google-github-actions/auth@v2
+        with:
+          project_id: ${{ vars.GCP_PROJECT_ID }}
+          workload_identity_provider: ${{ vars.GCP_WIF_PROVIDER }}
+          service_account: ${{ vars.GCP_DEPLOY_SA }}
+
+      - name: Instalar gcloud
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Login de Docker en Artifact Registry
+        run: gcloud auth configure-docker "${AR_HOST}" --quiet
+
+      - name: Build y push de la imagen
+        run: |
+          set -euo pipefail
+          IMAGE="${AR_HOST}/${{ vars.GCP_PROJECT_ID }}/${{ vars.GCP_AR_REPO }}/${SERVICE}"
+          # Este proyecto no tiene NEXT_PUBLIC_*: no hacen falta build args.
+          docker build \
+            -t "${IMAGE}:${GITHUB_SHA}" \
+            -t "${IMAGE}:latest" \
+            .
+          docker push "${IMAGE}:${GITHUB_SHA}"
+          docker push "${IMAGE}:latest"
+          echo "IMAGE=${IMAGE}:${GITHUB_SHA}" >> "$GITHUB_ENV"
+
+      - name: Desplegar en Cloud Run
+        run: |
+          set -euo pipefail
+          # EMAILJS_* (src/app/api/contact/route.ts) no están definidas en producción:
+          # el endpoint hace fallback a log. Si se configuran algún día, añadirlas a --set-secrets.
+          gcloud run deploy "${SERVICE}" \
+            --project "${{ vars.GCP_PROJECT_ID }}" \
+            --image "${IMAGE}" \
+            --region "${GCP_REGION}" \
+            --platform managed \
+            --port 8080 \
+            --service-account "${{ vars.GCP_RUNTIME_SA }}" \
+            --allow-unauthenticated \
+            --cpu 1 \
+            --memory 512Mi \
+            --min-instances 0 \
+            --max-instances 2 \
+            --concurrency 80 \
+            --timeout 60 \
+            --cpu-boost \
+            --set-env-vars "NODE_ENV=production,UPSTASH_REDIS_REST_URL=${{ vars.UPSTASH_REDIS_REST_URL }}" \
+            --set-secrets "DEMO_API_KEY=DEMO_API_KEY:latest,UPSTASH_REDIS_REST_TOKEN=UPSTASH_REDIS_REST_TOKEN:latest"
+
+      - name: URL del servicio
+        run: |
+          gcloud run services describe "${SERVICE}" \
+            --project "${{ vars.GCP_PROJECT_ID }}" \
+            --region "${GCP_REGION}" \
+            --format 'value(status.url)'

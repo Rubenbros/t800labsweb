@@ -1,0 +1,32 @@
+# Dependencias y salidas de build (se regeneran dentro de la imagen)
+node_modules
+.next
+out
+build
+coverage
+*.tsbuildinfo
+
+# Git, CI y herramientas locales
+.git
+.github
+.vercel
+.claude
+.claude-bot-images
+.playwright-mcp
+
+# Secretos y entorno local
+.env*
+
+# Capturas y artefactos sueltos en la raíz (no forman parte del sitio)
+*.png
+screenshot-*.png
+
+# Scripts de preparación de assets (Python/Node de un solo uso)
+scripts
+
+# Docs y ficheros del sistema
+*.md
+.DS_Store
+npm-debug.log*
+Dockerfile
+.dockerignore

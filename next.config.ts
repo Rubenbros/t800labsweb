@@ -2,6 +2,8 @@ import type { NextConfig } from "next";
 import createNextIntlPlugin from "next-intl/plugin";
 
 const nextConfig: NextConfig = {
+  // Salida standalone para la imagen Docker de Cloud Run (server.js + node_modules trazados).
+  output: "standalone",
   reactStrictMode: false,
   images: {
     remotePatterns: [
