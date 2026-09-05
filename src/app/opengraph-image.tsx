@@ -1,6 +1,7 @@
 import { ImageResponse } from "next/og";
 
-export const runtime = "edge";
+// Cloud Run: sin runtime edge; next/og funciona igual en Node.js.
+export const runtime = "nodejs";
 export const alt = "T800 Labs — Software Development";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
