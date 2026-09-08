@@ -7,6 +7,6 @@ export async function resolveBusiness(
 ): Promise<BusinessData | null> {
   // 1. Static businesses first (instant, no I/O)
   if (businesses[slug]) return businesses[slug];
-  // 2. Dynamic businesses from Redis
+  // 2. Dynamic businesses from Postgres
   return getDynamicBusiness(slug);
 }
