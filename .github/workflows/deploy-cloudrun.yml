@@ -1,10 +1,16 @@
 name: Deploy to Cloud Run
 
 # Despliegue de producción a Google Cloud Run (europe-west1).
-# Este workflow construye la imagen y la despliega. Requiere que el runbook de
-# primer despliegue manual haya creado: repo de Artifact Registry, Service Accounts
-# (deploy y runtime), Workload Identity Federation y los secretos en Secret Manager
-# (demo-api-key, upstash-redis-rest-token).
+# Aplica el esquema de la base de datos y luego construye y despliega la imagen.
+# Requiere que el runbook de primer despliegue haya creado: repo de Artifact
+# Registry, Service Accounts (deploy y runtime), Workload Identity Federation,
+# la instancia de Cloud SQL `t800labs-pg` y los secretos en Secret Manager
+# (DEMO_API_KEY, DATABASE_URL).
+#
+# Secretos de GitHub necesarios:
+#   DATABASE_URL_CI  URL de la BD a través del proxy del runner
+#                    (postgresql://t800labsweb_app:PASS@127.0.0.1:5432/t800labsweb)
+# La SA de despliegue necesita `roles/cloudsql.client` para levantar el proxy.
 
 on:
   push:
@@ -28,6 +34,8 @@ env:
   GCP_REGION: europe-west1
   AR_HOST: europe-west1-docker.pkg.dev
   SERVICE: t800labsweb
+  CLOUDSQL_INSTANCE: t800labsweb:europe-west1:t800labs-pg
+  CLOUDSQL_PROXY_VERSION: v2.20.0
 
 jobs:
   deploy:
@@ -49,6 +57,38 @@ jobs:
       - name: Instalar gcloud
         uses: google-github-actions/setup-gcloud@v2
 
+      - name: Node para el esquema de la base de datos
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Arrancar Cloud SQL Auth Proxy
+        run: |
+          set -euo pipefail
+          curl -fsSL -o cloud-sql-proxy \
+            "https://storage.googleapis.com/cloud-sql-connectors/cloud-sql-proxy/${CLOUDSQL_PROXY_VERSION}/cloud-sql-proxy.linux.amd64"
+          chmod +x cloud-sql-proxy
+          # Usa las credenciales de WIF exportadas por google-github-actions/auth.
+          ./cloud-sql-proxy "${CLOUDSQL_INSTANCE}" --port 5432 --health-check &
+          for _ in $(seq 1 30); do
+            if curl -sf http://127.0.0.1:9090/startup > /dev/null; then
+              echo "Proxy listo"
+              exit 0
+            fi
+            sleep 1
+          done
+          echo "El Cloud SQL Auth Proxy no arrancó a tiempo" >&2
+          exit 1
+
+      - name: Aplicar el esquema (db:schema)
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL_CI }}
+        run: |
+          set -euo pipefail
+          npm ci --omit=dev --ignore-scripts
+          npm run db:schema
+
       - name: Login de Docker en Artifact Registry
         run: gcloud auth configure-docker "${AR_HOST}" --quiet
 
@@ -68,8 +108,8 @@ jobs:
       - name: Desplegar en Cloud Run
         run: |
           set -euo pipefail
-          # EMAILJS_* (src/app/api/contact/route.ts) no están definidas en producción:
-          # el endpoint hace fallback a log. Si se configuran algún día, añadirlas a --set-secrets.
+          # El correo sale por la API de Gmail con delegación de dominio: la SA de
+          # runtime necesita `roles/iam.serviceAccountTokenCreator` sobre mailer@.
           gcloud run deploy "${SERVICE}" \
             --project "${{ vars.GCP_PROJECT_ID }}" \
             --image "${IMAGE}" \
@@ -85,8 +125,9 @@ jobs:
             --concurrency 80 \
             --timeout 60 \
             --cpu-boost \
-            --set-env-vars "NODE_ENV=production,UPSTASH_REDIS_REST_URL=${{ vars.UPSTASH_REDIS_REST_URL }}" \
-            --set-secrets "DEMO_API_KEY=DEMO_API_KEY:latest,UPSTASH_REDIS_REST_TOKEN=UPSTASH_REDIS_REST_TOKEN:latest"
+            --add-cloudsql-instances "${CLOUDSQL_INSTANCE}" \
+            --set-env-vars "NODE_ENV=production,MAILER_SERVICE_ACCOUNT=mailer@t800labsweb.iam.gserviceaccount.com,GMAIL_SENDER=admin@t800labs.com,MAIL_FROM=T800 Labs <admin@t800labs.com>,CONTACT_TO=admin@t800labs.com" \
+            --set-secrets "DEMO_API_KEY=DEMO_API_KEY:latest,DATABASE_URL=DATABASE_URL:latest"
 
       - name: URL del servicio
         run: |

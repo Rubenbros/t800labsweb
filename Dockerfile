@@ -6,7 +6,7 @@
 #
 # Este proyecto NO usa variables NEXT_PUBLIC_* (no hay ninguna en src/), así que no
 # hacen falta build args: toda la configuración se inyecta en runtime desde Cloud Run
-# (DEMO_API_KEY, UPSTASH_REDIS_REST_URL, UPSTASH_REDIS_REST_TOKEN).
+# (DATABASE_URL, DEMO_API_KEY, MAILER_SERVICE_ACCOUNT, GMAIL_SENDER, MAIL_FROM, CONTACT_TO).
 
 ############################
 # Stage 1: deps (npm ci)
@@ -46,7 +46,7 @@ ENV NODE_ENV=production \
 RUN groupadd --system --gid 1001 nodejs \
  && useradd --system --uid 1001 --gid nodejs nextjs
 
-# Salida standalone: server.js + node_modules trazados (incluye @upstash/redis y sharp).
+# Salida standalone: server.js + node_modules trazados (incluye pg, nodemailer y sharp).
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 # static y public NO van dentro de standalone: hay que copiarlos aparte.
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static

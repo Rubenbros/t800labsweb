@@ -2,12 +2,15 @@ import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { businesses } from "@/lib/demo/businesses";
+import { resolveBusiness } from "@/lib/demo/resolve-business";
 import { sectors } from "@/lib/demo/sectors";
 import { DemoPage } from "@/components/demo/DemoPage";
 
 type Props = {
   params: Promise<{ locale: string; slug: string }>;
 };
+
+export const dynamicParams = true;
 
 export async function generateStaticParams() {
   return Object.keys(businesses).flatMap((slug) => [
@@ -18,7 +21,7 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale, slug } = await params;
-  const business = businesses[slug];
+  const business = await resolveBusiness(slug);
   if (!business) return {};
 
   const t = await getTranslations({ locale, namespace: "Demo" });
@@ -32,7 +35,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function DemoSlugPage({ params }: Props) {
   const { locale, slug } = await params;
-  const business = businesses[slug];
+  const business = await resolveBusiness(slug);
   if (!business) notFound();
 
   const sector = sectors[business.sectorId];
