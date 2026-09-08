@@ -2,7 +2,7 @@ import { Inter } from "next/font/google";
 import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
-import { businesses } from "@/lib/demo/businesses";
+import { resolveBusiness } from "@/lib/demo/resolve-business";
 import { sectors } from "@/lib/demo/sectors";
 import { themeToCSS } from "@/lib/demo/theme";
 import "../../../globals-demo.css";
@@ -24,7 +24,7 @@ export default async function DemoLayout({ children, params }: Props) {
     notFound();
   }
 
-  const business = businesses[slug];
+  const business = await resolveBusiness(slug);
   if (!business) {
     notFound();
   }
