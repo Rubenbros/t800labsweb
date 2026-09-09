@@ -1,0 +1,300 @@
+# Despliegue de producción de t800labsweb a Google Cloud Run (europe-west1).
+#
+# Convive con .github/workflows/deploy-cloudrun.yml, que sigue ACTIVO hasta que el
+# primer build de Cloud Build pase en verde (ver cabecera de ese fichero). Misma
+# imagen, mismas etiquetas, mismo esquema de base de datos y exactamente las mismas
+# banderas de `gcloud run deploy`.
+#
+# ── Cuenta de servicio del build ──────────────────────────────────────────────
+# cloudbuild-deployer@t800labsweb.iam.gserviceaccount.com necesita, a nivel de
+# proyecto t800labsweb:
+#   roles/run.admin                     `gcloud run deploy` + `--allow-unauthenticated`
+#                                       (escribe la policy IAM del servicio: allUsers →
+#                                       roles/run.invoker; con run.developer NO basta)
+#   roles/artifactregistry.writer       push a europe-west1-docker.pkg.dev/t800labsweb/t800labsweb
+#   roles/cloudsql.client               Cloud SQL Auth Proxy contra t800labs-pg
+#   roles/secretmanager.secretAccessor  leer DATABASE_URL en el paso del esquema
+#   roles/logging.logWriter             OBLIGATORIO al usar SA propia + CLOUD_LOGGING_ONLY
+# y además, SOBRE la SA de runtime t800labsweb-run@t800labsweb.iam.gserviceaccount.com:
+#   roles/iam.serviceAccountUser        para poder pasar `--service-account` al deploy
+#
+# NO necesita roles/storage.admin a nivel de proyecto: para leer el tarball de fuentes
+# basta roles/storage.objectViewer ACOTADO al bucket de staging
+# (gs://t800labsweb_cloudbuild). Este fichero ya no publica nada con `images:`, así que
+# tampoco hace falta permiso de escritura en buckets.
+#
+# ── Etiqueta de la imagen ─────────────────────────────────────────────────────
+# `$COMMIT_SHA` llega VACÍO en `gcloud builds submit`, así que el tag va en la
+# substitución `_IMAGE_TAG`. Su valor por defecto es un CENTINELA que hace fallar el
+# build en el primer paso: un disparador mal configurado NO puede degradar en silencio
+# el etiquetado (antes caía a 'manual' y se perdía la trazabilidad revisión↔commit).
+# El trigger DEBE definir `_IMAGE_TAG = $COMMIT_SHA`.
+#
+# ── Imágenes de los pasos ─────────────────────────────────────────────────────
+# Ninguna sale de Docker Hub anónimo (límite de descargas → builds rojos sin causa
+# aparente): `gcr.io/cloud-builders/*` y `gcr.io/google.com/cloudsdktool/*` son de
+# Google, y node va por `mirror.gcr.io/library/*`, la caché de Docker Hub de Google
+# (mismo contenido, sin límite de descargas y sin salir de la red de Google).
+#
+# ── Lanzar un build a mano ────────────────────────────────────────────────────
+#   gcloud builds submit --config cloudbuild.yaml --project t800labsweb \
+#     --substitutions=_IMAGE_TAG=$(git rev-parse HEAD)
+
+serviceAccount: 'projects/t800labsweb/serviceAccounts/cloudbuild-deployer@t800labsweb.iam.gserviceaccount.com'
+
+substitutions:
+  _PROJECT_ID: 't800labsweb'
+  _REGION: 'europe-west1'
+  _AR_HOST: 'europe-west1-docker.pkg.dev'
+  _AR_REPO: 't800labsweb'
+  _SERVICE: 't800labsweb'
+  _RUNTIME_SA: 't800labsweb-run@t800labsweb.iam.gserviceaccount.com'
+  _CLOUDSQL_INSTANCE: 't800labsweb:europe-west1:t800labs-pg'
+  _CLOUDSQL_PROXY_VERSION: 'v2.20.0'
+  _NODE_IMAGE: 'mirror.gcr.io/library/node:24-slim'
+  # CENTINELA: el build falla en el paso 0 si nadie lo sobreescribe. El trigger debe
+  # fijarlo a $COMMIT_SHA; a mano, `--substitutions=_IMAGE_TAG=$(git rev-parse HEAD)`.
+  _IMAGE_TAG: 'SET_BY_TRIGGER'
+  _RUN_ENV_VARS: 'NODE_ENV=production,MAILER_SERVICE_ACCOUNT=mailer@t800labsweb.iam.gserviceaccount.com,GMAIL_SENDER=admin@t800labs.com,MAIL_FROM=T800 Labs <admin@t800labs.com>,CONTACT_TO=admin@t800labs.com'
+  _RUN_SECRETS: 'DEMO_API_KEY=DEMO_API_KEY:latest,DATABASE_URL=DATABASE_URL:latest'
+
+# DATABASE_URL de producción (socket unix /cloudsql/<instancia>). El paso del esquema
+# levanta el proxy con `--unix-socket /cloudsql`, así que esta MISMA URL sirve tal cual:
+# no hace falta el secreto DATABASE_URL_CI de GitHub, que queda retirado.
+availableSecrets:
+  secretManager:
+    - versionName: 'projects/t800labsweb/secrets/DATABASE_URL/versions/latest'
+      env: 'DATABASE_URL'
+
+steps:
+  # 0. Guarda de configuración. Falla en segundos si `_IMAGE_TAG` sigue siendo el
+  #    centinela o no parece un SHA de git, antes de construir nada.
+  - id: 'check-image-tag'
+    name: 'gcr.io/cloud-builders/docker'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        set -euo pipefail
+        TAG='${_IMAGE_TAG}'
+        if ! printf '%s' "$$TAG" | grep -Eq '^[0-9a-f]{7,40}$$'; then
+          echo "ERROR: _IMAGE_TAG='$$TAG' no es un SHA de commit." >&2
+          echo "El disparador debe definir _IMAGE_TAG=\$$COMMIT_SHA; a mano:" >&2
+          echo "  gcloud builds submit --config cloudbuild.yaml --project ${_PROJECT_ID} \\" >&2
+          echo "    --substitutions=_IMAGE_TAG=\$$(git rev-parse HEAD)" >&2
+          exit 1
+        fi
+        echo "Etiqueta de imagen: $$TAG"
+
+  # 1. Build de la imagen. Sin build args: el Dockerfile no declara ningún ARG y el
+  #    proyecto no usa variables NEXT_PUBLIC_*.
+  - id: 'build'
+    name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'build'
+      - '-t'
+      - '${_AR_HOST}/${_PROJECT_ID}/${_AR_REPO}/${_SERVICE}:${_IMAGE_TAG}'
+      - '-t'
+      - '${_AR_HOST}/${_PROJECT_ID}/${_AR_REPO}/${_SERVICE}:latest'
+      - '.'
+
+  # 2. Push a Artifact Registry. El builder de docker de Cloud Build ya viene
+  #    autenticado contra *.pkg.dev: no hace falta `gcloud auth configure-docker`.
+  #    No hay bloque `images:` al final del build: duplicaría estos mismos pushes.
+  - id: 'push-tag'
+    name: 'gcr.io/cloud-builders/docker'
+    args: ['push', '${_AR_HOST}/${_PROJECT_ID}/${_AR_REPO}/${_SERVICE}:${_IMAGE_TAG}']
+
+  - id: 'push-latest'
+    name: 'gcr.io/cloud-builders/docker'
+    args: ['push', '${_AR_HOST}/${_PROJECT_ID}/${_AR_REPO}/${_SERVICE}:latest']
+
+  # 3. Digest de la imagen recién publicada. Es la identidad inmutable con la que el
+  #    paso `verify-revision` comprueba QUÉ está sirviendo Cloud Run al terminar
+  #    (las etiquetas se mueven; el digest no).
+  - id: 'image-digest'
+    name: 'gcr.io/cloud-builders/docker'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        set -euo pipefail
+        docker image inspect \
+          '${_AR_HOST}/${_PROJECT_ID}/${_AR_REPO}/${_SERVICE}:${_IMAGE_TAG}' \
+          --format '{{index .RepoDigests 0}}' | cut -d@ -f2 > /workspace/image-digest.txt
+        echo "Digest publicado: $$(cat /workspace/image-digest.txt)"
+
+  # 4. Esquema de la base de datos. En Cloud Build cada paso es un contenedor distinto
+  #    y un proceso en segundo plano NO sobrevive al paso, así que proxy y
+  #    `npm run db:schema` van fusionados en un único paso (en el workflow viejo eran
+  #    dos). El proxy escucha en socket unix /cloudsql/<instancia>, igual que en Cloud
+  #    Run, para poder reutilizar el secreto DATABASE_URL de producción sin cambiarlo.
+  - id: 'db-schema'
+    name: '${_NODE_IMAGE}'
+    entrypoint: 'bash'
+    secretEnv: ['DATABASE_URL']
+    args:
+      - '-c'
+      - |
+        set -euo pipefail
+
+        if ! command -v curl >/dev/null 2>&1; then
+          apt-get update -qq
+          apt-get install -y -qq --no-install-recommends curl ca-certificates
+        fi
+
+        curl -fsSL -o /usr/local/bin/cloud-sql-proxy \
+          "https://storage.googleapis.com/cloud-sql-connectors/cloud-sql-proxy/${_CLOUDSQL_PROXY_VERSION}/cloud-sql-proxy.linux.amd64"
+        chmod +x /usr/local/bin/cloud-sql-proxy
+
+        # Credenciales: ADC del servidor de metadatos (la SA del build).
+        mkdir -p /cloudsql
+        cloud-sql-proxy "${_CLOUDSQL_INSTANCE}" --unix-socket /cloudsql --health-check &
+
+        ready=0
+        for _ in $$(seq 1 30); do
+          if curl -sf http://127.0.0.1:9090/startup > /dev/null 2>&1; then
+            ready=1
+            break
+          fi
+          sleep 1
+        done
+        if [ "$$ready" != "1" ]; then
+          echo "El Cloud SQL Auth Proxy no arrancó a tiempo" >&2
+          exit 1
+        fi
+        echo "Proxy listo"
+
+        npm ci --omit=dev --ignore-scripts
+        npm run db:schema
+
+  # 5. Despliegue. Banderas idénticas a las del workflow retirado.
+  #    El correo sale por la API de Gmail con delegación de dominio: la SA de runtime
+  #    necesita roles/iam.serviceAccountTokenCreator sobre mailer@.
+  - id: 'deploy'
+    name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:slim'
+    entrypoint: 'gcloud'
+    args:
+      - 'run'
+      - 'deploy'
+      - '${_SERVICE}'
+      - '--project=${_PROJECT_ID}'
+      - '--image=${_AR_HOST}/${_PROJECT_ID}/${_AR_REPO}/${_SERVICE}:${_IMAGE_TAG}'
+      - '--region=${_REGION}'
+      - '--platform=managed'
+      - '--port=8080'
+      - '--service-account=${_RUNTIME_SA}'
+      - '--allow-unauthenticated'
+      - '--cpu=1'
+      - '--memory=512Mi'
+      - '--min-instances=0'
+      - '--max-instances=2'
+      - '--concurrency=80'
+      - '--timeout=60'
+      - '--cpu-boost'
+      - '--add-cloudsql-instances=${_CLOUDSQL_INSTANCE}'
+      - '--set-env-vars=${_RUN_ENV_VARS}'
+      - '--set-secrets=${_RUN_SECRETS}'
+
+  # 6. Serialización de despliegues (lo que en GitHub Actions daba `concurrency`).
+  #    Cloud Build no sabe encolar builds del mismo disparador, así que dos pushes
+  #    seguidos pueden desplegar en orden no determinista. En vez de intentar
+  #    detectar builds en vuelo con `gcloud builds list` (carrera igualmente: el otro
+  #    build puede desplegar entre la consulta y el deploy, y hace falta permiso extra
+  #    de lectura de builds), se comprueba el HECHO consumado: qué digest está
+  #    sirviendo el servicio. Si el que quedó sirviendo NO es el de este build, otro
+  #    build ganó la carrera y este se marca ROJO — el estado real de producción es
+  #    correcto (el commit más nuevo manda) y el build perdedor no miente diciendo que
+  #    desplegó. Es la comprobación más robusta porque valida el resultado, no la
+  #    intención.
+  - id: 'verify-revision'
+    name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:slim'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        set -euo pipefail
+        EXPECTED=$$(cat /workspace/image-digest.txt)
+
+        REV=$$(gcloud run services describe '${_SERVICE}' \
+          --project='${_PROJECT_ID}' --region='${_REGION}' \
+          --format='value(status.traffic[0].revisionName)')
+        if [ -z "$$REV" ]; then
+          REV=$$(gcloud run services describe '${_SERVICE}' \
+            --project='${_PROJECT_ID}' --region='${_REGION}' \
+            --format='value(status.latestReadyRevisionName)')
+        fi
+        echo "Revisión que sirve tráfico: $$REV"
+
+        # `status.imageDigest` devuelve la referencia completa
+        # (repo/imagen@sha256:...); nos quedamos con el digest.
+        ACTUAL=$$(gcloud run revisions describe "$$REV" \
+          --project='${_PROJECT_ID}' --region='${_REGION}' \
+          --format='value(status.imageDigest)')
+        ACTUAL=$${ACTUAL##*@}
+
+        if [ -z "$$ACTUAL" ]; then
+          # Respaldo si el status no trae digest: Cloud Run resuelve la etiqueta a
+          # digest también en el spec de la revisión.
+          IMG=$$(gcloud run revisions describe "$$REV" \
+            --project='${_PROJECT_ID}' --region='${_REGION}' \
+            --format='value(spec.containers[0].image)')
+          ACTUAL=$${IMG##*@}
+        fi
+
+        if [ -z "$$ACTUAL" ] || [ "$$ACTUAL" != "$$EXPECTED" ]; then
+          echo "ERROR: la revisión que sirve tráfico usa $$ACTUAL" >&2
+          echo "       y este build desplegó $$EXPECTED." >&2
+          echo "Otro build (commit más reciente) desplegó después: este se marca rojo" >&2
+          echo "a propósito. Comprueba que producción sirve el commit que toca." >&2
+          exit 1
+        fi
+        echo "OK: producción sirve el digest de este build ($$EXPECTED)"
+
+  # 7. Verificación posterior al despliegue: petición HTTP real. Sin esto un build
+  #    sale verde aunque la revisión nueva devuelva 500 en todas las rutas.
+  #    `/` es la home en el locale por defecto (next-intl con localePrefix
+  #    'as-needed'); se sigue el redirect por si la negociación de idioma manda a
+  #    /en. Se reintenta porque min-instances=0: el primer golpe paga arranque en frío.
+  - id: 'smoke-test'
+    name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:slim'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        set -euo pipefail
+
+        if ! command -v curl >/dev/null 2>&1; then
+          apt-get update -qq
+          apt-get install -y -qq --no-install-recommends curl ca-certificates
+        fi
+
+        URL=$$(gcloud run services describe '${_SERVICE}' \
+          --project='${_PROJECT_ID}' --region='${_REGION}' \
+          --format='value(status.url)')
+        echo "URL del servicio: $$URL"
+
+        code=000
+        for attempt in $$(seq 1 6); do
+          code=$$(curl -sS -L -o /dev/null -w '%{http_code}' --max-time 30 "$$URL/" || echo 000)
+          if [ "$$code" = "200" ]; then
+            echo "Smoke test OK: $$URL/ devolvió 200 (intento $$attempt)"
+            exit 0
+          fi
+          echo "Intento $$attempt: $$URL/ devolvió $$code; reintentando en 10 s"
+          sleep 10
+        done
+
+        echo "ERROR: $$URL/ devolvió $$code, no 200. La revisión desplegada no sirve." >&2
+        echo "Rollback: gcloud run services update-traffic ${_SERVICE} --region=${_REGION} \\" >&2
+        echo "  --project=${_PROJECT_ID} --to-revisions=<revisión-anterior>=100" >&2
+        exit 1
+
+# El workflow tardaba ~2 min en ubuntu-latest (4 vCPU). E2_HIGHCPU_8 mantiene o mejora
+# ese tiempo; el timeout va holgado porque no hay caché de capas y `npm ci` se repite
+# entero dentro de la imagen.
+options:
+  logging: CLOUD_LOGGING_ONLY
+  machineType: 'E2_HIGHCPU_8'
+
+timeout: '1800s'

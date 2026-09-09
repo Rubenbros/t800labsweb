@@ -1,0 +1,136 @@
+# Pruebas de t800labsweb (lint, typecheck, tests y build) en Cloud Build.
+#
+# Pensado para un trigger de pull request contra `main`. NO despliega ni toca
+# Artifact Registry, Cloud SQL ni Secret Manager: no necesita ningún secreto.
+#
+# El repositorio NO tenía CI de pruebas (el único workflow era el de despliegue);
+# esto es material nuevo, no una traducción.
+#
+# ── Cuenta de servicio del build: MÍNIMOS PRIVILEGIOS ─────────────────────────
+# Este fichero ejecuta código de pull requests, INCLUIDAS las de terceros: darle la
+# cuenta de despliegue sería una puerta abierta a producción (podría publicar una
+# imagen, desplegarla y leer los secretos del proyecto). Corre con
+# cloudbuild-ci@t800labsweb, que sólo tiene:
+#   roles/logging.logWriter    obligatorio con SA propia + CLOUD_LOGGING_ONLY
+#   roles/storage.objectViewer leer el tarball de fuentes del bucket de staging
+# No puede desplegar, ni publicar imágenes, ni leer Secret Manager. Por eso el test
+# de integración usa un Postgres efímero del propio build y NUNCA la base de datos
+# de producción ni el secreto DATABASE_URL.
+#
+# ── Imágenes de los pasos ─────────────────────────────────────────────────────
+# Nada de Docker Hub anónimo (límite de descargas → builds rojos sin causa aparente):
+# node y postgres van por `mirror.gcr.io/library/*`, la caché de Docker Hub de Google
+# (mismo contenido, sin límite y sin salir de la red de Google), y el resto es
+# `gcr.io/cloud-builders/*`.
+#
+# ── Lanzar a mano ─────────────────────────────────────────────────────────────
+#   gcloud builds submit --config cloudbuild-ci.yaml --project t800labsweb
+
+serviceAccount: 'projects/t800labsweb/serviceAccounts/cloudbuild-ci@t800labsweb.iam.gserviceaccount.com'
+
+substitutions:
+  _NODE_IMAGE: 'mirror.gcr.io/library/node:24-slim'
+  _POSTGRES_IMAGE: 'mirror.gcr.io/library/postgres:17-alpine'
+  _PG_CONTAINER: 't800-ci-postgres'
+  _PG_DB: 't800labsweb_test'
+
+steps:
+  # Postgres efímero para el test de integración. `services:` no existe en Cloud
+  # Build: se levanta un contenedor en la red `cloudbuild` (a la que se enganchan
+  # todos los pasos), así que el host es el NOMBRE del contenedor y el puerto es el
+  # nativo, 5432. Se arranca primero para que vaya inicializándose mientras corre
+  # `npm ci`. Autenticación `trust`: es un contenedor de usar y tirar, aislado en la
+  # red del build, y así no hay ninguna credencial escrita en el repositorio.
+  - id: 'postgres-up'
+    name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'run'
+      - '-d'
+      - '--name=${_PG_CONTAINER}'
+      - '--network=cloudbuild'
+      - '-e'
+      - 'POSTGRES_HOST_AUTH_METHOD=trust'
+      - '-e'
+      - 'POSTGRES_USER=postgres'
+      - '-e'
+      - 'POSTGRES_DB=${_PG_DB}'
+      - '${_POSTGRES_IMAGE}'
+
+  # Instalación completa: `next build`, tsc y vitest necesitan devDependencies.
+  # node_modules queda en /workspace y lo heredan los pasos siguientes.
+  - id: 'deps'
+    name: '${_NODE_IMAGE}'
+    entrypoint: 'npm'
+    args: ['ci']
+
+  # Equivalente al `healthcheck` de un `services:` de GitHub Actions.
+  - id: 'postgres-ready'
+    name: 'gcr.io/cloud-builders/docker'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        set -euo pipefail
+        for _ in $$(seq 1 60); do
+          if docker exec '${_PG_CONTAINER}' pg_isready -U postgres -d '${_PG_DB}' >/dev/null 2>&1; then
+            echo "Postgres listo"
+            exit 0
+          fi
+          sleep 1
+        done
+        echo "El Postgres del CI no arrancó a tiempo" >&2
+        docker logs '${_PG_CONTAINER}' >&2 || true
+        exit 1
+
+  # BLOQUEANTE. Ámbito acotado a lo que SÍ debe estar limpio: todo el repositorio
+  # menos los 4 ficheros con errores PREEXISTENTES (ver `lint:ci` en package.json).
+  # Cualquier error nuevo en cualquier otro fichero pone el build en rojo.
+  - id: 'lint'
+    name: '${_NODE_IMAGE}'
+    entrypoint: 'npm'
+    args: ['run', 'lint:ci']
+
+  # NO BLOQUEANTE, sólo informe: el lint COMPLETO, para que la deuda quede visible en
+  # el log en vez de escondida. Son 6 errores preexistentes (3 de `require()` en
+  # scripts/split-sprite.js y 3 de las reglas nuevas de react-hooks/react en
+  # src/components/HalShutdownPanel.tsx, src/components/ProcessTesseract.tsx y
+  # src/app/[locale]/not-found.tsx).
+  # FECHA LÍMITE 2026-10-09: arreglar esos 6 errores, borrar el script `lint:ci` de
+  # package.json y dejar un único paso `npm run lint` bloqueante. Pasada esa fecha,
+  # este paso deja de ser deuda tolerada y pasa a ser un incumplimiento.
+  - id: 'lint-deuda'
+    name: '${_NODE_IMAGE}'
+    entrypoint: 'npm'
+    args: ['run', 'lint']
+    allowFailure: true
+
+  - id: 'typecheck'
+    name: '${_NODE_IMAGE}'
+    entrypoint: 'npm'
+    args: ['run', 'typecheck']
+
+  # vitest COMPLETO. Con DATABASE_URL_TEST definido, tests/db.integration.test.ts deja
+  # de saltarse (`describe.skipIf`) y se ejecutan también sus 5 casos contra el
+  # Postgres de arriba: 17 tests en total, no 12 pasados + 5 omitidos. El test crea y
+  # borra su propio esquema (`t800_itest`) aplicando db/schema.sql, así que además
+  # valida que el esquema real es aplicable.
+  - id: 'test'
+    name: '${_NODE_IMAGE}'
+    entrypoint: 'npm'
+    args: ['test']
+    env:
+      - 'DATABASE_URL_TEST=postgresql://postgres@${_PG_CONTAINER}:5432/${_PG_DB}'
+
+  # Mismo `next build` que ejecuta la etapa `builder` del Dockerfile: es el gate real.
+  - id: 'build'
+    name: '${_NODE_IMAGE}'
+    entrypoint: 'npm'
+    args: ['run', 'build']
+    env:
+      - 'NEXT_TELEMETRY_DISABLED=1'
+
+options:
+  logging: CLOUD_LOGGING_ONLY
+  machineType: 'E2_HIGHCPU_8'
+
+timeout: '1800s'
