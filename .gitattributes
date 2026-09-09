@@ -1,0 +1,6 @@
+# Los scripts bash embebidos en los ficheros de Cloud Build (y en los workflows) se
+# ejecutan en Linux: un CRLF colado desde Windows los rompe con errores ilegibles.
+cloudbuild*.yaml text eol=lf
+*.yml text eol=lf
+Dockerfile text eol=lf
+*.sh text eol=lf

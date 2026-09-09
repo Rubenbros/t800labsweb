@@ -6,21 +6,56 @@
 # El repositorio NO tenía CI de pruebas (el único workflow era el de despliegue);
 # esto es material nuevo, no una traducción.
 #
-# ── Cuenta de servicio del build ──────────────────────────────────────────────
-# Corre con la misma SA que el despliegue por simplicidad, pero SOLO necesita
-# roles/logging.logWriter (obligatorio con SA propia + CLOUD_LOGGING_ONLY). Si se
-# quiere principio de mínimos privilegios, crear cloudbuild-ci@t800labsweb con ese
-# único rol y cambiar el campo `serviceAccount` de abajo.
+# ── Cuenta de servicio del build: MÍNIMOS PRIVILEGIOS ─────────────────────────
+# Este fichero ejecuta código de pull requests, INCLUIDAS las de terceros: darle la
+# cuenta de despliegue sería una puerta abierta a producción (podría publicar una
+# imagen, desplegarla y leer los secretos del proyecto). Corre con
+# cloudbuild-ci@t800labsweb, que sólo tiene:
+#   roles/logging.logWriter    obligatorio con SA propia + CLOUD_LOGGING_ONLY
+#   roles/storage.objectViewer leer el tarball de fuentes del bucket de staging
+# No puede desplegar, ni publicar imágenes, ni leer Secret Manager. Por eso el test
+# de integración usa un Postgres efímero del propio build y NUNCA la base de datos
+# de producción ni el secreto DATABASE_URL.
+#
+# ── Imágenes de los pasos ─────────────────────────────────────────────────────
+# Nada de Docker Hub anónimo (límite de descargas → builds rojos sin causa aparente):
+# node y postgres van por `mirror.gcr.io/library/*`, la caché de Docker Hub de Google
+# (mismo contenido, sin límite y sin salir de la red de Google), y el resto es
+# `gcr.io/cloud-builders/*`.
 #
 # ── Lanzar a mano ─────────────────────────────────────────────────────────────
 #   gcloud builds submit --config cloudbuild-ci.yaml --project t800labsweb
 
-serviceAccount: 'projects/t800labsweb/serviceAccounts/cloudbuild-deployer@t800labsweb.iam.gserviceaccount.com'
+serviceAccount: 'projects/t800labsweb/serviceAccounts/cloudbuild-ci@t800labsweb.iam.gserviceaccount.com'
 
 substitutions:
-  _NODE_IMAGE: 'node:24-slim'
+  _NODE_IMAGE: 'mirror.gcr.io/library/node:24-slim'
+  _POSTGRES_IMAGE: 'mirror.gcr.io/library/postgres:17-alpine'
+  _PG_CONTAINER: 't800-ci-postgres'
+  _PG_DB: 't800labsweb_test'
 
 steps:
+  # Postgres efímero para el test de integración. `services:` no existe en Cloud
+  # Build: se levanta un contenedor en la red `cloudbuild` (a la que se enganchan
+  # todos los pasos), así que el host es el NOMBRE del contenedor y el puerto es el
+  # nativo, 5432. Se arranca primero para que vaya inicializándose mientras corre
+  # `npm ci`. Autenticación `trust`: es un contenedor de usar y tirar, aislado en la
+  # red del build, y así no hay ninguna credencial escrita en el repositorio.
+  - id: 'postgres-up'
+    name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'run'
+      - '-d'
+      - '--name=${_PG_CONTAINER}'
+      - '--network=cloudbuild'
+      - '-e'
+      - 'POSTGRES_HOST_AUTH_METHOD=trust'
+      - '-e'
+      - 'POSTGRES_USER=postgres'
+      - '-e'
+      - 'POSTGRES_DB=${_PG_DB}'
+      - '${_POSTGRES_IMAGE}'
+
   # Instalación completa: `next build`, tsc y vitest necesitan devDependencies.
   # node_modules queda en /workspace y lo heredan los pasos siguientes.
   - id: 'deps'
@@ -28,14 +63,42 @@ steps:
     entrypoint: 'npm'
     args: ['ci']
 
-  # NO BLOQUEANTE a propósito: `npm run lint` arrastra 6 errores PREEXISTENTES
-  # (3 en scripts/split-sprite.js por `require()`, y 3 de las reglas nuevas de
-  # react-hooks en src/components/HalShutdownPanel.tsx, src/components/ProcessTesseract.tsx
-  # y src/app/[locale]/not-found.tsx). Acotar el ámbito del lint no los eliminaría
-  # (3 de los 6 están en src/), así que se marca el paso con `allowFailure: true`:
-  # el resultado se ve entero en el log y el build sigue. Quitar esta línea en cuanto
-  # se arreglen los 6 errores.
+  # Equivalente al `healthcheck` de un `services:` de GitHub Actions.
+  - id: 'postgres-ready'
+    name: 'gcr.io/cloud-builders/docker'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        set -euo pipefail
+        for _ in $$(seq 1 60); do
+          if docker exec '${_PG_CONTAINER}' pg_isready -U postgres -d '${_PG_DB}' >/dev/null 2>&1; then
+            echo "Postgres listo"
+            exit 0
+          fi
+          sleep 1
+        done
+        echo "El Postgres del CI no arrancó a tiempo" >&2
+        docker logs '${_PG_CONTAINER}' >&2 || true
+        exit 1
+
+  # BLOQUEANTE. Ámbito acotado a lo que SÍ debe estar limpio: todo el repositorio
+  # menos los 4 ficheros con errores PREEXISTENTES (ver `lint:ci` en package.json).
+  # Cualquier error nuevo en cualquier otro fichero pone el build en rojo.
   - id: 'lint'
+    name: '${_NODE_IMAGE}'
+    entrypoint: 'npm'
+    args: ['run', 'lint:ci']
+
+  # NO BLOQUEANTE, sólo informe: el lint COMPLETO, para que la deuda quede visible en
+  # el log en vez de escondida. Son 6 errores preexistentes (3 de `require()` en
+  # scripts/split-sprite.js y 3 de las reglas nuevas de react-hooks/react en
+  # src/components/HalShutdownPanel.tsx, src/components/ProcessTesseract.tsx y
+  # src/app/[locale]/not-found.tsx).
+  # FECHA LÍMITE 2026-10-09: arreglar esos 6 errores, borrar el script `lint:ci` de
+  # package.json y dejar un único paso `npm run lint` bloqueante. Pasada esa fecha,
+  # este paso deja de ser deuda tolerada y pasa a ser un incumplimiento.
+  - id: 'lint-deuda'
     name: '${_NODE_IMAGE}'
     entrypoint: 'npm'
     args: ['run', 'lint']
@@ -46,14 +109,17 @@ steps:
     entrypoint: 'npm'
     args: ['run', 'typecheck']
 
-  # vitest. tests/db.integration.test.ts se salta solo si no hay DATABASE_URL_TEST
-  # (describe.skipIf), así que el CI no necesita Postgres ni el Cloud SQL Auth Proxy.
-  # Si algún día se quiere ejecutar de verdad, hay que levantar aquí un Postgres
-  # (`docker run -d --network=cloudbuild ...`) y definir DATABASE_URL_TEST.
+  # vitest COMPLETO. Con DATABASE_URL_TEST definido, tests/db.integration.test.ts deja
+  # de saltarse (`describe.skipIf`) y se ejecutan también sus 5 casos contra el
+  # Postgres de arriba: 17 tests en total, no 12 pasados + 5 omitidos. El test crea y
+  # borra su propio esquema (`t800_itest`) aplicando db/schema.sql, así que además
+  # valida que el esquema real es aplicable.
   - id: 'test'
     name: '${_NODE_IMAGE}'
     entrypoint: 'npm'
     args: ['test']
+    env:
+      - 'DATABASE_URL_TEST=postgresql://postgres@${_PG_CONTAINER}:5432/${_PG_DB}'
 
   # Mismo `next build` que ejecuta la etapa `builder` del Dockerfile: es el gate real.
   - id: 'build'

@@ -1,5 +1,23 @@
 name: Deploy to Cloud Run
 
+# ─────────────────────────────────────────────────────────────────────────────
+# TRANSICIÓN A CLOUD BUILD (2026-09-09)
+#
+# El despliegue se está moviendo a Cloud Build (`cloudbuild.yaml` en la raíz). Este
+# workflow sigue ACTIVO a propósito: los disparadores de Cloud Build todavía no
+# existen, así que si se desactivara al fusionar habría una ventana sin despliegue
+# ninguno. El apagado es por variable de repositorio, no por mover el fichero:
+#
+#   gh variable set DEPLOY_VIA_CLOUD_BUILD --body true
+#
+# El orquestador pondrá esa variable a 'true' EN CUANTO el primer build de Cloud
+# Build pase en verde. A partir de ese momento este workflow no hace nada (el job
+# se salta entero) y el fichero se puede borrar junto con la federación de
+# identidad (WIF) y la cuenta `github-deployer`. Mientras la variable no exista o
+# no valga 'true', despliega este workflow y NO debe existir a la vez un disparador
+# de Cloud Build sobre `main`, o habría dos despliegues compitiendo.
+# ─────────────────────────────────────────────────────────────────────────────
+#
 # Despliegue de producción a Google Cloud Run (europe-west1).
 # Aplica el esquema de la base de datos y luego construye y despliega la imagen.
 # Requiere que el runbook de primer despliegue haya creado: repo de Artifact
@@ -39,6 +57,10 @@ env:
 
 jobs:
   deploy:
+    # Interruptor de apagado: cuando el despliegue lo haga Cloud Build, basta con
+    # poner la variable de repositorio DEPLOY_VIA_CLOUD_BUILD a 'true' para que este
+    # job deje de ejecutarse, sin tocar el repositorio ni el historial.
+    if: vars.DEPLOY_VIA_CLOUD_BUILD != 'true'
     runs-on: ubuntu-latest
     # Entorno de GitHub 'production' (permite añadir reglas de aprobación luego).
     environment: production
