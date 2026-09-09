@@ -1,0 +1,1 @@
+Workflows retirados: el despliegue lo hace ahora Cloud Build (`cloudbuild.yaml` en la raíz); se conservan aquí, fuera de `.github/workflows/` y por tanto desactivados, hasta que el primer build real de Cloud Build pase en verde.

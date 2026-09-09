@@ -9,6 +9,8 @@ coverage
 # Git, CI y herramientas locales
 .git
 .github
+cloudbuild.yaml
+cloudbuild-ci.yaml
 .vercel
 .claude
 .claude-bot-images

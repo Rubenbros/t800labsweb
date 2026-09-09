@@ -1,0 +1,70 @@
+# Pruebas de t800labsweb (lint, typecheck, tests y build) en Cloud Build.
+#
+# Pensado para un trigger de pull request contra `main`. NO despliega ni toca
+# Artifact Registry, Cloud SQL ni Secret Manager: no necesita ningún secreto.
+#
+# El repositorio NO tenía CI de pruebas (el único workflow era el de despliegue);
+# esto es material nuevo, no una traducción.
+#
+# ── Cuenta de servicio del build ──────────────────────────────────────────────
+# Corre con la misma SA que el despliegue por simplicidad, pero SOLO necesita
+# roles/logging.logWriter (obligatorio con SA propia + CLOUD_LOGGING_ONLY). Si se
+# quiere principio de mínimos privilegios, crear cloudbuild-ci@t800labsweb con ese
+# único rol y cambiar el campo `serviceAccount` de abajo.
+#
+# ── Lanzar a mano ─────────────────────────────────────────────────────────────
+#   gcloud builds submit --config cloudbuild-ci.yaml --project t800labsweb
+
+serviceAccount: 'projects/t800labsweb/serviceAccounts/cloudbuild-deployer@t800labsweb.iam.gserviceaccount.com'
+
+substitutions:
+  _NODE_IMAGE: 'node:24-slim'
+
+steps:
+  # Instalación completa: `next build`, tsc y vitest necesitan devDependencies.
+  # node_modules queda en /workspace y lo heredan los pasos siguientes.
+  - id: 'deps'
+    name: '${_NODE_IMAGE}'
+    entrypoint: 'npm'
+    args: ['ci']
+
+  # NO BLOQUEANTE a propósito: `npm run lint` arrastra 6 errores PREEXISTENTES
+  # (3 en scripts/split-sprite.js por `require()`, y 3 de las reglas nuevas de
+  # react-hooks en src/components/HalShutdownPanel.tsx, src/components/ProcessTesseract.tsx
+  # y src/app/[locale]/not-found.tsx). Acotar el ámbito del lint no los eliminaría
+  # (3 de los 6 están en src/), así que se marca el paso con `allowFailure: true`:
+  # el resultado se ve entero en el log y el build sigue. Quitar esta línea en cuanto
+  # se arreglen los 6 errores.
+  - id: 'lint'
+    name: '${_NODE_IMAGE}'
+    entrypoint: 'npm'
+    args: ['run', 'lint']
+    allowFailure: true
+
+  - id: 'typecheck'
+    name: '${_NODE_IMAGE}'
+    entrypoint: 'npm'
+    args: ['run', 'typecheck']
+
+  # vitest. tests/db.integration.test.ts se salta solo si no hay DATABASE_URL_TEST
+  # (describe.skipIf), así que el CI no necesita Postgres ni el Cloud SQL Auth Proxy.
+  # Si algún día se quiere ejecutar de verdad, hay que levantar aquí un Postgres
+  # (`docker run -d --network=cloudbuild ...`) y definir DATABASE_URL_TEST.
+  - id: 'test'
+    name: '${_NODE_IMAGE}'
+    entrypoint: 'npm'
+    args: ['test']
+
+  # Mismo `next build` que ejecuta la etapa `builder` del Dockerfile: es el gate real.
+  - id: 'build'
+    name: '${_NODE_IMAGE}'
+    entrypoint: 'npm'
+    args: ['run', 'build']
+    env:
+      - 'NEXT_TELEMETRY_DISABLED=1'
+
+options:
+  logging: CLOUD_LOGGING_ONLY
+  machineType: 'E2_HIGHCPU_8'
+
+timeout: '1800s'

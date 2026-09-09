@@ -54,5 +54,27 @@ El test de integración de `tests/db.integration.test.ts` solo se ejecuta si def
 
 ## Despliegue
 
-Google Cloud Run (europe-west1) desde `.github/workflows/deploy-cloudrun.yml`: cada push a
-`main` aplica el esquema por el Cloud SQL Auth Proxy y despliega la imagen del `Dockerfile`.
+Google Cloud Run (europe-west1) desde **Cloud Build** (`cloudbuild.yaml`): construye la
+imagen del `Dockerfile`, la publica en Artifact Registry con las etiquetas del commit y
+`latest`, aplica el esquema de la base de datos a traves del Cloud SQL Auth Proxy y despliega
+el servicio. Nada sale de Google: no hay credenciales en GitHub.
+
+La configuracion no secreta (proyecto, region, repositorio, cuentas de servicio, instancia de
+Cloud SQL, variables de entorno del servicio) vive versionada en `substitutions:` dentro del
+propio `cloudbuild.yaml`. Los secretos se leen de Secret Manager (`availableSecrets`).
+
+Build a mano:
+
+```bash
+gcloud builds submit --config cloudbuild.yaml --project t800labsweb   --substitutions=_IMAGE_TAG=$(git rev-parse HEAD)
+```
+
+Las pruebas (lint, typecheck, vitest y `next build`) estan en `cloudbuild-ci.yaml`, pensado
+para un trigger de pull request:
+
+```bash
+gcloud builds submit --config cloudbuild-ci.yaml --project t800labsweb
+```
+
+El workflow de GitHub Actions que hacia esto antes queda desactivado en
+`.github/workflows-legacy/` hasta que el primer despliegue por Cloud Build pase en verde.
