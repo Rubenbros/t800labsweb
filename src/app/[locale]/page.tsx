@@ -85,8 +85,8 @@ export default async function Page({
           name: locale === "es" ? "Automatización con IA" : "AI Automation",
           description:
             locale === "es"
-              ? "Automatización de tareas con inteligencia artificial: respuestas automáticas, facturación, gestión de stock."
-              : "Task automation with AI: auto-replies, invoicing, stock management.",
+              ? "Automatización con IA de lo que un negocio repite a mano: presupuestos a partir de un audio, respuesta a las consultas que entran y lectura de facturas de proveedores."
+              : "AI automation of what a business repeats by hand: quotes from a voice note, replies to incoming enquiries and reading of supplier invoices.",
         },
         {
           name: locale === "es" ? "Reservas y Citas Online" : "Online Bookings & Appointments",

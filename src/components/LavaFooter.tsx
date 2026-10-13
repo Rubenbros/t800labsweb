@@ -1,5 +1,7 @@
 "use client";
 
+import { Link } from "@/i18n/routing";
+
 interface LavaFooterProps {
   t: (key: string) => string;
 }
@@ -191,6 +193,9 @@ export default function LavaFooter({ t }: LavaFooterProps) {
                 <a href="#contacto" className="block transition-colors duration-300 hover:text-[#e50914]">
                   {t("Navbar.contacto")}
                 </a>
+                <Link href="/automatiza" className="block transition-colors duration-300 hover:text-[#e50914]">
+                  {t("Footer.automatiza")}
+                </Link>
               </div>
             </div>
 

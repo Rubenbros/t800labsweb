@@ -70,8 +70,9 @@
     "webDevDesc": "Tu web desde cero: rápida, adaptada a móvil y lista para que te encuentren en Google.",
     "webDevIcon": "'<'/'>",
     "ai": "Automatización con IA",
-    "aiDesc": "Ahorra horas cada semana. Respuestas automáticas, emails, facturación, gestión de stock... la IA se encarga.",
+    "aiDesc": "Lo que tu negocio repite cada día o cada semana, montado para que se haga solo, con tu programa y tu WhatsApp de siempre.",
     "aiIcon": "'{'AI'}'",
+    "aiLink": "Desde {price} + IVA →",
     "mobile": "Reservas y Citas Online",
     "mobileDesc": "Que tus clientes reserven solos, sin llamadas ni WhatsApps. Avisos automáticos incluidos.",
     "mobileIcon": "[R]",
@@ -86,14 +87,26 @@
   "Portfolio": {
     "subtitle": "Proyectos reales",
     "title": "PORTFOLIO",
-    "project1Name": "NoEsGratis",
-    "project1Desc": "Plataforma propia de gymkhanas virtuales. Los usuarios crean desafíos interactivos con pruebas, temporizadores y códigos para regalar experiencias únicas.",
-    "project1Tech": "Next.js · React · TypeScript · Tailwind · Auth · DB",
-    "project1Type": "PRODUCTO PROPIO",
-    "project2Name": "The Rehab Studio",
-    "project2Desc": "Web profesional para clínica de fisioterapia deportiva. Diseño elegante con reservas online, servicios detallados y SEO optimizado para aparecer en Google.",
-    "project2Tech": "Next.js · React · TypeScript · Tailwind · i18n",
-    "project2Type": "CLIENTE",
+    "project1Name": "Guardesa",
+    "project1Summary": "SaaS para gestionar alquileres por habitaciones.",
+    "project1Desc": "SaaS para gestores de pisos por habitaciones: contratos, pagos e incidencias, con asistente de IA por WhatsApp.",
+    "project1Tech": "Next.js · tRPC · Supabase · IA",
+    "project1Type": "SAAS PROPIO",
+    "project2Name": "Stelvia",
+    "project2Summary": "Firma una estrella real con tu mensaje.",
+    "project2Desc": "El cielo como muro de firmas: deja tu nombre y tu mensaje en una estrella real y hazlos permanentes con certificado y vídeo.",
+    "project2Tech": "Next.js · Stripe · Cloud Run · AR",
+    "project2Type": "PRODUCTO PROPIO",
+    "project3Name": "The Rehab Studio",
+    "project3Summary": "Web de una clínica de fisioterapia deportiva.",
+    "project3Desc": "Web para una clínica de fisioterapia deportiva de Zaragoza: reservas online, servicios y SEO para Google.",
+    "project3Tech": "Next.js · TypeScript · Tailwind · i18n",
+    "project3Type": "CLIENTE",
+    "project4Name": "Aula",
+    "project4Summary": "Temario interactivo de FP y aula sobre GitHub.",
+    "project4Desc": "Mi web docente de FP: temario abierto con laboratorios en el navegador y un aula sobre GitHub para las entregas.",
+    "project4Tech": "Next.js · GitHub API · PostgreSQL · Cloud Run",
+    "project4Type": "FORMACIÓN",
     "visitSite": "Ver proyecto ↗",
     "cta": "¿Tu negocio necesita algo así?",
     "cornerSys": "SYS.05",
@@ -148,7 +161,7 @@
     "q5": "¿Qué pasa si no tengo logo, fotos ni textos?",
     "a5": "No te preocupes, es más habitual de lo que crees. Puedo orientarte con el diseño del logo, usar fotografía profesional de stock y redactar los textos de tu web. Todo incluido en el proyecto.",
     "q6": "¿Cuánto cuesta mantener la web al mes?",
-    "a6": "El hosting y dominio cuestan entre 10-30€/mes dependiendo del proyecto. El mantenimiento técnico (actualizaciones, seguridad, copias de seguridad) lo ofrezco desde 50€/mes. Muchos clientes no necesitan mantenimiento continuo.",
+    "a6": "El hosting y el dominio cuestan entre 10 y 30 €/mes según el proyecto. El mantenimiento técnico (actualizaciones, seguridad, copias de seguridad) lo ofrezco desde 49 €/mes. Muchos clientes no necesitan mantenimiento continuo.",
     "q7": "¿Trabajáis en remoto o solo presencial?",
     "a7": "Trabajo con clientes de cualquier parte del mundo. El proceso es 100% digital: videollamada, entregas online y comunicación fluida por WhatsApp o email. Sin importar dónde estés.",
     "q8": "¿Qué es eso de la inteligencia artificial? ¿Me sirve para algo?",
@@ -159,7 +172,298 @@
     "contact": "CONTACTO",
     "navigation": "NAVEGACIÓN",
     "followUs": "SÍGUENOS",
-    "copyright": "© 2026 T800 Labs. Todos los derechos reservados."
+    "copyright": "© 2026 T800 Labs. Todos los derechos reservados.",
+    "automatiza": "Automatiza con IA"
+  },
+  "Automatiza": {
+    "metaTitle": "Automatización con IA para negocios | T800 Labs",
+    "metaDescription": "Lo que tu negocio repite, que lo haga solo y sin cambiar de programa. Tres ejemplos con precio cerrado desde 690 € + IVA más 49 €/mes, y proyectos a medida. Diagnóstico gratis por WhatsApp. Solo España.",
+    "header": {
+      "home": "Ir a la web de T800 Labs",
+      "cta": "WhatsApp"
+    },
+    "hero": {
+      "eyebrow": "Automatización con IA para negocios de España",
+      "title": "Lo que tu negocio repite, que lo haga solo.",
+      "titleAccent": "Sin cambiar de programa.",
+      "lead": "Automatizo lo que haces a mano cada día o cada semana, con tu programa y tu WhatsApp de siempre. Tres ejemplos con precio cerrado y, si lo tuyo es otra cosa, en dos días laborables te digo qué se puede hacer y cuánto cuesta.",
+      "cta": "Cuéntame qué te quita tiempo",
+      "ctaNote": "Un audio o un texto por WhatsApp. En 2 días laborables desde que tengo lo que necesito te digo por escrito si se puede automatizar, con qué paquete o propuesta a medida, cuánto cuesta y si te compensa. Gratis y sin llamada.",
+      "secondary": "Ver ejemplos y precios",
+      "cornerSys": "SYS.07",
+      "cornerLabel": "AUTOMATIZA"
+    },
+    "demo": {
+      "badge": "Datos de ejemplo",
+      "caption": "Un ejemplo: el presupuesto por audio, al salir de ver una obra.",
+      "contact": "Presupuestos",
+      "status": "asistente de tu empresa",
+      "audioLength": "0:47",
+      "audioCaption": "«Baño completo: quitar bañera, plato de ducha de 120 × 80, alicatar 22 m² y mueble de 80 con lavabo…»",
+      "sentAt": "13:02",
+      "replyTitle": "Borrador listo",
+      "replyBody": "14 partidas · 4.180 € + IVA. Una partida sale con precio pendiente: la mampara a medida no está en tu tarifa.",
+      "fileName": "Presupuesto_reforma_baño.pdf",
+      "fileMeta": "PDF · 2 páginas",
+      "logged": "Apuntado en tu hoja: pendiente de enviar.",
+      "repliedAt": "13:05",
+      "alt": "Ejemplo de conversación de WhatsApp: el dueño manda un audio al salir de una visita y recibe el borrador del presupuesto en PDF."
+    },
+    "packages": {
+      "eyebrow": "Tres ejemplos con precio cerrado",
+      "title": "Lo que casi todos los negocios repiten",
+      "lead": "Son los tres casos que más negocios comparten y sirven a cualquier sector. Si lo tuyo es otra cosa, va a medida. Precios sin IVA (21 %).",
+      "setupLabel": "Puesta en marcha",
+      "plusVat": "+ IVA",
+      "monthly": "+ {fee}/mes de cuota",
+      "deadlineLabel": "Plazo",
+      "usageLabel": "Uso",
+      "includesLabel": "Incluye",
+      "excludesLabel": "No hace",
+      "youProvideLabel": "Tú pones",
+      "details": "Ver qué incluye y qué no",
+      "cta": "Quiero este",
+      "p1": {
+        "name": "Presupuesto por audio",
+        "audience": "Para quien va, mira y luego tiene que pasar un precio: reformas, instaladores, talleres, carpintería, jardinería, limpieza o mudanzas.",
+        "summary": "Al salir de la visita mandas por WhatsApp un audio, un texto o fotos con lo que has visto. En unos minutos recibes el borrador del presupuesto en PDF con tus partidas o servicios, tus precios y tu logo, para revisarlo, tocarlo y enviarlo tú. Cada presupuesto queda apuntado en una hoja: cliente, importe, fecha y estado.",
+        "usage": "Hasta 200 presupuestos al mes",
+        "deadline": "10 días laborables desde que tengo tu tarifa y tu plantilla",
+        "includes": [
+          "Carga de tu tarifa: hasta 300 partidas o servicios, desde tu Excel o desde 5-10 presupuestos antiguos",
+          "Tu plantilla y tus condiciones",
+          "Hasta 3 personas del equipo",
+          "30 días de ajustes tras la entrega",
+          "30 minutos de formación por videollamada"
+        ],
+        "excludes": [
+          "Enviar nada a tu cliente sin que tú lo apruebes. Nunca",
+          "Inventar precios: lo que no está en tu tarifa sale como «precio pendiente»",
+          "Decidir el IVA aplicable: lo configuras tú",
+          "Mediciones de planos, cálculos técnicos o de normativa, facturas ni Verifactu",
+          "Conexión con tu programa de gestión: eso va a medida"
+        ],
+        "youProvide": "Tu tarifa o presupuestos antiguos, el logo y las condiciones. WhatsApp en el móvil.",
+        "note": "La tarifa vale igual para partidas de obra que para servicios de taller: se carga la tuya."
+      },
+      "p2": {
+        "name": "Ningún cliente sin respuesta",
+        "audience": "Para quien recibe consultas por su web, su correo o su WhatsApp de empresa: inmobiliarias, talleres, tiendas, academias de adultos o despachos.",
+        "summary": "Cuando entra una consulta por el formulario de tu web, por correo o por tu WhatsApp de empresa, contesta en menos de un minuto y a cualquier hora, diciendo que es un asistente con IA. Pide lo que necesitas para atenderla (qué quiere, dónde, fotos si hacen falta, plazo y cuándo prefiere que le llames), lo apunta en una hoja y te manda un resumen al móvil.",
+        "usage": "Hasta 300 conversaciones al mes",
+        "deadline": "15 días laborables",
+        "includes": [
+          "Hasta 3 canales de entrada",
+          "El guion de preguntas, a tu medida",
+          "El aviso de que quien contesta es un asistente con IA",
+          "Opcional: un recordatorio al cliente unos días después de enviarle el presupuesto, que activas tú en cada caso",
+          "30 días de ajustes y 30 minutos de formación"
+        ],
+        "excludes": [
+          "Dar precios, comprometer fechas o cerrar ventas",
+          "Atender quejas: te las pasa al momento",
+          "Llamadas de voz",
+          "Publicidad"
+        ],
+        "youProvide": "Acceso al formulario o al correo de contacto y, para WhatsApp, tu número de empresa y los papeles que pide Meta.",
+        "note": "WhatsApp depende de que Meta verifique tu empresa: si se retrasa, arranca con web y correo, y WhatsApp se añade después sin coste. Los mensajes que cobra Meta van a precio de coste: contestar dentro de las 24 horas es gratis y solo se pagan los enviados pasada esa ventana (céntimos por mensaje)."
+      },
+      "p3": {
+        "name": "Facturas sin teclear",
+        "audience": "Para cualquier autónomo o empresa que recibe facturas y tickets de proveedores.",
+        "summary": "Las facturas y tickets de proveedores que reenvías a tu dirección de papeleo o mandas en foto por WhatsApp se leen solos, se guardan en tu Drive por mes y proveedor y se apuntan en una hoja (fecha, proveedor, base, IVA, total y, si lo usas, obra o proyecto), lista para tu gestoría. Te avisa de lo que no cuadra: sin NIF, IVA raro o factura repetida.",
+        "usage": "Hasta 300 documentos al mes",
+        "deadline": "7 días laborables desde que creas el reenvío",
+        "includes": [
+          "Tu dirección de papeleo, con el filtro de reenvío ya montado",
+          "Las carpetas y la hoja",
+          "30 días de ajustes tras la entrega",
+          "15 minutos de formación"
+        ],
+        "excludes": [
+          "Acceso a todo tu correo: solo entra lo que reenvías",
+          "Contabilidad, impuestos o asesoría fiscal",
+          "Emitir facturas",
+          "Conexión con el banco"
+        ],
+        "youProvide": "Gmail o Google Workspace y Google Drive. Outlook y Microsoft 365, todavía no.",
+        "note": "Es lo mismo que uso para mis propias cuentas de autónomo."
+      }
+    },
+    "fee": {
+      "title": "Qué cubre la cuota de {fee} al mes por automatización",
+      "body": "Alojamiento, IA, vigilancia, arreglos y un cambio pequeño al mes, como actualizar la tarifa. El primer mes va incluido en la puesta en marcha. Una automatización es lo que nombras con una frase («me prepara los presupuestos»): dos paquetes son dos cuotas. Si superas el uso incluido dos meses seguidos, lo hablamos: no hay cargos automáticos por exceso. Sin permanencia: te das de baja con 30 días de aviso."
+    },
+    "custom": {
+      "eyebrow": "A medida",
+      "title": "¿Lo tuyo es otra cosa?",
+      "lead": "En el diagnóstico te doy un precio cerrado dentro de uno de estos tramos. Más {fee} al mes por automatización, todo + IVA.",
+      "examplesLabel": "Por ejemplo",
+      "deadlineLabel": "Plazo",
+      "perPhase": "por fase",
+      "tiers": {
+        "t1": {
+          "name": "Una tarea",
+          "body": "Un proceso con las herramientas que ya usas: correo, hojas, Drive, WhatsApp o formularios. Si cabe en un paquete, cuesta como un paquete.",
+          "examples": "Los pedidos de un formulario, a tu hoja y con aviso al móvil. Leer albaranes en foto y apuntarlos. Un resumen diario de ventas por WhatsApp.",
+          "deadline": "Hasta 10 días laborables"
+        },
+        "t2": {
+          "name": "Un proceso conectado a tu programa",
+          "body": "Lee o escribe en tu programa de gestión, tu CRM o tu tienda online a través de su API, o lleva reglas propias de tu negocio.",
+          "examples": "El presupuesto por audio que entra directo en tu programa. Los pedidos de la tienda online, a tu almacén. El seguimiento de los presupuestos enviados, en tu CRM.",
+          "deadline": "Hasta 20 días laborables"
+        },
+        "t3": {
+          "name": "Varios procesos",
+          "body": "De 2 a 4 automatizaciones que se pasan datos, o un asistente que consulta los datos de tu negocio por WhatsApp.",
+          "examples": "Del presupuesto aceptado al encargo en la agenda y al aviso de cobro pendiente. Un WhatsApp interno que responde «¿cuánto nos debe este cliente?».",
+          "deadline": "Cada fase, hasta 20 días laborables. Puedes parar tras cualquier fase y te quedas con lo que ya funciona"
+        }
+      },
+      "honestTitle": "Si no te compensa, te lo digo",
+      "honestBody": "Hago la cuenta con tus números: las horas que te quita al mes y lo que vale tu hora. Si la puesta en marcha y un año de cuota no se recuperan en 12 meses, no te lo vendo. Y si una herramienta barata ya lo resuelve, te digo cuál."
+    },
+    "steps": {
+      "eyebrow": "Diagnóstico por escrito, sin llamada",
+      "title": "Cómo funciona",
+      "items": [
+        {
+          "title": "Me cuentas qué te quita tiempo",
+          "body": "Un audio de hasta 3 minutos o un texto por WhatsApp: qué tarea, cada cuánto, con qué programa y quién la hace."
+        },
+        {
+          "title": "Respuesta escrita en 2 días laborables",
+          "body": "Desde que tengo lo que necesito; puedo hacerte hasta 3 preguntas. Te digo si encaja en un paquete, si va a medida, si no te compensa o si no lo hago, con precio cerrado y plazo. Videollamada de 20-30 minutos solo si la pides o si son varios procesos."
+        },
+        {
+          "title": "Aceptas la ficha de alcance",
+          "body": "Lista, antes de empezar, lo que tiene que hacer y cómo se comprueba. Pagas el primer 50 %. La propuesta vale 30 días, y lo que no esté en la ficha se presupuesta aparte, por escrito y antes de hacerlo."
+        },
+        {
+          "title": "Lo ves funcionando con tus datos",
+          "body": "Entrega en el plazo del paquete o del tramo. Pagas el segundo 50 % y empieza la cuota."
+        }
+      ]
+    },
+    "conditions": {
+      "eyebrow": "Condiciones",
+      "title": "Condiciones que te quitan riesgo",
+      "lead": "Valen igual para los paquetes y para lo a medida.",
+      "items": [
+        {
+          "title": "Pago en dos mitades",
+          "body": "50 % al aceptar la ficha de alcance y 50 % en la entrega, cuando lo ves funcionando con tus datos reales."
+        },
+        {
+          "title": "Si no cumple la ficha, te devuelvo lo pagado",
+          "body": "Si en la entrega no hace lo que dice la ficha y no queda bien en 10 días laborables, recuperas lo pagado y no pagas nada más."
+        },
+        {
+          "title": "Sin permanencia",
+          "body": "La cuota se da de baja con 30 días de aviso."
+        },
+        {
+          "title": "Tus datos, en tu cuenta",
+          "body": "Las hojas, los PDF y los documentos viven en tu Google Drive. Si te das de baja, te los quedas."
+        },
+        {
+          "title": "Tú apruebas lo que sale",
+          "body": "Todo lo que la IA prepara para un cliente tuyo lo apruebas tú antes de que salga. La única excepción son los mensajes del paquete 2 para recoger datos: se presentan como asistente con IA y nunca dan precios ni fechas."
+        },
+        {
+          "title": "Soporte incluido en la cuota",
+          "body": "Por WhatsApp o correo, de lunes a viernes, con respuesta en un día laborable. No es un soporte 24/7."
+        }
+      ],
+      "foundersTitle": "Clientes fundadores",
+      "foundersBody": "Los 5 primeros clientes, de paquete o a medida, tienen 3 meses de cuota gratis en vez de 1, a cambio de un testimonio de dos frases y de permiso para enseñar su caso con los datos anonimizados.",
+      "capacityTitle": "Dos puestas en marcha a la vez",
+      "capacityBody": "No cojo más de dos a la vez. Si estoy lleno, te doy fecha de inicio."
+    },
+    "about": {
+      "eyebrow": "Quién lo monta",
+      "title": "Rubén Jarné, T800 Labs",
+      "body": "Soy programador y trabajo desde Zaragoza. Tu oficio lo conoces tú: yo te enseño el sistema funcionando con tus datos antes de que pagues la segunda mitad.",
+      "proofTitle": "Lo que ya funciona",
+      "proof": [
+        "Guardesa: los gestores de pisos por habitaciones consultan los datos de su negocio escribiendo por WhatsApp y cargan su cartera desde un Excel.",
+        "Mis propias facturas de autónomo se apuntan solas con el sistema del paquete 3."
+      ],
+      "photoAlt": "Rubén Jarné, fundador de T800 Labs"
+    },
+    "faq": {
+      "eyebrow": "Dudas habituales",
+      "title": "Antes de escribirme",
+      "items": [
+        {
+          "q": "¿Tengo que cambiar de programa?",
+          "a": "No. Trabaja con tus herramientas y tu WhatsApp de siempre, y lo que genera queda en tu Google Drive y en una hoja tuya. Conectarlo con tu programa de gestión va a medida, y solo si el programa tiene API o exporta ficheros."
+        },
+        {
+          "q": "¿La IA manda algo a mis clientes sin que yo lo vea?",
+          "a": "No. Los presupuestos y todo lo que prepara para un cliente lo apruebas tú antes de que salga. La única excepción son los mensajes del paquete 2 para recoger datos: se presentan como asistente con IA y nunca dan precios ni fechas."
+        },
+        {
+          "q": "Lo mío no es ninguno de los tres ejemplos. ¿Me sirve?",
+          "a": "Sí: va a medida. Tras el diagnóstico te doy un precio cerrado dentro de su tramo: una tarea suelta, de 690 a 1.490 €; un proceso conectado a tu programa, de 1.500 a 3.000 €; varios procesos, de 3.000 a 6.000 € por fase. Más 49 €/mes por automatización, todo + IVA."
+        },
+        {
+          "q": "¿Qué pasa si no me funciona?",
+          "a": "Antes de empezar acordamos una ficha con lo que tiene que hacer y cómo se comprueba. Si en la entrega no lo cumple y no queda bien en 10 días laborables, te devuelvo lo pagado."
+        },
+        {
+          "q": "¿Qué pasa con mis datos si me doy de baja?",
+          "a": "Se quedan contigo: las hojas, los PDF y los documentos están en tu cuenta de Google desde el primer día."
+        },
+        {
+          "q": "En el presupuesto por audio, ¿y si algo no está en mi tarifa?",
+          "a": "Sale marcado como «precio pendiente» para que le pongas tú el precio. No se inventa precios."
+        },
+        {
+          "q": "¿Qué no haces?",
+          "a": "Emitir facturas (las emites tú desde tu programa), contabilidad o asesoría fiscal, envíos masivos en frío por correo o WhatsApp, IA que decide sobre personas (seleccionar candidatos o conceder créditos), chatbots generalistas y llamadas de voz con IA. Por ahora tampoco trabajo con sectores que manejan datos de salud o de menores."
+        },
+        {
+          "q": "¿Trabajas con negocios de fuera de España?",
+          "a": "Por ahora, solo con negocios de España."
+        }
+      ]
+    },
+    "contact": {
+      "eyebrow": "Diagnóstico gratis",
+      "title": "Cuéntame qué te quita tiempo",
+      "lead": "Un audio de hasta 3 minutos o un texto: qué tarea, cada cuánto, con qué programa y quién la hace. Te contesto por escrito en 2 días laborables desde que tengo lo que necesito.",
+      "cta": "Escríbeme por WhatsApp",
+      "formTitle": "¿Prefieres escribir aquí?",
+      "name": "Nombre",
+      "email": "Email",
+      "message": "¿Qué te quita tiempo?",
+      "send": "Enviar",
+      "sending": "Enviando…",
+      "success": "Recibido. En menos de 24 horas laborables te confirmo que lo tengo y te pregunto lo que falte.",
+      "error": "No se ha podido enviar. Escríbeme a hola@t800labs.com o por WhatsApp.",
+      "privacy": "Responsable: T800 Labs (Rubén Jarné Cabañero). Uso tus datos solo para responderte. Puedes pedir que los borre en hola@t800labs.com."
+    },
+    "sticky": {
+      "cta": "Escríbeme por WhatsApp",
+      "note": "Diagnóstico gratis"
+    },
+    "footer": {
+      "home": "Web de T800 Labs",
+      "rights": "© 2026 T800 Labs. Precios sin IVA."
+    },
+    "whatsapp": {
+      "origins": {
+        "instagram": "Hola, vengo de Instagram.",
+        "tiktok": "Hola, vengo de TikTok.",
+        "youtube": "Hola, vengo de YouTube.",
+        "facebook": "Hola, vengo de Facebook.",
+        "web": "Hola, vengo de la web."
+      },
+      "package": "Me interesa «{name}».",
+      "ask": "Te cuento qué me quita tiempo:"
+    }
   },
   "Demo": {
     "metaTitle": "Tu negocio online",

@@ -1,18 +1,35 @@
 # T800 Labs
 
-> Software development company based in Zaragoza, Spain. We build custom web applications, AI integrations, mobile apps, cloud infrastructure, and bespoke software solutions.
+> Software studio based in Zaragoza, Spain, run by Rubén Jarné Cabañero. We build websites, custom apps and AI automations for small businesses, and our own products.
 
-## Services
+## AI automation for businesses (Spain only)
 
-- **Web Development**: Custom websites and web applications using React, Next.js, and full-stack technologies
-- **AI & Automation**: AI integrations, chatbots, and business process automation
-- **Mobile Apps**: Native and hybrid applications for iOS and Android
-- **Cloud & DevOps**: Cloud infrastructure, CI/CD pipelines, containers, and automated deployments
-- **Custom Software**: Bespoke software solutions for specific business needs
+We automate what a small business repeats by hand every day or every week, with the software and the WhatsApp it already uses. Any sector, except those handling health data or data about minors. All prices exclude VAT (21%). Details: https://t800labs.com/automatiza
 
-## About
+Three fixed-price examples, each with a €49/month fee per automation:
 
-Founded by Rubén Jarné Cabañero, a full-stack developer specializing in AI-assisted development. Based in Zaragoza, Spain, serving clients nationally and internationally.
+- **Quote by voice note** (Presupuesto por audio): for anyone who visits a job and then has to give a price (renovations, installers, garages, carpentry, gardening, cleaning). The owner sends a WhatsApp voice note and receives a draft quote as a PDF built from their own price list and template. Setup €890 + VAT. Delivered in 10 working days.
+- **No client left unanswered** (Ningún cliente sin respuesta): an AI assistant answers incoming enquiries from the web form, email or business WhatsApp, gathers what is needed to handle them and sends the owner a summary. Setup €1,490 + VAT. Delivered in 15 working days.
+- **Invoices without typing** (Facturas sin teclear): supplier invoices and receipts that are forwarded or photographed are read, filed in the client's Google Drive and logged in a sheet for their accountant. Setup €690 + VAT. Delivered in 7 working days.
+
+Custom work, quoted at a fixed price after the assessment, in three bands: a single task, €690 to €1,490; a process connected to the client's software, €1,500 to €3,000; several processes, €3,000 to €6,000 per phase. Plus €49/month per automation, all + VAT.
+
+Terms: 50% up front and 50% on delivery; refund if it does not do what the scope sheet says; no lock-in on the monthly fee; the client's data stays in the client's own Google account; the owner approves everything the AI prepares for a customer. Free written assessment over WhatsApp, answered within 2 working days of having the necessary information. If the automation would not pay for itself within 12 months, we say so and do not sell it.
+
+Not offered: issuing invoices, bookkeeping or tax advice, cold mass mailings, AI that makes decisions about people, general-purpose chatbots and AI voice calls.
+
+## Other services
+
+- **Websites**: professional websites from €1,500, fast, mobile-ready and optimised for search
+- **Online bookings and online stores**
+- **Custom apps**: admin panels, integrations and bespoke software, quoted after an assessment
+
+## Work
+
+- **Guardesa** (own product): SaaS for managers of room-by-room rentals, with an AI assistant over WhatsApp and Telegram — https://guardesa.com
+- **Stelvia** (own product): sign a real star with your name and message — https://stelvia.space
+- **The Rehab Studio** (client): website for a sports physiotherapy clinic in Zaragoza — https://therehabstudio.es
+- **Aula** (teaching): open course material for vocational training in programming and cloud AI — https://rubenjarne.dev
 
 ## Contact
 

@@ -16,5 +16,17 @@ export default function sitemap(): MetadataRoute.Sitemap {
         },
       },
     },
+    {
+      url: `${baseUrl}/automatiza`,
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.9,
+      alternates: {
+        languages: {
+          es: `${baseUrl}/automatiza`,
+          en: `${baseUrl}/en/automatiza`,
+        },
+      },
+    },
   ];
 }

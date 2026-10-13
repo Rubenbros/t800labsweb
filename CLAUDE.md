@@ -1,8 +1,14 @@
 # T800 Labs - Web Project
 
 ## Estado actual
-La página tiene implementadas 7 secciones completas: Hero, Bond Barrel, Servicios, Proceso, Equipo (Blade Runner) y HAL 9000 (Contacto) + Footer.
+La home tiene implementadas sus secciones: Hero, Bond Barrel, Servicios, Proceso, Portfolio (Tron), Equipo (Blade Runner) y HAL 9000 (Contacto) + Footer.
+Además existe la página `/automatiza`, con la oferta de entrada de automatizaciones con IA.
 Se debe ir sección por sección, obteniendo aprobación antes de avanzar.
+
+Gobernanza de autocompany: `ligero` (`.autocompany/config.json`). Las decisiones de negocio de T800 Labs
+(público, paquetes, precios, llamada a la acción) viven en `marketing-t800labs/docs/t800labs/oferta.md`
+(BDR-MKT-08 y 09): la web las refleja, no las decide. Ese documento cambia: antes de tocar el texto de
+`/automatiza`, vuelve a leerlo.
 
 ## Requisito clave
 **TODA la página debe estar contenida en GSAP.** Todas las animaciones, transiciones y efectos de scroll deben usar GSAP con ScrollTrigger. No usar Framer Motion ni CSS animations para las animaciones principales.
@@ -31,6 +37,11 @@ Se debe ir sección por sección, obteniendo aprobación antes de avanzar.
 src/app/[locale]/page.tsx       → Página principal (server component, renderiza HomeClient)
 src/app/[locale]/HomeClient.tsx → Client component con todo el contenido y GSAP
 src/app/[locale]/layout.tsx     → Layout raíz (Geist fonts, next-intl provider)
+src/app/[locale]/automatiza/page.tsx → Página /automatiza (metadatos + JSON-LD; el contenido, en components/automatiza)
+src/components/automatiza/      → Bloques de /automatiza (página, tarjeta de paquete, demo de chat, WhatsApp, formulario)
+src/lib/automatiza/offer.ts     → Paquetes, tramos a medida y precios (fuente única; salen de las BDR-MKT-08 y 09)
+src/lib/automatiza/whatsapp.ts  → Enlace de WhatsApp con el mensaje según el utm_source
+src/lib/seo.ts                  → Imagen para compartir (la genera src/app/opengraph-image.tsx)
 src/app/globals.css             → Estilos base (Tailwind + CSS vars + scrollbar)
 src/lib/gsap.ts                 → Config GSAP (registra ScrollTrigger, defaults)
 src/lib/hal-stats.ts            → Tipos/utilidades para stats de HAL
@@ -145,9 +156,32 @@ El Hero ocupa `h-screen`, fondo negro, y contiene:
 - Email: hola@t800labs.com
 - WhatsApp: +34 645 515 267
 
+### 9. Portfolio ✅ (id="portfolio") — Tron
+- Sección pinned entre Proceso y Equipo, paleta cian (#00d4ff), con `TronBikes` de fondo
+- 4 tarjetas, definidas en `PORTFOLIO_PROJECTS` (HomeClient.tsx) con sus textos en `Portfolio.projectN*`:
+  Guardesa (SaaS propio), Stelvia (producto propio), The Rehab Studio (cliente) y Aula (formación)
+- Rejilla 2×2 en móvil y tablet, 4 en fila en escritorio. En móvil se enseña `projectNSummary` (una línea)
+  y desde tablet `projectNDesc`; las etiquetas de tecnología se ocultan en móvil y en pantallas bajas
+- Las cuatro tarjetas, el título y el CTA tienen que caber en la pantalla con la navbar (80 px): al
+  añadir o alargar una tarjeta, comprobarlo a 1280×620 y a 360×640
+
+### 10. Página /automatiza ✅
+- Página aparte (no pinned, scroll normal) para el tráfico de los vídeos: pequeños negocios de España de
+  cualquier sector, casi todo móvil. Oferta general (BDR-MKT-09): «automatización con IA para negocios»
+- Tres ejemplos con precio (ninguno destacado: no son un catálogo cerrado), cuota, plazo, qué incluye y qué
+  no; los tres tramos a medida y la regla «si no te compensa, te lo digo»; cómo funciona; condiciones y
+  garantía; quién lo monta; dudas; WhatsApp y formulario (que usa `/api/contact`)
+- El mensaje de WhatsApp dice de qué red viene el visitante: `?utm_source=instagram|tiktok|youtube|facebook`
+  → «Hola, vengo de Instagram. Te cuento qué me quita tiempo:»
+- La demo del chat lleva siempre la etiqueta «Datos de ejemplo»
+- Líneas rojas del copy (oferta §7): sin cifras de ahorro que no sean del cliente, sin «garantizado» fuera
+  de la garantía escrita y sin «100 % automático»
+- Movimiento con GSAP (`AutomatizaMotion`, `ChatDemo`, `StickyCta`); el contenido se sirve visible y
+  respeta «reducir movimiento»
+- El botón flotante de WhatsApp del layout no se pinta aquí: la página lleva los suyos
+
 ## Secciones pendientes
-- Todas las secciones principales están implementadas
-- Posibles mejoras futuras: Portfolio (cuando haya proyectos de clientes)
+- Aviso legal, privacidad y consentimiento de cookies (hoy no existen; ver `.autocompany/estado.json`)
 
 ## Notas de diseño
 - Estética: oscuro, tech, cyberpunk-minimalista
@@ -176,7 +210,8 @@ Al final del useEffect se hace `ScrollTrigger.sort()` + `ScrollTrigger.refresh()
 - Locales: `es` (default), `en`
 - Prefix: "as-needed" (sin /es/ en URLs para español)
 - Archivos de traducción: `messages/es.json`, `messages/en.json`
-- Namespaces: Metadata, Hero, Bond, Services, Navbar, Hal, HalCorners, ScrollIndicator, Process, Team, Footer
+- Namespaces: Metadata, Hero, Bond, Services, Navbar, Hal, HalCorners, ScrollIndicator, Manifesto, Portfolio, Process, Team, FAQ, Footer, Automatiza, Demo
+- `tests/messages.test.ts` falla si español e inglés no tienen exactamente las mismas claves
 
 ## Workflow
 1. Mostrar resultado al usuario vía captura de pantalla

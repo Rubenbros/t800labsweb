@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
 import Image from "next/image";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import Hal9000 from "@/components/Hal9000v2";
 import HalShutdownPanel from "@/components/HalShutdownPanel";
 import Navbar from "@/components/Navbar";
@@ -11,10 +11,21 @@ import MatrixRain from "@/components/MatrixRain";
 import ProcessTesseract from "@/components/ProcessTesseract";
 import TronBikes from "@/components/TronBikes";
 import LavaFooter from "@/components/LavaFooter";
+import { Link } from "@/i18n/routing";
+import { LOWEST_SETUP_PRICE, formatEuros } from "@/lib/automatiza/offer";
+
+// Tarjetas del portfolio. Los textos van en messages (Portfolio.<key>Name, …Desc, …).
+const PORTFOLIO_PROJECTS = [
+  { key: "project1", href: "https://guardesa.com" },
+  { key: "project2", href: "https://stelvia.space" },
+  { key: "project3", href: "https://therehabstudio.es" },
+  { key: "project4", href: "https://rubenjarne.dev" },
+] as const;
 
 export default function HomeClient() {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const t = useTranslations();
+  const locale = useLocale();
 
   // Scroll to pinned sections correctly (accounts for ScrollTrigger pin offsets)
   const PIN_PROGRESS: Record<string, number> = {
@@ -589,7 +600,7 @@ export default function HomeClient() {
       // Phase 1: Cards stagger in (0.8→2.0)
       pt2.fromTo(".portfolio-card",
         { opacity: 0, y: 40 },
-        { opacity: 1, y: 0, stagger: 0.2, duration: 0.8, ease: "power2.out" }, 0.8);
+        { opacity: 1, y: 0, stagger: 0.15, duration: 0.75, ease: "power2.out" }, 0.8);
 
       // CTA fade in
       pt2.fromTo(".portfolio-cta",
@@ -1228,8 +1239,8 @@ export default function HomeClient() {
               </p>
             </div>
 
-            {/* Card 2: AI & Automation */}
-            <div className="service-card group flex flex-col gap-1.5 rounded border border-[#00ff41]/20 bg-black/60 p-3 backdrop-blur-sm transition-all duration-500 hover:border-[#00ff41]/50 hover:bg-black/80 md:gap-3 md:p-5 lg:p-6">
+            {/* Card 2: AI & Automation — lleva a la página de paquetes */}
+            <Link href="/automatiza" className="service-card group flex flex-col gap-1.5 rounded border border-[#00ff41]/20 bg-black/60 p-3 backdrop-blur-sm transition-all duration-500 hover:border-[#00ff41]/50 hover:bg-black/80 md:gap-3 md:p-5 lg:p-6">
               <span className="font-mono text-lg text-[#00ff41]/70 transition-colors duration-300 group-hover:text-[#00ff41] md:text-2xl lg:text-3xl">
                 {t("Services.aiIcon")}
               </span>
@@ -1239,7 +1250,10 @@ export default function HomeClient() {
               <p className="hidden font-mono text-[10px] leading-relaxed text-white/50 sm:block md:text-xs">
                 {t("Services.aiDesc")}
               </p>
-            </div>
+              <span className="mt-auto font-mono text-[10px] text-[#00ff41]/80 transition-colors duration-300 group-hover:text-[#00ff41] md:text-xs">
+                {t("Services.aiLink", { price: formatEuros(LOWEST_SETUP_PRICE, locale) })}
+              </span>
+            </Link>
 
             {/* Card 3: Mobile Apps */}
             <div className="service-card group flex flex-col gap-1.5 rounded border border-[#00ff41]/20 bg-black/60 p-3 backdrop-blur-sm transition-all duration-500 hover:border-[#00ff41]/50 hover:bg-black/80 md:gap-3 md:p-5 lg:p-6">
@@ -1355,9 +1369,10 @@ export default function HomeClient() {
           <TronBikes />
         </div>
 
-        <div className="relative z-10 mx-auto flex h-full max-w-6xl flex-col items-center justify-center px-4 py-14 md:px-10 md:py-0">
+        {/* El padding superior reserva la franja de la navbar: el bloque se centra en lo que queda */}
+        <div className="relative z-10 mx-auto flex h-full max-w-6xl flex-col items-center justify-center px-4 pb-10 pt-24 md:px-10 md:pb-0 md:pt-20">
           {/* Section header */}
-          <div className="portfolio-header mb-6 flex flex-col items-center gap-2 opacity-0 md:mb-16 md:gap-3">
+          <div className="portfolio-header mb-5 flex flex-col items-center gap-2 opacity-0 md:mb-8 md:gap-3">
             <span className="font-mono text-[10px] tracking-[0.3em] text-[#00d4ff]/60 uppercase">
               {t("Portfolio.subtitle")}
             </span>
@@ -1367,87 +1382,55 @@ export default function HomeClient() {
             <div className="portfolio-divider h-[1px] w-16 origin-center scale-x-0 bg-gradient-to-r from-transparent via-[#00d4ff]/50 to-transparent" />
           </div>
 
-          {/* Project cards grid */}
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-8">
-            {/* Project 1: NoEsGratis */}
-            <a
-              href="https://noesgratis.es"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="portfolio-card group relative overflow-hidden rounded border border-[#00d4ff]/20 bg-[#0a1628]/80 p-4 opacity-0 backdrop-blur-sm transition-colors duration-500 hover:border-[#00d4ff]/60 md:p-8"
-              style={{ boxShadow: '0 0 15px rgba(0,212,255,0.08)' }}
-            >
-              {/* Card scan line */}
-              <div className="pointer-events-none absolute inset-0 bg-[repeating-linear-gradient(0deg,transparent,transparent_3px,rgba(0,212,255,0.015)_3px,rgba(0,212,255,0.015)_6px)]" />
-              {/* Top accent line */}
-              <div className="absolute left-0 right-0 top-0 h-[1px] bg-gradient-to-r from-transparent via-[#00d4ff]/40 to-transparent" />
+          {/* Project cards grid — 2×2 en móvil y tablet, 4 en fila en escritorio */}
+          <div className="grid w-full grid-cols-2 gap-2.5 md:gap-5 lg:grid-cols-4">
+            {PORTFOLIO_PROJECTS.map(({ key, href }) => (
+              <a
+                key={key}
+                href={href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="portfolio-card group relative flex flex-col overflow-hidden rounded border border-[#00d4ff]/20 bg-[#0a1628]/80 p-3 opacity-0 backdrop-blur-sm transition-colors duration-500 hover:border-[#00d4ff]/60 md:p-5"
+                style={{ boxShadow: '0 0 15px rgba(0,212,255,0.08)' }}
+              >
+                {/* Card scan line */}
+                <div className="pointer-events-none absolute inset-0 bg-[repeating-linear-gradient(0deg,transparent,transparent_3px,rgba(0,212,255,0.015)_3px,rgba(0,212,255,0.015)_6px)]" />
+                {/* Top accent line */}
+                <div className="absolute left-0 right-0 top-0 h-[1px] bg-gradient-to-r from-transparent via-[#00d4ff]/40 to-transparent" />
 
-              <div className="relative z-10">
-                <span className="inline-block rounded border border-[#00d4ff]/30 px-2 py-0.5 font-mono text-[9px] tracking-[0.2em] text-[#00d4ff]/70 uppercase">
-                  {t("Portfolio.project1Type")}
-                </span>
-                <h3 className="mt-2 text-base font-bold tracking-[0.05em] text-[#00d4ff] md:mt-3 md:text-xl">
-                  {t("Portfolio.project1Name")}
-                </h3>
-                <p className="mt-1.5 font-mono text-[10px] leading-relaxed text-white/50 md:mt-2 md:text-xs">
-                  {t("Portfolio.project1Desc")}
-                </p>
-                {/* Tech tags */}
-                <div className="mt-2.5 flex flex-wrap gap-1.5 md:mt-4 md:gap-2">
-                  {t("Portfolio.project1Tech").split(" · ").map((tech: string) => (
-                    <span key={tech} className="rounded bg-[#00d4ff]/8 px-2 py-0.5 font-mono text-[9px] text-[#00d4ff]/60">
-                      {tech}
-                    </span>
-                  ))}
+                <div className="relative z-10 flex h-full flex-col items-start">
+                  <span className="inline-block rounded border border-[#00d4ff]/30 px-1.5 py-0.5 font-mono text-[8px] tracking-[0.15em] text-[#00d4ff]/70 uppercase md:px-2 md:text-[9px] md:tracking-[0.2em]">
+                    {t(`Portfolio.${key}Type`)}
+                  </span>
+                  <h3 className="mt-2 text-sm font-bold tracking-[0.05em] text-[#00d4ff] md:mt-3 md:text-xl">
+                    {t(`Portfolio.${key}Name`)}
+                  </h3>
+                  {/* En móvil cabe un resumen de una línea; la descripción entera, desde tablet */}
+                  <p className="mt-1.5 font-mono text-[10px] leading-relaxed text-white/50 md:hidden">
+                    {t(`Portfolio.${key}Summary`)}
+                  </p>
+                  <p className="mt-2 hidden font-mono text-xs leading-relaxed text-white/50 md:block">
+                    {t(`Portfolio.${key}Desc`)}
+                  </p>
+                  {/* Tech tags — fuera en móvil y en pantallas bajas, donde no caben */}
+                  <div className="mt-4 hidden flex-wrap gap-1.5 md:flex [@media(max-height:700px)]:md:hidden">
+                    {t(`Portfolio.${key}Tech`).split(" · ").map((tech: string) => (
+                      <span key={tech} className="rounded bg-[#00d4ff]/8 px-2 py-0.5 font-mono text-[9px] text-[#00d4ff]/60">
+                        {tech}
+                      </span>
+                    ))}
+                  </div>
+                  {/* Visit link */}
+                  <span className="mt-auto inline-flex items-center gap-1.5 pt-2.5 font-mono text-[9px] tracking-[0.15em] text-[#00d4ff]/60 uppercase transition-colors duration-300 group-hover:text-[#00d4ff] md:pt-5 md:text-[11px]">
+                    {t("Portfolio.visitSite")}
+                  </span>
                 </div>
-                {/* Visit link */}
-                <span className="mt-3 inline-flex items-center gap-1.5 font-mono text-[10px] tracking-[0.15em] text-[#00d4ff]/60 uppercase transition-colors duration-300 group-hover:text-[#00d4ff] md:mt-5 md:text-[11px]">
-                  {t("Portfolio.visitSite")}
-                </span>
-              </div>
-            </a>
-
-            {/* Project 2: The Rehab Studio */}
-            <a
-              href="https://therehabstudio.es"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="portfolio-card group relative overflow-hidden rounded border border-[#00d4ff]/20 bg-[#0a1628]/80 p-4 opacity-0 backdrop-blur-sm transition-colors duration-500 hover:border-[#00d4ff]/60 md:p-8"
-              style={{ boxShadow: '0 0 15px rgba(0,212,255,0.08)' }}
-            >
-              {/* Card scan line */}
-              <div className="pointer-events-none absolute inset-0 bg-[repeating-linear-gradient(0deg,transparent,transparent_3px,rgba(0,212,255,0.015)_3px,rgba(0,212,255,0.015)_6px)]" />
-              {/* Top accent line */}
-              <div className="absolute left-0 right-0 top-0 h-[1px] bg-gradient-to-r from-transparent via-[#00d4ff]/40 to-transparent" />
-
-              <div className="relative z-10">
-                <span className="inline-block rounded border border-[#00d4ff]/30 px-2 py-0.5 font-mono text-[9px] tracking-[0.2em] text-[#00d4ff]/70 uppercase">
-                  {t("Portfolio.project2Type")}
-                </span>
-                <h3 className="mt-2 text-base font-bold tracking-[0.05em] text-[#00d4ff] md:mt-3 md:text-xl">
-                  {t("Portfolio.project2Name")}
-                </h3>
-                <p className="mt-1.5 font-mono text-[10px] leading-relaxed text-white/50 md:mt-2 md:text-xs">
-                  {t("Portfolio.project2Desc")}
-                </p>
-                {/* Tech tags */}
-                <div className="mt-2.5 flex flex-wrap gap-1.5 md:mt-4 md:gap-2">
-                  {t("Portfolio.project2Tech").split(" · ").map((tech: string) => (
-                    <span key={tech} className="rounded bg-[#00d4ff]/8 px-2 py-0.5 font-mono text-[9px] text-[#00d4ff]/60">
-                      {tech}
-                    </span>
-                  ))}
-                </div>
-                {/* Visit link */}
-                <span className="mt-3 inline-flex items-center gap-1.5 font-mono text-[10px] tracking-[0.15em] text-[#00d4ff]/60 uppercase transition-colors duration-300 group-hover:text-[#00d4ff] md:mt-5 md:text-[11px]">
-                  {t("Portfolio.visitSite")}
-                </span>
-              </div>
-            </a>
+              </a>
+            ))}
           </div>
 
           {/* CTA */}
-          <div className="portfolio-cta mt-6 flex flex-col items-center gap-2 opacity-0 md:mt-16 md:gap-3">
+          <div className="portfolio-cta mt-5 flex flex-col items-center gap-2 opacity-0 md:mt-8 md:gap-3">
             <h3 className="text-center font-bold text-xs tracking-[0.1em] text-[#00d4ff]/80 md:text-lg">
               {t("Portfolio.cta")}
             </h3>

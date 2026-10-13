@@ -1,0 +1,33 @@
+{
+  "proyecto": "t800labsweb",
+  "nombre": "T800 Labs — web",
+  "descripcion": "Web de T800 Labs en t800labs.com (Next.js 16 + GSAP, Cloud Run europe-west1): servicios, portfolio y la página /automatiza con la oferta de automatización con IA para negocios (BDR-MKT-08 y 09 de marketing-t800labs).",
+  "fase": "operacion",
+  "avance": 90,
+  "estado": "activo",
+  "ultimoMovimiento": "2026-10-13",
+  "url": "https://t800labs.com",
+  "departamentosActivos": [],
+  "tareas": [
+    {
+      "id": "t1",
+      "titulo": "Portfolio al día: Guardesa, Stelvia, The Rehab Studio y Aula (sale NoEsGratis, que daba 403)",
+      "estado": "done"
+    },
+    {
+      "id": "t2",
+      "titulo": "Página /automatiza con la oferta general (BDR-MKT-09): tres ejemplos con precio, tramos a medida, garantía, WhatsApp con el mensaje por red y formulario (encargo de marketing-t800labs/docs/t800labs/oferta.md §8)",
+      "estado": "done"
+    },
+    {
+      "id": "t3",
+      "titulo": "Aviso legal, política de privacidad y consentimiento de cookies: la web no los tiene y carga Google Analytics sin pedir permiso. Los datos del titular (NIF y domicilio) no pueden ir en el repo",
+      "estado": "todo"
+    },
+    {
+      "id": "t4",
+      "titulo": "Las preguntas frecuentes de la home solo salen en los datos estructurados, no en la página: enseñarlas o quitarlas del JSON-LD",
+      "estado": "todo"
+    }
+  ]
+}

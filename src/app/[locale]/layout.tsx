@@ -6,6 +6,7 @@ import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
 import Script from "next/script";
 import WhatsAppButton from "@/components/WhatsAppButton";
+import { OG_IMAGE } from "@/lib/seo";
 import "../globals.css";
 
 const geistSans = Geist({
@@ -71,20 +72,13 @@ export async function generateMetadata({
       siteName: "T800 Labs",
       title: t("ogTitle"),
       description: t("ogDescription"),
-      images: [
-        {
-          url: "/og-image.png",
-          width: 1200,
-          height: 630,
-          alt: "T800 Labs — Software Development",
-        },
-      ],
+      images: [OG_IMAGE],
     },
     twitter: {
       card: "summary_large_image",
       title: t("ogTitle"),
       description: t("ogDescription"),
-      images: ["/og-image.png"],
+      images: [OG_IMAGE.url],
     },
     icons: {
       icon: [
