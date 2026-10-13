@@ -176,7 +176,7 @@ function notasDeLinea(linea: LineaPresupuesto): Array<{ texto: string; color: RG
     notas.push({ texto: `Medición estimada${linea.notaMedicion ? `: ${linea.notaMedicion}` : ""}`, color: C.gris, cursiva: true });
   }
   if (linea.codigo) {
-    notas.push({ texto: `Ref. ${linea.codigo} · Dicho: «${linea.dicho}»`, color: C.grisClaro, cursiva: false });
+    notas.push({ texto: `Ref. ${linea.codigo} · Entendido: «${linea.dicho}»`, color: C.grisClaro, cursiva: false });
   }
   return notas;
 }

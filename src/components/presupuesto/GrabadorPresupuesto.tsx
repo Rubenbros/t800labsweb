@@ -89,6 +89,19 @@ export function GrabadorPresupuesto() {
     [],
   );
 
+  // Si el enlace con #c=... se abre con la página ya cargada, solo cambia el hash.
+  useEffect(() => {
+    const alCambiar = () => {
+      const c = codigoInicial();
+      if (c) {
+        setCodigo(c);
+        setFase((f) => (f.tipo === "acceso" ? { tipo: "listo" } : f));
+      }
+    };
+    window.addEventListener("hashchange", alCambiar);
+    return () => window.removeEventListener("hashchange", alCambiar);
+  }, []);
+
   const enviar = useCallback(
     async (cuerpo: Blob | string) => {
       if (!codigo) return;
@@ -217,7 +230,7 @@ export function GrabadorPresupuesto() {
               </button>
               <p className="mt-5 font-mono text-sm tabular-nums text-[#ededed]">
                 {grabando
-                  ? `0:${String(grabadora.segundos).padStart(2, "0")} · toca para enviar${restante <= 15 ? ` (quedan ${restante} s)` : ""}`
+                  ? `${Math.floor(grabadora.segundos / 60)}:${String(grabadora.segundos % 60).padStart(2, "0")} · toca para enviar${restante <= 15 ? ` (quedan ${restante} s)` : ""}`
                   : "Toca para grabar"}
               </p>
               {(grabadora.error || fase.error) && (
