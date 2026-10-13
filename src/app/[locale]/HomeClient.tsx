@@ -13,19 +13,24 @@ import TronBikes from "@/components/TronBikes";
 import LavaFooter from "@/components/LavaFooter";
 import { Link } from "@/i18n/routing";
 import { LOWEST_SETUP_PRICE, formatEuros } from "@/lib/automatiza/offer";
+import { formatPublishedDate, latestByBrand, type Brand } from "@/lib/escaparate/feed";
+import { usePublishedVideos } from "@/lib/escaparate/use-published-videos";
 
 // Tarjetas del portfolio. Los textos van en messages (Portfolio.<key>Name, …Desc, …).
+// `brand` es la marca del proyecto en el escaparate de vídeos: la tarjeta enseña sola la
+// fecha de su último vídeo publicado.
 const PORTFOLIO_PROJECTS = [
-  { key: "project1", href: "https://guardesa.com" },
-  { key: "project2", href: "https://stelvia.space" },
-  { key: "project3", href: "https://therehabstudio.es" },
-  { key: "project4", href: "https://rubenjarne.dev" },
-] as const;
+  { key: "project1", href: "https://guardesa.com", brand: "guardesa" },
+  { key: "project2", href: "https://stelvia.space", brand: "stelvia" },
+  { key: "project3", href: "https://therehabstudio.es", brand: null },
+  { key: "project4", href: "https://rubenjarne.dev", brand: null },
+] as const satisfies readonly { key: string; href: string; brand: Brand | null }[];
 
 export default function HomeClient() {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const t = useTranslations();
   const locale = useLocale();
+  const latestVideos = latestByBrand(usePublishedVideos());
 
   // Scroll to pinned sections correctly (accounts for ScrollTrigger pin offsets)
   const PIN_PROGRESS: Record<string, number> = {
@@ -1384,7 +1389,9 @@ export default function HomeClient() {
 
           {/* Project cards grid — 2×2 en móvil y tablet, 4 en fila en escritorio */}
           <div className="grid w-full grid-cols-2 gap-2.5 md:gap-5 lg:grid-cols-4">
-            {PORTFOLIO_PROJECTS.map(({ key, href }) => (
+            {PORTFOLIO_PROJECTS.map(({ key, href, brand }) => {
+              const latestVideo = brand && latestVideos[brand];
+              return (
               <a
                 key={key}
                 href={href}
@@ -1420,13 +1427,21 @@ export default function HomeClient() {
                       </span>
                     ))}
                   </div>
+                  {/* Último vídeo publicado: llega solo del escaparate. Desde tablet, donde cabe */}
+                  {latestVideo && (
+                    <span className="mt-3 hidden items-center gap-1.5 font-mono text-[9px] tracking-[0.12em] text-white/60 uppercase md:inline-flex">
+                      <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-[#00d4ff]" />
+                      {t("Portfolio.latestVideo", { date: formatPublishedDate(latestVideo.publishedAt, locale) })}
+                    </span>
+                  )}
                   {/* Visit link */}
                   <span className="mt-auto inline-flex items-center gap-1.5 pt-2.5 font-mono text-[9px] tracking-[0.15em] text-[#00d4ff]/60 uppercase transition-colors duration-300 group-hover:text-[#00d4ff] md:pt-5 md:text-[11px]">
                     {t("Portfolio.visitSite")}
                   </span>
                 </div>
               </a>
-            ))}
+              );
+            })}
           </div>
 
           {/* CTA */}

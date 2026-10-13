@@ -19,7 +19,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     {
       url: `${baseUrl}/automatiza`,
       lastModified: new Date(),
-      changeFrequency: "monthly",
+      // Los casos en vídeo entran solos cada semana.
+      changeFrequency: "weekly",
       priority: 0.9,
       alternates: {
         languages: {

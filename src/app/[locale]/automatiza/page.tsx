@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import { AutomatizaPage } from "@/components/automatiza/AutomatizaPage";
 import { PACKAGES } from "@/lib/automatiza/offer";
+import { loadShowcase } from "@/lib/escaparate/source";
 import { OG_IMAGE } from "@/lib/seo";
 
 const BASE_URL = "https://t800labs.com";
@@ -53,6 +54,9 @@ export default async function Page({ params }: Props) {
   const t = await getTranslations({ locale, namespace: "Automatiza" });
   const faq = t.raw("faq.items") as { q: string; a: string }[];
   const url = pageUrl(locale);
+  // La página sale con los vídeos que el servidor tiene a mano, sin esperar al panel más de
+  // un instante; el navegador la pone al día después.
+  const videos = await loadShowcase({ waitMs: 1_200, staleOk: true });
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -103,7 +107,7 @@ export default async function Page({ params }: Props) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }}
       />
-      <AutomatizaPage locale={locale} />
+      <AutomatizaPage locale={locale} videos={videos} />
     </>
   );
 }

@@ -108,6 +108,7 @@
     "project4Tech": "Next.js · GitHub API · PostgreSQL · Cloud Run",
     "project4Type": "TEACHING",
     "visitSite": "View project ↗",
+    "latestVideo": "Latest video: {date}",
     "cta": "Does your business need something like this?",
     "cornerSys": "SYS.05",
     "cornerLabel": "TRON"
@@ -324,6 +325,13 @@
       "honestTitle": "If it isn't worth it for you, I'll say so",
       "honestBody": "I do the maths with your numbers: the hours it takes you each month and what your hour is worth. If the setup plus a year of fees doesn't pay for itself within 12 months, I won't sell it to you. And if a cheap tool already solves it, I'll tell you which one."
     },
+    "cases": {
+      "eyebrow": "Video cases",
+      "title": "One case per video",
+      "lead": "One sector and one task per video, running on a phone or a computer. Demos use sample data. This list updates itself: every video I publish shows up here without me touching the site. The videos are in Spanish.",
+      "watchOn": "Watch on {network}",
+      "cta": "I want something like this"
+    },
     "steps": {
       "eyebrow": "Written assessment, no call",
       "title": "How it works",
@@ -390,7 +398,9 @@
         "Guardesa: managers of room-by-room rentals query their business data by writing on WhatsApp and load their portfolio from an Excel file.",
         "My own freelance invoices log themselves with the system from package 3."
       ],
-      "photoAlt": "Rubén Jarné, founder of T800 Labs"
+      "photoAlt": "Rubén Jarné, founder of T800 Labs",
+      "videosTitle": "This site updates itself",
+      "videosBody": "The videos for my own products are edited, scheduled and published automatically. When one goes out, it shows up here without me touching the site. The latest:"
     },
     "faq": {
       "eyebrow": "Common questions",
@@ -462,6 +472,7 @@
         "web": "Hi, I'm coming from your website."
       },
       "package": "I'm interested in “{name}”.",
+      "case": "I watched the video “{name}”.",
       "ask": "Here's what eats my time:"
     }
   },

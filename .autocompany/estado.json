@@ -20,6 +20,11 @@
       "estado": "done"
     },
     {
+      "id": "t5",
+      "titulo": "La web se actualiza sola (ADR 0003): cada vídeo que publica el panel de marketing aparece en /automatiza (casos de T800 Labs y últimos de Guardesa y Stelvia) y en las tarjetas del portfolio, sin tocar la web. Es la condición del vídeo T1",
+      "estado": "done"
+    },
+    {
       "id": "t3",
       "titulo": "Aviso legal, política de privacidad y consentimiento de cookies: la web no los tiene y carga Google Analytics sin pedir permiso. Los datos del titular (NIF y domicilio) no pueden ir en el repo",
       "estado": "todo"

@@ -108,6 +108,7 @@
     "project4Tech": "Next.js · GitHub API · PostgreSQL · Cloud Run",
     "project4Type": "FORMACIÓN",
     "visitSite": "Ver proyecto ↗",
+    "latestVideo": "Último vídeo: {date}",
     "cta": "¿Tu negocio necesita algo así?",
     "cornerSys": "SYS.05",
     "cornerLabel": "TRON"
@@ -324,6 +325,13 @@
       "honestTitle": "Si no te compensa, te lo digo",
       "honestBody": "Hago la cuenta con tus números: las horas que te quita al mes y lo que vale tu hora. Si la puesta en marcha y un año de cuota no se recuperan en 12 meses, no te lo vendo. Y si una herramienta barata ya lo resuelve, te digo cuál."
     },
+    "cases": {
+      "eyebrow": "Casos en vídeo",
+      "title": "Un caso en cada vídeo",
+      "lead": "Un sector y una tarea por vídeo, funcionando en el móvil o en el ordenador. Si es una demo, lleva datos de ejemplo. Esta lista se actualiza sola: cada vídeo que publico aparece aquí sin que yo toque la web.",
+      "watchOn": "Ver en {network}",
+      "cta": "Quiero algo así"
+    },
     "steps": {
       "eyebrow": "Diagnóstico por escrito, sin llamada",
       "title": "Cómo funciona",
@@ -390,7 +398,9 @@
         "Guardesa: los gestores de pisos por habitaciones consultan los datos de su negocio escribiendo por WhatsApp y cargan su cartera desde un Excel.",
         "Mis propias facturas de autónomo se apuntan solas con el sistema del paquete 3."
       ],
-      "photoAlt": "Rubén Jarné, fundador de T800 Labs"
+      "photoAlt": "Rubén Jarné, fundador de T800 Labs",
+      "videosTitle": "Esta web se actualiza sola",
+      "videosBody": "Los vídeos de mis productos se montan, se programan y se publican solos. Cuando sale uno, aparece aquí sin que yo toque la web. Los últimos:"
     },
     "faq": {
       "eyebrow": "Dudas habituales",
@@ -462,6 +472,7 @@
         "web": "Hola, vengo de la web."
       },
       "package": "Me interesa «{name}».",
+      "case": "He visto el vídeo «{name}».",
       "ask": "Te cuento qué me quita tiempo:"
     }
   },

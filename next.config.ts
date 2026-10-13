@@ -11,6 +11,12 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "images.unsplash.com",
       },
+      // Portadas de los vídeos publicados: las sirve el escaparate del panel.
+      {
+        protocol: "https",
+        hostname: "panel.t800labs.com",
+        pathname: "/api/publico/escaparate/portada/**",
+      },
     ],
   },
   async headers() {

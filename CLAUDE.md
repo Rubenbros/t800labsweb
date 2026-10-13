@@ -41,6 +41,8 @@ src/app/[locale]/automatiza/page.tsx → Página /automatiza (metadatos + JSON-L
 src/components/automatiza/      → Bloques de /automatiza (página, tarjeta de paquete, demo de chat, WhatsApp, formulario)
 src/lib/automatiza/offer.ts     → Paquetes, tramos a medida y precios (fuente única; salen de las BDR-MKT-08 y 09)
 src/lib/automatiza/whatsapp.ts  → Enlace de WhatsApp con el mensaje según el utm_source
+src/lib/escaparate/             → Vídeos publicados que la web enseña sola (los lee del panel de marketing)
+src/app/api/escaparate/route.ts → Los vídeos publicados, para que el navegador ponga la página al día
 src/lib/seo.ts                  → Imagen para compartir (la genera src/app/opengraph-image.tsx)
 src/app/globals.css             → Estilos base (Tailwind + CSS vars + scrollbar)
 src/lib/gsap.ts                 → Config GSAP (registra ScrollTrigger, defaults)
@@ -179,6 +181,17 @@ El Hero ocupa `h-screen`, fondo negro, y contiene:
 - Movimiento con GSAP (`AutomatizaMotion`, `ChatDemo`, `StickyCta`); el contenido se sirve visible y
   respeta «reducir movimiento»
 - El botón flotante de WhatsApp del layout no se pinta aquí: la página lleva los suyos
+
+### 11. La web se actualiza sola ✅ (ADR 0003)
+- La dispara un vídeo que sale en las redes: el panel de marketing lo publica y la web lo lee de su escaparate
+  (`panel.t800labs.com/api/publico/escaparate`, ADR-MKT-012 de marketing-t800labs). Nadie toca la web ni la despliega
+- `/automatiza`: «Casos en vídeo» (`VideoCases`, los vídeos de T800 Labs; sin ninguno, la sección no existe) y
+  «Esta web se actualiza sola» dentro de «Quién lo monta» (`ProductVideos`, los últimos de Guardesa y Stelvia)
+- Home: las tarjetas del portfolio con `brand` enseñan la fecha de su último vídeo (desde tablet)
+- `src/lib/escaparate/`: `feed.ts` valida lo que llega del panel, `source.ts` guarda la última lista buena en el
+  servidor y `use-published-videos.ts` la pone al día en el navegador con `/api/escaparate`
+- La página nunca espera al panel más de 1,2 s ni falla por él. Es lo que enseña el vídeo T1: si cambia qué la
+  dispara o qué aparece, hay que cambiar también `marketing-t800labs/docs/t800labs/guiones-semana-1.md`
 
 ## Secciones pendientes
 - Aviso legal, privacidad y consentimiento de cookies (hoy no existen; ver `.autocompany/estado.json`)

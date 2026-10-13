@@ -31,6 +31,8 @@ type Props = {
   placement: string;
   /** Si el botón es el de un paquete, su nombre se añade al mensaje. */
   packageName?: string;
+  /** Si el botón es el de un caso en vídeo, su título se añade al mensaje. */
+  caseTitle?: string;
   showIcon?: boolean;
   className?: string;
   children: React.ReactNode;
@@ -39,6 +41,7 @@ type Props = {
 export function WhatsAppCta({
   placement,
   packageName,
+  caseTitle,
   showIcon = true,
   className,
   children,
@@ -46,10 +49,11 @@ export function WhatsAppCta({
   const t = useTranslations("Automatiza.whatsapp");
   const origin = useOrigin();
 
-  // «Hola, vengo de Instagram. [Me interesa «…».] Te cuento qué me quita tiempo:»
+  // «Hola, vengo de Instagram. [Me interesa «…».] [He visto el vídeo «…».] Te cuento qué me quita tiempo:»
   const message = [
     t(`origins.${origin}`),
     packageName ? t("package", { name: packageName }) : null,
+    caseTitle ? t("case", { name: caseTitle }) : null,
     t("ask"),
   ]
     .filter(Boolean)

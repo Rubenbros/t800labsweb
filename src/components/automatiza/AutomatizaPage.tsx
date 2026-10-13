@@ -3,18 +3,27 @@ import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/routing";
 import LanguageSelector from "@/components/LanguageSelector";
 import { CUSTOM_TIERS, MONTHLY_FEE, PACKAGES, formatEuroRange, formatEuros } from "@/lib/automatiza/offer";
+import type { PublishedVideo } from "@/lib/escaparate/feed";
 import { AutomatizaForm } from "./AutomatizaForm";
 import { AutomatizaMotion } from "./AutomatizaMotion";
 import { ChatDemo } from "./ChatDemo";
 import { PackageCard } from "./PackageCard";
+import { ProductVideos } from "./ProductVideos";
 import { StickyCta } from "./StickyCta";
+import { VideoCases } from "./VideoCases";
 import { WhatsAppCta } from "./WhatsAppCta";
 import { BUTTON_OUTLINE, BUTTON_WHATSAPP, CONTAINER, EYEBROW, SECTION_TITLE } from "./styles";
 
 type TitledItem = { title: string; body: string };
 type FaqItem = { q: string; a: string };
 
-export async function AutomatizaPage({ locale }: { locale: string }) {
+type Props = {
+  locale: string;
+  /** Vídeos publicados que el servidor tenía a mano; el navegador los pone al día. */
+  videos: PublishedVideo[];
+};
+
+export async function AutomatizaPage({ locale, videos }: Props) {
   const t = await getTranslations({ locale, namespace: "Automatiza" });
   const steps = t.raw("steps.items") as TitledItem[];
   const conditions = t.raw("conditions.items") as TitledItem[];
@@ -181,6 +190,9 @@ export async function AutomatizaPage({ locale }: { locale: string }) {
           </div>
         </section>
 
+        {/* ── CASOS EN VÍDEO (solo si T800 Labs ha publicado alguno) ── */}
+        <VideoCases initial={videos} />
+
         {/* ── CÓMO FUNCIONA ── */}
         <section className="border-t border-white/5 py-20 md:py-28">
           <div className={CONTAINER}>
@@ -250,7 +262,8 @@ export async function AutomatizaPage({ locale }: { locale: string }) {
                 className="object-cover grayscale"
               />
             </div>
-            <div data-reveal className="max-w-2xl">
+            {/* min-w-0: sin él, la fila deslizante de vídeos ensancha la columna más que la pantalla */}
+            <div data-reveal className="min-w-0 max-w-2xl">
               <p className={EYEBROW}>{t("about.eyebrow")}</p>
               <h2 className={SECTION_TITLE}>{t("about.title")}</h2>
               <p className="mt-5 text-[17px] leading-relaxed text-white/75">{t("about.body")}</p>
@@ -266,6 +279,8 @@ export async function AutomatizaPage({ locale }: { locale: string }) {
                   </li>
                 ))}
               </ul>
+
+              <ProductVideos initial={videos} />
             </div>
           </div>
         </section>
