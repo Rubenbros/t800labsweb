@@ -1,0 +1,646 @@
+{
+  "nombre": "Tarifa de ejemplo 2026",
+  "vigencia": "2026",
+  "moneda": "EUR",
+  "partidas": [
+    {
+      "codigo": "DEM-01",
+      "capitulo": "Demoliciones y desmontajes",
+      "descripcion": "Desmontaje de bañera existente de acero, fundición o acrílica, con retirada a contenedor",
+      "unidad": "ud",
+      "precio": 95.00,
+      "incluye": "Mano de obra, desconexión del desagüe y carga a contenedor. No incluye el picado del alicatado ni el contenedor.",
+      "sinonimos": ["quitar la bañera", "sacar la bañera", "desmontar la bañera", "fuera la bañera", "quitar la bañera vieja"]
+    },
+    {
+      "codigo": "DEM-02",
+      "capitulo": "Demoliciones y desmontajes",
+      "descripcion": "Picado de alicatado existente en paredes, incluso material de agarre, con carga a contenedor",
+      "unidad": "m2",
+      "precio": 13.00,
+      "incluye": "Mano de obra con medios manuales y carga de escombros. Se mide la superficie real picada. No incluye el contenedor.",
+      "sinonimos": ["picar los azulejos", "quitar los azulejos", "quitar el alicatado", "picar las paredes", "arrancar el azulejo"]
+    },
+    {
+      "codigo": "DEM-03",
+      "capitulo": "Demoliciones y desmontajes",
+      "descripcion": "Levantado de solado cerámico existente, incluso material de agarre, con carga a contenedor",
+      "unidad": "m2",
+      "precio": 16.00,
+      "incluye": "Mano de obra y carga de escombros. No incluye la demolición de la solera ni el contenedor.",
+      "sinonimos": ["levantar el suelo", "quitar el suelo", "picar el suelo", "quitar las baldosas del suelo", "levantar las baldosas"]
+    },
+    {
+      "codigo": "DEM-04",
+      "capitulo": "Demoliciones y desmontajes",
+      "descripcion": "Desmontaje de lavabo o mueble de lavabo existente, con su grifería, y taponado de tomas",
+      "unidad": "ud",
+      "precio": 35.00,
+      "incluye": "Mano de obra, retirada a contenedor y anulación provisional de las tomas de agua y del desagüe.",
+      "sinonimos": ["quitar el lavabo", "desmontar el lavabo", "sacar el lavabo viejo", "quitar el mueble del lavabo"]
+    },
+    {
+      "codigo": "DEM-05",
+      "capitulo": "Demoliciones y desmontajes",
+      "descripcion": "Desmontaje de inodoro o bidé existente, con taponado de tomas y retirada a contenedor",
+      "unidad": "ud",
+      "precio": 35.00,
+      "incluye": "Mano de obra y carga a contenedor. Incluye la anulación provisional de la toma de agua y del desagüe.",
+      "sinonimos": ["quitar el váter", "quitar el inodoro", "quitar el bidé", "desmontar el váter", "sacar el bidé"]
+    },
+    {
+      "codigo": "DEM-06",
+      "capitulo": "Demoliciones y desmontajes",
+      "descripcion": "Desmontaje de plato de ducha existente, con picado perimetral y retirada a contenedor",
+      "unidad": "ud",
+      "precio": 90.00,
+      "incluye": "Mano de obra y carga a contenedor. No incluye el levantado del solado del resto del baño.",
+      "sinonimos": ["quitar el plato de ducha", "sacar el plato viejo", "desmontar el plato", "quitar el plato antiguo"]
+    },
+    {
+      "codigo": "DEM-07",
+      "capitulo": "Demoliciones y desmontajes",
+      "descripcion": "Desmontaje de muebles de cocina altos y bajos, encimera y fregadero, con retirada a contenedor",
+      "unidad": "pa",
+      "precio": 230.00,
+      "incluye": "Cocina de hasta 5 ml. Incluye desconexión de agua y desagüe y carga a contenedor. Electrodomésticos aparte.",
+      "sinonimos": ["quitar la cocina", "desmontar la cocina vieja", "sacar los muebles de la cocina", "quitar los muebles de cocina"]
+    },
+    {
+      "codigo": "DEM-08",
+      "capitulo": "Demoliciones y desmontajes",
+      "descripcion": "Desmontaje de puerta interior con cerco y tapajuntas, con retirada a contenedor",
+      "unidad": "ud",
+      "precio": 40.00,
+      "incluye": "Mano de obra y carga a contenedor, sin recuperación de la puerta.",
+      "sinonimos": ["quitar la puerta", "sacar la puerta vieja", "desmontar la puerta"]
+    },
+    {
+      "codigo": "DEM-09",
+      "capitulo": "Demoliciones y desmontajes",
+      "descripcion": "Demolición de tabique de ladrillo hueco sencillo, con medios manuales y carga a contenedor",
+      "unidad": "m2",
+      "precio": 15.00,
+      "incluye": "Mano de obra y carga de escombros, medido por una cara. No incluye el contenedor ni los remates posteriores.",
+      "sinonimos": ["tirar el tabique", "tirar la pared", "quitar el tabique", "derribar la pared", "abrir la cocina al salón"]
+    },
+    {
+      "codigo": "ALB-01",
+      "capitulo": "Albañilería",
+      "descripcion": "Falso techo continuo de placa de yeso laminado hidrófuga, con perfilería y juntas tratadas",
+      "unidad": "m2",
+      "precio": 36.00,
+      "incluye": "Suministro y colocación, listo para pintar. No incluye la pintura ni los focos.",
+      "sinonimos": ["bajar el techo", "techo de pladur", "falso techo", "poner pladur en el techo", "techo de escayola"]
+    },
+    {
+      "codigo": "ALB-02",
+      "capitulo": "Albañilería",
+      "descripcion": "Regularización de suelo con mortero de cemento, espesor medio 3 cm, para recibir solado",
+      "unidad": "m2",
+      "precio": 18.00,
+      "incluye": "Suministro y aplicación del mortero. Para corregir desniveles tras levantar el suelo antiguo.",
+      "sinonimos": ["recrecer el suelo", "nivelar con mortero", "hacer la base del suelo", "igualar el suelo"]
+    },
+    {
+      "codigo": "ALB-03",
+      "capitulo": "Albañilería",
+      "descripcion": "Nivelación de suelo con mortero autonivelante, espesor medio 5 mm",
+      "unidad": "m2",
+      "precio": 17.00,
+      "incluye": "Suministro y aplicación, con imprimación previa. Los espesores mayores se valoran aparte.",
+      "sinonimos": ["autonivelante", "nivelar el suelo", "echar autonivelante", "dejar el suelo plano"]
+    },
+    {
+      "codigo": "ALB-04",
+      "capitulo": "Albañilería",
+      "descripcion": "Impermeabilización de zona de ducha con membrana líquida y banda de refuerzo en encuentros",
+      "unidad": "ud",
+      "precio": 160.00,
+      "incluye": "Suelo de la ducha y paredes hasta 2 m de altura en el perímetro del plato. Suministro y aplicación.",
+      "sinonimos": ["impermeabilizar la ducha", "impermeabilizar", "poner tela impermeable", "que no filtre la ducha"]
+    },
+    {
+      "codigo": "ALB-05",
+      "capitulo": "Albañilería",
+      "descripcion": "Enfoscado maestreado con mortero de cemento en paredes, para recibir alicatado",
+      "unidad": "m2",
+      "precio": 16.00,
+      "incluye": "Suministro y aplicación. Necesario cuando la pared queda irregular después del picado.",
+      "sinonimos": ["enfoscar las paredes", "enfoscar", "dejar la pared recta", "maestrear las paredes"]
+    },
+    {
+      "codigo": "ALB-06",
+      "capitulo": "Albañilería",
+      "descripcion": "Tabique de placa de yeso laminado de 15 mm por cara, con aislamiento de lana mineral",
+      "unidad": "m2",
+      "precio": 34.00,
+      "incluye": "Suministro y montaje con perfilería de 48 mm y juntas tratadas, listo para pintar.",
+      "sinonimos": ["poner un tabique de pladur", "hacer una pared de pladur", "levantar un tabique", "pared de pladur"]
+    },
+    {
+      "codigo": "ALB-07",
+      "capitulo": "Albañilería",
+      "descripcion": "Ayudas de albañilería a instalaciones de fontanería y electricidad: rozas, pasos y tapado",
+      "unidad": "pa",
+      "precio": 180.00,
+      "incluye": "Mano de obra y material de tapado para una estancia (baño o cocina).",
+      "sinonimos": ["hacer las rozas", "tapar las rozas", "ayudas de albañilería", "abrir y tapar para los tubos"]
+    },
+    {
+      "codigo": "FON-01",
+      "capitulo": "Fontanería",
+      "descripcion": "Adaptación de fontanería para plato de ducha: desagüe a sifón y traslado de tomas a la nueva grifería",
+      "unidad": "ud",
+      "precio": 260.00,
+      "incluye": "Mano de obra y material (PVC y multicapa) hasta 2 m de recorrido. No incluye la grifería.",
+      "sinonimos": ["mover el desagüe", "adaptar la fontanería de la ducha", "cambiar el desagüe", "subir las tomas de la ducha", "preparar la fontanería del plato"]
+    },
+    {
+      "codigo": "FON-02",
+      "capitulo": "Fontanería",
+      "descripcion": "Renovación de fontanería de baño completo con tubería multicapa y desagües de PVC, con llave de corte",
+      "unidad": "pa",
+      "precio": 740.00,
+      "incluye": "Tomas y desagües de inodoro, lavabo, bidé y ducha o bañera, desde la llave del baño. No incluye aparatos ni ayudas de albañilería.",
+      "sinonimos": ["cambiar toda la fontanería del baño", "fontanería nueva", "renovar las tuberías del baño", "cambiar las tuberías", "tubería nueva en el baño"]
+    },
+    {
+      "codigo": "FON-03",
+      "capitulo": "Fontanería",
+      "descripcion": "Toma de agua fría y caliente y desagüe para fregadero o lavavajillas en cocina",
+      "unidad": "ud",
+      "precio": 130.00,
+      "incluye": "Mano de obra y material hasta 2 m de recorrido, con llaves de escuadra. No incluye la grifería.",
+      "sinonimos": ["toma de agua en la cocina", "sacar agua para el fregadero", "toma para el lavavajillas", "desagüe de la cocina", "mover el fregadero"]
+    },
+    {
+      "codigo": "FON-04",
+      "capitulo": "Fontanería",
+      "descripcion": "Hora de oficial fontanero",
+      "unidad": "h",
+      "precio": 38.00,
+      "incluye": "Mano de obra por hora o fracción en trabajos por administración. Material aparte.",
+      "sinonimos": ["hora de fontanero", "fontanero por horas", "una hora de fontanero"]
+    },
+    {
+      "codigo": "FON-05",
+      "capitulo": "Fontanería",
+      "descripcion": "Sustitución de termo eléctrico por uno nuevo de 80 l vertical, gama media",
+      "unidad": "ud",
+      "precio": 420.00,
+      "incluye": "Suministro e instalación con válvula de seguridad y latiguillos. Incluye la retirada del termo antiguo.",
+      "sinonimos": ["cambiar el termo", "termo nuevo", "poner un termo de 80", "cambiar el calentador eléctrico"]
+    },
+    {
+      "codigo": "FON-06",
+      "capitulo": "Fontanería",
+      "descripcion": "Sustitución de grifo de lavabo, fregadero o bidé, solo mano de obra",
+      "unidad": "ud",
+      "precio": 45.00,
+      "incluye": "Desmontaje del grifo antiguo y montaje del nuevo, aportado por el cliente. Latiguillos aparte.",
+      "sinonimos": ["cambiar el grifo", "poner el grifo que he comprado", "cambiar un grifo", "montar el grifo"]
+    },
+    {
+      "codigo": "FON-07",
+      "capitulo": "Fontanería",
+      "descripcion": "Desatasco de desagüe de fregadero, lavabo, ducha o inodoro, con medios manuales o máquina",
+      "unidad": "ud",
+      "precio": 105.00,
+      "incluye": "Servicio de hasta 1 h con desplazamiento incluido. Camión cuba aparte.",
+      "sinonimos": ["desatascar", "desatasco", "está atascado el fregadero", "se ha atascado el váter", "desatascar la ducha"]
+    },
+    {
+      "codigo": "SAN-01",
+      "capitulo": "Sanitarios y grifería",
+      "descripcion": "Plato de ducha de resina extraplano antideslizante, hasta 100 cm de largo, con válvula sifónica",
+      "unidad": "ud",
+      "precio": 315.00,
+      "incluye": "Suministro y colocación sobre base nivelada, gama media, blanco. No incluye la adaptación de fontanería.",
+      "sinonimos": ["plato de ducha de 80", "plato de ducha de 90", "plato de 100", "plato de ducha pequeño", "plato cuadrado"]
+    },
+    {
+      "codigo": "SAN-02",
+      "capitulo": "Sanitarios y grifería",
+      "descripcion": "Plato de ducha de resina extraplano antideslizante, de 101 a 140 cm de largo, con válvula sifónica",
+      "unidad": "ud",
+      "precio": 365.00,
+      "incluye": "Suministro y colocación sobre base nivelada, gama media, blanco. No incluye la adaptación de fontanería.",
+      "sinonimos": ["plato de ducha de 120", "plato de 120", "plato de ducha de 1,20", "plato de 120 por 70", "plato de ducha de 140", "poner plato de ducha"]
+    },
+    {
+      "codigo": "SAN-03",
+      "capitulo": "Sanitarios y grifería",
+      "descripcion": "Plato de ducha de resina extraplano antideslizante, de 141 a 180 cm de largo, con válvula sifónica",
+      "unidad": "ud",
+      "precio": 445.00,
+      "incluye": "Suministro y colocación sobre base nivelada, gama media, blanco. No incluye la adaptación de fontanería.",
+      "sinonimos": ["plato de ducha de 160", "plato de 150", "plato de 180", "plato de ducha grande", "plato largo"]
+    },
+    {
+      "codigo": "SAN-04",
+      "capitulo": "Sanitarios y grifería",
+      "descripcion": "Lavabo de porcelana vitrificada con pedestal, gama media, color blanco",
+      "unidad": "ud",
+      "precio": 170.00,
+      "incluye": "Suministro y colocación con anclajes, sifón y latiguillos. No incluye el grifo.",
+      "sinonimos": ["lavabo de pie", "lavabo con pie", "lavabo con pedestal", "lavabo sencillo"]
+    },
+    {
+      "codigo": "SAN-05",
+      "capitulo": "Sanitarios y grifería",
+      "descripcion": "Mueble de baño de 80 cm con lavabo cerámico integrado, gama media, suspendido o a suelo",
+      "unidad": "ud",
+      "precio": 365.00,
+      "incluye": "Suministro y colocación con sifón y latiguillos. No incluye el grifo ni el espejo.",
+      "sinonimos": ["cambiar el lavabo", "mueble de lavabo", "lavabo con mueble", "poner un lavabo nuevo", "mueble de baño"]
+    },
+    {
+      "codigo": "SAN-06",
+      "capitulo": "Sanitarios y grifería",
+      "descripcion": "Montaje de mueble de baño o lavabo aportado por el cliente, solo mano de obra",
+      "unidad": "ud",
+      "precio": 75.00,
+      "incluye": "Montaje, anclaje y conexión a tomas existentes. Sifón y latiguillos aparte.",
+      "sinonimos": ["montar el mueble que he comprado", "colocar el lavabo del cliente", "solo montar el lavabo", "instalar el mueble de baño"]
+    },
+    {
+      "codigo": "SAN-07",
+      "capitulo": "Sanitarios y grifería",
+      "descripcion": "Inodoro de porcelana con tanque bajo, doble descarga y asiento amortiguado, gama media",
+      "unidad": "ud",
+      "precio": 285.00,
+      "incluye": "Suministro y colocación con fijaciones, manguetón y latiguillo, conectado al desagüe existente.",
+      "sinonimos": ["cambiar el váter", "poner un váter nuevo", "inodoro nuevo", "cambiar el inodoro", "taza nueva"]
+    },
+    {
+      "codigo": "SAN-08",
+      "capitulo": "Sanitarios y grifería",
+      "descripcion": "Colocación de inodoro aportado por el cliente, solo mano de obra",
+      "unidad": "ud",
+      "precio": 60.00,
+      "incluye": "Montaje y conexión a tomas existentes. Manguetón y latiguillo aparte.",
+      "sinonimos": ["montar el váter que he comprado", "colocar el inodoro del cliente", "solo poner el váter"]
+    },
+    {
+      "codigo": "SAN-09",
+      "capitulo": "Sanitarios y grifería",
+      "descripcion": "Grifo monomando de lavabo, cromado, gama media",
+      "unidad": "ud",
+      "precio": 110.00,
+      "incluye": "Suministro y colocación con latiguillos y válvula clic-clac.",
+      "sinonimos": ["grifo del lavabo", "cambiar el grifo del lavabo", "grifo monomando", "grifo nuevo para el lavabo"]
+    },
+    {
+      "codigo": "SAN-10",
+      "capitulo": "Sanitarios y grifería",
+      "descripcion": "Conjunto de ducha termostático con barra, rociador y teleducha, gama media, cromado",
+      "unidad": "ud",
+      "precio": 245.00,
+      "incluye": "Suministro y colocación sobre tomas existentes. Incluye flexo y soporte.",
+      "sinonimos": ["termostático", "grifo termostático", "columna de ducha", "grifo de la ducha", "conjunto de ducha", "barra de ducha"]
+    },
+    {
+      "codigo": "ALI-01",
+      "capitulo": "Alicatados y solados",
+      "descripcion": "Alicatado con azulejo cerámico gama media hasta 30x60 cm, recibido con adhesivo cementoso C2",
+      "unidad": "m2",
+      "precio": 42.00,
+      "incluye": "Suministro y colocación con rejuntado. Azulejo de hasta 15 €/m² de PVP. Cantoneras aparte.",
+      "sinonimos": ["alicatar hasta el techo", "alicatar el baño", "poner azulejos", "azulejar las paredes", "alicatado nuevo", "poner azulejo en la pared"]
+    },
+    {
+      "codigo": "ALI-02",
+      "capitulo": "Alicatados y solados",
+      "descripcion": "Alicatado con azulejo aportado por el cliente, solo mano de obra",
+      "unidad": "m2",
+      "precio": 25.00,
+      "incluye": "Colocación con adhesivo C2 y rejuntado incluidos. Formatos de más de 60 cm, aparte.",
+      "sinonimos": ["solo la mano de obra del alicatado", "alicatar con mi azulejo", "poner el azulejo que he comprado", "mano de obra de alicatar"]
+    },
+    {
+      "codigo": "ALI-03",
+      "capitulo": "Alicatados y solados",
+      "descripcion": "Solado de baño con baldosa de gres porcelánico gama media, recibida con adhesivo C2",
+      "unidad": "m2",
+      "precio": 44.00,
+      "incluye": "Suministro y colocación con rejuntado. Baldosa de hasta 18 €/m² de PVP.",
+      "sinonimos": ["suelo del baño", "poner suelo en el baño", "solar el baño", "baldosa del baño", "cambiar el suelo del baño"]
+    },
+    {
+      "codigo": "ALI-04",
+      "capitulo": "Alicatados y solados",
+      "descripcion": "Solado con baldosa aportada por el cliente, solo mano de obra",
+      "unidad": "m2",
+      "precio": 24.00,
+      "incluye": "Colocación con adhesivo C2 y rejuntado incluidos. No incluye la nivelación del soporte.",
+      "sinonimos": ["solo poner el suelo", "colocar la baldosa que he comprado", "mano de obra del suelo"]
+    },
+    {
+      "codigo": "ALI-05",
+      "capitulo": "Alicatados y solados",
+      "descripcion": "Solado de vivienda con gres porcelánico rectificado de 60x60 cm, gama media",
+      "unidad": "m2",
+      "precio": 48.00,
+      "incluye": "Suministro y colocación con adhesivo C2 y rejuntado. No incluye rodapié ni nivelación.",
+      "sinonimos": ["suelo porcelánico", "poner porcelánico", "suelo de gres", "cambiar el suelo de la casa", "baldosa grande"]
+    },
+    {
+      "codigo": "ALI-06",
+      "capitulo": "Alicatados y solados",
+      "descripcion": "Cantonera o perfil de remate de aluminio para esquinas de alicatado",
+      "unidad": "ml",
+      "precio": 9.00,
+      "incluye": "Suministro y colocación durante el alicatado.",
+      "sinonimos": ["cantoneras", "perfil de esquina", "remate de las esquinas", "cantonera de aluminio"]
+    },
+    {
+      "codigo": "ELE-01",
+      "capitulo": "Electricidad",
+      "descripcion": "Punto de luz sencillo empotrado, con cableado, caja y mecanismo gama media",
+      "unidad": "ud",
+      "precio": 55.00,
+      "incluye": "Suministro e instalación desde caja de registro existente. No incluye la lámpara.",
+      "sinonimos": ["punto de luz", "poner una luz", "sacar un punto de luz", "un punto de luz más"]
+    },
+    {
+      "codigo": "ELE-02",
+      "capitulo": "Electricidad",
+      "descripcion": "Toma de corriente de 16 A empotrada, con cableado, caja y mecanismo gama media",
+      "unidad": "ud",
+      "precio": 52.00,
+      "incluye": "Suministro e instalación desde un circuito existente.",
+      "sinonimos": ["enchufe", "poner un enchufe", "añadir enchufes", "un enchufe más"]
+    },
+    {
+      "codigo": "ELE-03",
+      "capitulo": "Electricidad",
+      "descripcion": "Sustitución de cuadro eléctrico de vivienda con IGA, diferenciales y magnetotérmicos, hasta 8 circuitos",
+      "unidad": "ud",
+      "precio": 550.00,
+      "incluye": "Suministro e instalación. No incluye el certificado (CIE) ni la renovación del cableado.",
+      "sinonimos": ["cambiar el cuadro", "cuadro eléctrico nuevo", "cambiar los diferenciales", "cuadro de luz nuevo", "poner cuadro nuevo"]
+    },
+    {
+      "codigo": "ELE-04",
+      "capitulo": "Electricidad",
+      "descripcion": "Certificado de instalación eléctrica (CIE o boletín) y tramitación ante Industria",
+      "unidad": "ud",
+      "precio": 140.00,
+      "incluye": "Revisión, mediciones y registro. Las tasas oficiales, si las hay, van aparte.",
+      "sinonimos": ["boletín", "boletín de la luz", "certificado eléctrico", "el CIE", "papeles de la luz"]
+    },
+    {
+      "codigo": "ELE-05",
+      "capitulo": "Electricidad",
+      "descripcion": "Hora de oficial electricista",
+      "unidad": "h",
+      "precio": 38.00,
+      "incluye": "Mano de obra por hora o fracción en trabajos por administración. Material aparte.",
+      "sinonimos": ["hora de electricista", "electricista por horas", "una hora de electricista"]
+    },
+    {
+      "codigo": "ELE-06",
+      "capitulo": "Electricidad",
+      "descripcion": "Renovación de instalación eléctrica de baño: circuito, puntos de luz, enchufes y conexión de extractor",
+      "unidad": "pa",
+      "precio": 290.00,
+      "incluye": "Hasta 2 puntos de luz y 2 enchufes con mecanismos gama media. No incluye luminarias ni el extractor.",
+      "sinonimos": ["electricidad del baño", "cambiar la luz del baño", "renovar la instalación eléctrica del baño", "enchufes del baño"]
+    },
+    {
+      "codigo": "ELE-07",
+      "capitulo": "Electricidad",
+      "descripcion": "Instalación eléctrica de cocina: circuitos de horno, placa, lavadora y lavavajillas, y enchufes",
+      "unidad": "pa",
+      "precio": 820.00,
+      "incluye": "Circuitos independientes desde el cuadro, 6 enchufes de encimera y 2 puntos de luz. No incluye el cambio de cuadro.",
+      "sinonimos": ["electricidad de la cocina", "instalación eléctrica de la cocina", "enchufes de la cocina", "línea para la placa", "toma para el horno"]
+    },
+    {
+      "codigo": "ELE-08",
+      "capitulo": "Electricidad",
+      "descripcion": "Foco LED empotrable (downlight) en falso techo, con cableado",
+      "unidad": "ud",
+      "precio": 40.00,
+      "incluye": "Suministro e instalación de foco LED gama media, luz neutra.",
+      "sinonimos": ["focos", "poner focos", "ojos de buey", "downlights", "luces en el techo"]
+    },
+    {
+      "codigo": "ELE-09",
+      "capitulo": "Electricidad",
+      "descripcion": "Extractor de baño de 100 mm, con conexión eléctrica y a conducto existente",
+      "unidad": "ud",
+      "precio": 105.00,
+      "incluye": "Suministro e instalación. No incluye la apertura de un conducto nuevo.",
+      "sinonimos": ["extractor", "poner un extractor", "ventilador del baño", "extractor del baño"]
+    },
+    {
+      "codigo": "CAR-01",
+      "capitulo": "Carpintería",
+      "descripcion": "Puerta interior abatible lisa lacada en blanco, en block, con tapajuntas y manivela",
+      "unidad": "ud",
+      "precio": 245.00,
+      "incluye": "Suministro y colocación de puerta de medida estándar. Medidas especiales y correderas, aparte.",
+      "sinonimos": ["puerta nueva", "cambiar la puerta", "puerta lacada", "poner una puerta de paso", "puerta blanca"]
+    },
+    {
+      "codigo": "CAR-02",
+      "capitulo": "Carpintería",
+      "descripcion": "Sustitución de manivela de puerta interior con roseta, acabado inox o cromo",
+      "unidad": "ud",
+      "precio": 35.00,
+      "incluye": "Suministro y colocación del juego de manivelas por las dos caras.",
+      "sinonimos": ["cambiar las manillas", "cambiar los pomos", "manillas nuevas", "cambiar el picaporte"]
+    },
+    {
+      "codigo": "CAR-03",
+      "capitulo": "Carpintería",
+      "descripcion": "Suelo laminado flotante AC4 de 8 mm, con lámina de polietileno",
+      "unidad": "m2",
+      "precio": 30.00,
+      "incluye": "Suministro y colocación. No incluye rodapié, nivelación ni retirada del suelo existente.",
+      "sinonimos": ["tarima flotante", "poner tarima", "suelo laminado", "parquet flotante", "poner parquet"]
+    },
+    {
+      "codigo": "CAR-04",
+      "capitulo": "Carpintería",
+      "descripcion": "Rodapié de MDF lacado en blanco de 7 a 10 cm, colocado con adhesivo o clavado",
+      "unidad": "ml",
+      "precio": 11.00,
+      "incluye": "Suministro y colocación, con remates en esquinas.",
+      "sinonimos": ["rodapié", "poner rodapié", "zócalo", "rodapié blanco"]
+    },
+    {
+      "codigo": "PIN-01",
+      "capitulo": "Pintura",
+      "descripcion": "Pintura plástica lisa mate en paredes y techos, dos manos, color blanco o suave",
+      "unidad": "m2",
+      "precio": 9.00,
+      "incluye": "Protección, plastecido de pequeñas fisuras y dos manos. No incluye el alisado de gotelé.",
+      "sinonimos": ["pintar", "pintar las paredes", "pintar el piso", "pintar la habitación", "dar una mano de pintura"]
+    },
+    {
+      "codigo": "PIN-02",
+      "capitulo": "Pintura",
+      "descripcion": "Pintura plástica antimoho en techo de baño o cocina, dos manos",
+      "unidad": "m2",
+      "precio": 11.00,
+      "incluye": "Imprimación y dos manos. Para techos de zonas húmedas.",
+      "sinonimos": ["pintar el techo", "pintar el techo del baño", "pintura antihumedad", "pintura antimoho"]
+    },
+    {
+      "codigo": "PIN-03",
+      "capitulo": "Pintura",
+      "descripcion": "Alisado de paredes con gotelé mediante plaste y lijado, listo para pintar",
+      "unidad": "m2",
+      "precio": 15.00,
+      "incluye": "Mano de obra y material. No incluye la pintura posterior.",
+      "sinonimos": ["quitar el gotelé", "alisar las paredes", "tapar el gotelé", "alisar el gotelé"]
+    },
+    {
+      "codigo": "PIN-04",
+      "capitulo": "Pintura",
+      "descripcion": "Esmaltado de puerta interior por las dos caras, con cerco y tapajuntas",
+      "unidad": "ud",
+      "precio": 95.00,
+      "incluye": "Lijado ligero, imprimación y dos manos de esmalte al agua. Puertas con vidrio, aparte.",
+      "sinonimos": ["pintar la puerta", "lacar las puertas", "esmaltar la puerta", "pintar las puertas de blanco"]
+    },
+    {
+      "codigo": "COC-01",
+      "capitulo": "Cocina",
+      "descripcion": "Montaje de muebles de cocina altos y bajos, solo mano de obra",
+      "unidad": "ml",
+      "precio": 80.00,
+      "incluye": "Montaje, nivelado y fijación de módulos aportados por el cliente. Encimera y electrodomésticos aparte.",
+      "sinonimos": ["montar la cocina", "montar los muebles de la cocina", "montaje de cocina", "colocar los muebles de cocina"]
+    },
+    {
+      "codigo": "COC-02",
+      "capitulo": "Cocina",
+      "descripcion": "Encimera laminada de 38 mm con canto postformado, gama media",
+      "unidad": "ml",
+      "precio": 110.00,
+      "incluye": "Suministro y colocación con huecos de fregadero y placa y copete. Fondo hasta 62 cm.",
+      "sinonimos": ["encimera laminada", "encimera de formica", "encimera imitación madera", "encimera barata"]
+    },
+    {
+      "codigo": "COC-03",
+      "capitulo": "Cocina",
+      "descripcion": "Encimera de aglomerado de cuarzo de 2 cm, gama media, con canto pulido",
+      "unidad": "ml",
+      "precio": 330.00,
+      "incluye": "Suministro, plantilla y colocación. Fondo hasta 62 cm. Huecos de fregadero y placa aparte.",
+      "sinonimos": ["encimera de cuarzo", "encimera de silestone", "encimera de compac", "encimera de piedra"]
+    },
+    {
+      "codigo": "COC-04",
+      "capitulo": "Cocina",
+      "descripcion": "Hueco para fregadero bajo encimera o para placa en encimera de cuarzo, con pulido de cantos",
+      "unidad": "ud",
+      "precio": 55.00,
+      "incluye": "Corte y pulido en taller. Uno por cada fregadero o placa.",
+      "sinonimos": ["hueco del fregadero", "hueco de la placa", "corte de la encimera"]
+    },
+    {
+      "codigo": "COC-05",
+      "capitulo": "Cocina",
+      "descripcion": "Frente de cocina alicatado con azulejo cerámico gama media, recibido con adhesivo C2",
+      "unidad": "m2",
+      "precio": 44.00,
+      "incluye": "Suministro y colocación entre encimera y muebles altos, con rejuntado.",
+      "sinonimos": ["frente de cocina", "alicatar la cocina", "azulejo de la cocina", "salpicadero", "poner azulejo detrás de la encimera"]
+    },
+    {
+      "codigo": "COC-06",
+      "capitulo": "Cocina",
+      "descripcion": "Montaje de fregadero y grifo de cocina aportados por el cliente, con sifón",
+      "unidad": "ud",
+      "precio": 90.00,
+      "incluye": "Mano de obra y sellado, con conexión a tomas existentes.",
+      "sinonimos": ["montar el fregadero", "poner el fregadero", "conectar el grifo de la cocina", "instalar el fregadero"]
+    },
+    {
+      "codigo": "COC-07",
+      "capitulo": "Cocina",
+      "descripcion": "Instalación y conexión de electrodoméstico integrable (horno, placa, lavavajillas o campana)",
+      "unidad": "ud",
+      "precio": 65.00,
+      "incluye": "Mano de obra por aparato, con conexión a tomas existentes. Salida de humos nueva, aparte.",
+      "sinonimos": ["montar el horno", "conectar la placa", "instalar el lavavajillas", "poner la campana", "conectar los electrodomésticos"]
+    },
+    {
+      "codigo": "GES-01",
+      "capitulo": "Gestión de residuos",
+      "descripcion": "Contenedor de escombros de 5 m³, con colocación, retirada y canon de vertido de residuos inertes",
+      "unidad": "ud",
+      "precio": 230.00,
+      "incluye": "Hasta 7 días. La tasa municipal de ocupación de la vía pública va aparte.",
+      "sinonimos": ["contenedor", "poner un contenedor", "cuba de escombros", "contenedor de obra"]
+    },
+    {
+      "codigo": "GES-02",
+      "capitulo": "Gestión de residuos",
+      "descripcion": "Gestión de residuos de obra en gestor autorizado, con certificado de entrega",
+      "unidad": "pa",
+      "precio": 110.00,
+      "incluye": "Clasificación, transporte en sacas y certificado. Para obras sin contenedor o con residuos no inertes.",
+      "sinonimos": ["gestión de residuos", "llevar los escombros", "tirar los escombros", "retirada de escombros", "sacas de escombro"]
+    },
+    {
+      "codigo": "GES-03",
+      "capitulo": "Gestión de residuos",
+      "descripcion": "Limpieza final de obra de la zona reformada, con retirada de restos y protecciones",
+      "unidad": "pa",
+      "precio": 180.00,
+      "incluye": "Limpieza a fondo de la estancia reformada y sus accesos. Pisos completos, según medición.",
+      "sinonimos": ["limpieza final", "limpiar al terminar", "dejarlo limpio", "limpieza de obra"]
+    },
+    {
+      "codigo": "VAR-01",
+      "capitulo": "Varios",
+      "descripcion": "Desplazamiento a obra o servicio dentro del área urbana",
+      "unidad": "ud",
+      "precio": 30.00,
+      "incluye": "Por visita. Fuera del área urbana, según distancia.",
+      "sinonimos": ["desplazamiento", "la salida", "venir a casa", "el viaje"]
+    },
+    {
+      "codigo": "VAR-02",
+      "capitulo": "Varios",
+      "descripcion": "Hora de oficial de 1ª de albañilería",
+      "unidad": "h",
+      "precio": 30.00,
+      "incluye": "Mano de obra por hora en trabajos por administración. Material aparte.",
+      "sinonimos": ["hora de albañil", "hora de oficial", "albañil por horas"]
+    },
+    {
+      "codigo": "VAR-03",
+      "capitulo": "Varios",
+      "descripcion": "Hora de peón de construcción",
+      "unidad": "h",
+      "precio": 20.00,
+      "incluye": "Mano de obra por hora en trabajos por administración.",
+      "sinonimos": ["hora de peón", "hora de ayudante", "peón por horas"]
+    },
+    {
+      "codigo": "VAR-04",
+      "capitulo": "Varios",
+      "descripcion": "Protección de suelos, muebles y zonas comunes durante la obra",
+      "unidad": "pa",
+      "precio": 60.00,
+      "incluye": "Cartón, plástico y cinta en recorridos, ascensor y estancias no afectadas.",
+      "sinonimos": ["proteger el suelo", "proteger el ascensor", "tapar los muebles", "protecciones"]
+    },
+    {
+      "codigo": "VAR-05",
+      "capitulo": "Varios",
+      "descripcion": "Tramitación de licencia o declaración responsable de obra menor ante el ayuntamiento",
+      "unidad": "pa",
+      "precio": 150.00,
+      "incluye": "Preparación y presentación de la documentación. Tasas e ICIO aparte.",
+      "sinonimos": ["licencia de obra", "permiso de obra", "papeles del ayuntamiento", "declaración responsable"]
+    }
+  ]
+}

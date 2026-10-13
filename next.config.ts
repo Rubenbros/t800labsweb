@@ -24,6 +24,12 @@ const nextConfig: NextConfig = {
           { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=()" },
         ],
       },
+      // La demo de presupuesto por audio graba con el micrófono (solo este origen).
+      // Va DESPUÉS: con la misma cabecera, la última regla que casa es la que manda.
+      {
+        source: "/:locale(en)?/demo/presupuesto",
+        headers: [{ key: "Permissions-Policy", value: "camera=(), microphone=(self), geolocation=()" }],
+      },
     ];
   },
 };

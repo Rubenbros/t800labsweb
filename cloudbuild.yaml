@@ -171,6 +171,9 @@ steps:
   # 5. Despliegue. Banderas idénticas a las del workflow retirado.
   #    El correo sale por la API de Gmail con delegación de dominio: la SA de runtime
   #    necesita roles/iam.serviceAccountTokenCreator sobre mailer@.
+  #    El presupuesto por audio (docs/adr/0002) llama a Gemini en Vertex AI con la SA de
+  #    runtime (roles/aiplatform.user, concedido el 13-10-2026) y lee sus secretos
+  #    (PRESUPUESTO_*) de Secret Manager en tiempo de ejecución, sin --set-secrets.
   - id: 'deploy'
     name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:slim'
     entrypoint: 'gcloud'
