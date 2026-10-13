@@ -49,7 +49,7 @@ export function StickyCta({ showAfter, hideAt }: Props) {
     >
       <WhatsAppCta
         placement="sticky"
-        className="flex w-full items-center justify-center gap-2.5 rounded-md bg-[#25D366] px-5 py-3.5 text-[15px] font-semibold text-black"
+        className="flex w-full items-center justify-center gap-2.5 whitespace-nowrap rounded-md bg-[#25D366] px-5 py-3.5 text-[15px] font-semibold text-black"
       >
         {t("cta")}
         <span className="font-normal text-black/60">· {t("note")}</span>
