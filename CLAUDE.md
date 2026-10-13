@@ -143,7 +143,7 @@ El Hero ocupa `h-screen`, fondo negro, y contiene:
 - Línea de copyright
 - Font mono, estilo minimalista acorde al resto
 - Email: hola@t800labs.com
-- WhatsApp: +34 646 515 267
+- WhatsApp: +34 645 515 267
 
 ## Secciones pendientes
 - Todas las secciones principales están implementadas

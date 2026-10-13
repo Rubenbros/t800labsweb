@@ -212,7 +212,7 @@ export default function LavaFooter({ t }: LavaFooterProps) {
                   rel="noopener noreferrer"
                   className="block transition-colors duration-300 hover:text-[#e50914]"
                 >
-                  +34 646 515 267
+                  +34 645 515 267
                 </a>
               </div>
             </div>
